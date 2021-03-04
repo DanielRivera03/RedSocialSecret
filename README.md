@@ -57,7 +57,7 @@
 <p>3. Tienes límites de subidas de fotos y vídeos, por favor atender las indicaciones respectivas en los formularios en cuestión.</p>
 <p>4. Está red social es privada, ningún usuario sin iniciar sesión o registrarse puede consultar los detalles de otros usuarios.</p>
 <p>5. No es obligatorio completar los detalles <b>Sobre Mí</b> de tu perfil de usuario; sin embargo al no hacerlo, los demás usuarios de esta red social no podrán visualizar tu perfil de usuario, además de no poder consultar tú mismo tus detalles de usuario. En su lugar te aparecerá un mensaje de advertencia citando lo anteriormente descrito.</p>
-<p>6. Puedes hacer uso de la cámara web <b>Solo de manera local en tu servidor, o en un hostig que cuente con certificado SSL vigente.</b></p>
+<p>6. Puedes hacer uso de la cámara web <b>Solo de manera local en tu servidor, o en un hosting que cuente con certificado SSL vigente.</b></p>
 
 <h2>Algunas Capturas:</h2>
 
