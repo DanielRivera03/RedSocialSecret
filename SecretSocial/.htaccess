@@ -1,0 +1,67 @@
+#--------------------------------------------------------
+#║            SECRET - RED SOCIAL PHP NATIVO            ║
+#--------------------------------------------------------           
+#    AUTOR: DANIEL RIVERA (danielrivera03)
+#    Github: https://github.com/DanielRivera03
+#    VERSIONES TESTEADAS: 7.3 a 8.0
+#    -> VERSIONES INFERIORES PROBABLEMENTE TENGAN
+#    ALGUN CONFLICTO. TOMAR EN CUENTA.
+#    COPYRIGHT © 2020 - 2021
+#--------------------------------------------------------
+# NO PERMITIR LA VISTA DE LOS DIRECTORIOS DEL SITIO
+Options +FollowSymLinks
+Options All -Indexes
+RewriteEngine on
+# URL's AMIGABLES -> VALIDO PARA TODO EL SISTEMA
+# -> INICIO DE SESION
+RewriteRule ^IniciarSesion/([0-9a-zA-Z]+)$ controlador/ControlInicioSesiones.php?validarsesion=inicio
+# -> CONTRASEÑA INCORRECTA -> INICIO DE SESION FALLIDO
+RewriteRule ^CredencialesIncorrectas/([0-9a-zA-Z]+)$ vista/error-iniciarsesion.php?error
+# -> REGISTRARME -> NUEVOS USUARIOS
+RewriteRule ^Registrarme/([0-9a-zA-Z]+)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=altanuevousuario
+# -> CONFIRMACION REGISTRO EXITOSO -> ENVIO A BASE DE DATOS
+RewriteRule ^RegistrarUsuario/([0-9a-zA-Z]+)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=ok
+# -> CONFIRMACION REGISTRO EXITOSO -> ALERTA EN PANTALLA
+RewriteRule ^RegistroExitoso/([0-9a-zA-Z]+)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=confirmacionregistro
+# -> CONFIRMACION REGISTRO FALLIDO -> ALERTA EN PANTALLA
+RewriteRule ^RegistroFallido/([0-9a-zA-Z_]+)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=error_registro
+# -> CAMPOS VACIOS {SECCION REGISTRAR NUEVOS USUARIOS}
+RewriteRule ^Error/([0-9a-zA-Z]+)$ cRegistroNuevosUsuarios.php?nuevoregistro=camposvacios
+# -> COMPLETAR PERFIL {NUEVOS USUARIOS REGISTRADOS}
+RewriteRule ^NuevosUsuarios/(.*)=(.*)$ vista/completar-perfil.php?nuevoregistro=completarperfil&comprobacion=$1
+# -> FEED DE NOTICIAS -> INICIO DE SECRET SOCIAL LUEGO DE INICIAR SESION
+RewriteRule ^Feed/([[0-9a-zA-Z-_/]+)$ controlador/cPublicacionesUsuarios.php?publicaciones=inicio
+# -> PERFIL PROPIETARIO DE USUARIOS {MI PERFIL DE USUARIO}
+RewriteRule ^Perfil/(.*)$ controlador/cPublicacionesUsuarios.php?publicaciones=perfil-usuario&usuario=$1
+# -> PERFILES GENERALES DE USUARIOS {VISTA TODOS LOS PERFILES DE USUARIOS REGISTRADOS}
+RewriteRule ^Perfiles/(.*)=(.*)$ controlador/cPublicacionesUsuarios.php?publicaciones=perfil-general&usuario=$1&id=$2
+# -> EXPLORAR MIS AMIGOS ACEPTADOS {SOLICITUDES DE AMISTAD APROBADAS}
+RewriteRule ^MisAmigos/([[0-9a-zA-Z-_/]+)$ controlador/cPublicacionesUsuarios.php?publicaciones=explorar-amigos-aceptados
+# -> EXPLORAR LISTADO DE TODOS LOS USUARIOS REGISTRADOS EN LA PLATAFORMA
+RewriteRule ^Amigos/([[0-9a-zA-Z-_/]+)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=explorar-amigos
+# -> TODAS LAS NOTIFICACIONES RECIBIDAS DE USUARIOS
+RewriteRule ^Notificaciones/(.*)$ controlador/cPublicacionesUsuarios.php?publicaciones=mostrar-notificaciones&usuario=$1
+# -> REGISTRAR NUEVOS EVENTOS SOCIALES SECRET
+RewriteRule ^EventosSociales/([[0-9a-zA-Z-_/]+)$ controlador/cEventosSecretSocial.php?eventos_sociales=registrareventos
+# -> MOSTRAR EVENTOS SOCIALES SECRET REGISTRADOS
+RewriteRule ^Eventos/([[0-9a-zA-Z-_/]+)$ controlador/cEventosSecretSocial.php?eventos_sociales=mostrareventos
+# -> CHAT GENERAL SECRET
+RewriteRule ^ChatGeneral/([[0-9a-zA-Z-_/]+)$ controlador/cPublicacionesUsuarios.php?publicaciones=mensajeria-secret
+# -> MUSICA FAVORITA SECRET
+RewriteRule ^Videos/([[0-9a-zA-Z-_/]+)$ controlador/cPublicacionesUsuarios.php?publicaciones=multimedia-secretvideos
+# -> VER TODAS LAS SOLICITUDES DE AMISTAD
+RewriteRule ^SolicitudesAmistad/(.*)$ controlador/cPublicacionesUsuarios.php?publicaciones=solicitudes-amistad&usuario=$1
+# -> EDITAR PERFIL DE USUARIOS
+RewriteRule ^EditarPerfil/(.*)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=editar-perfil&usuario=$1
+# -> CARGAR COMENTARIOS Y REACCIONES DE PUBLICACIONES SECRET REGISTRADAS
+RewriteRule ^CargarDatosPublicacion/(.*)$ controlador/cPublicacionesUsuarios.php?publicaciones=comentariosperfilusuario&idpublicacion=$1
+# -> BUSCADOR SECRET {TODA LA PLATAFORMA}
+RewriteRule ^Buscador/(.*)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistro=resultados-busqueda
+# -> CERRAR SESION DE SECRET
+RewriteRule ^Salir/([[0-9a-zA-Z-_/]+)$ controlador/ControlInicioSesiones.php?validarsesion=cerrarsesion
+# -> ACCESO DENEGADO {BLOQUEAR ACCIONES NO EXISTENTES E INICIOS DE SESION NULOS}
+RewriteRule ^AccesoDenegado=([[0-9a-zA-Z-_/]+)$ vista/accesodenegado.php?restringido
+# -> PERFIL INCOMPLETO -> BLOQUEAR VISTA A TODOS LOS USUARIOS
+RewriteRule ^PerfilNoCompleto=([[0-9a-zA-Z-_/]+)$ vista/perfil-nocompleto.php?true
+# -> PRIVACIDAD / TERMINOS Y CONDICIONES
+RewriteRule ^Secret/([[0-9a-zA-Z-_/]+)$ controlador/cPublicacionesUsuarios.php?publicaciones=privacidad-condiciones
