@@ -76,7 +76,8 @@
 
 <h2>Modelo Entidad Relación - Base de Datos</h2>
 
-![mE-R](https://user-images.githubusercontent.com/44457989/107606149-d9806b00-6bfa-11eb-889e-bf1d952cc140.png)
+![DiagramaER_SecretDB](https://user-images.githubusercontent.com/44457989/127075209-6783e205-9d81-4483-a12e-8e40521cb8fc.png)
+
 
 
 <h2>Muchas gracias por obtener este repositorio hecho con muchas tazas de café ☕ ❤️</h2>
