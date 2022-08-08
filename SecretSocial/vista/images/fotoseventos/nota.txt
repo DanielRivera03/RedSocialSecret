@@ -1,0 +1,1 @@
+Creación de carpeta contenedora de fotografía de eventos registrados - error 404 al no existir dicha carpeta.
