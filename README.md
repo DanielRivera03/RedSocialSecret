@@ -37,6 +37,24 @@
 
 ![CapturaModelo](https://user-images.githubusercontent.com/44457989/107604778-bf448e00-6bf6-11eb-992e-a9ace832ab0b.PNG)
 
+
+<h2>¿Deseas probar la demo en vivo:</h2>
+<p>Se ha habilitado un espacio dentro de un hosting gratuito para efectuar pruebas de este sistema, por favor tome en cuenta que la velocidad de respuesta así como su ancho de banda y cantidad de usuarios se ve limitada al ser un hosting gratuito. Puede acceder a la demo en el siguiente enlace: http://secretsocial.rf.gd/IniciarSesion/inicio A continación se detalla el ingreso del perfil de pruebas para ingresar<br><br>
+<br>
+<ul>
+  <li>correo: jprr@correo.com | clave: 1234567890</li>
+</ul>
+
+
+
+![Captura web_26-12-2022_0481_secretsocial rf gd](https://user-images.githubusercontent.com/44457989/209513945-95983ec2-42b2-4c1a-99c7-5daa81f4cff5.jpeg)
+![Captura web_26-12-2022_04654_secretsocial rf gd](https://user-images.githubusercontent.com/44457989/209513947-cd60e26d-5696-45bc-acec-df2d1fb477f0.jpeg)
+![Captura web_26-12-2022_04637_secretsocial rf gd](https://user-images.githubusercontent.com/44457989/209513948-90debed4-62db-408c-9ad8-e8dfc41cac39.jpeg)
+
+
+<p>Para la subida de archivos multimedia, por favor tome nota que únicamente puede subir archivos hasta un máximo de 8MB. Además de tomar las diferentes restricciones dentro de la plataforma. NO existen roles de usuario estrictamente asignados.</p>
+
+
 <h2>Consideraciones Especiales:</h2>
 <p>1. Al momento de registrarte, es de estricta obligación completar tu perfil de usuario, de lo contrario no podrás hacer uso de la aplicación. Si deseas cancelar el registro. Solamente tienes que dirigirte al formulario  <b>"Cancelar Registro" y explicar los motivos de tu cancelación, una vez procesado no hay vuelta atrás y pierdes el acceso a la plataforma, así como la posibilidad de usar ese mismo correo.</b></p>
 <p>* Completar Perfil de Usuarios Nuevos</p>
