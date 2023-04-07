@@ -39,17 +39,14 @@
 
 
 <h2>¿Deseas probar la demo en vivo:</h2>
-<p>Se ha habilitado un espacio dentro de un hosting gratuito para efectuar pruebas de este sistema, por favor tome en cuenta que la velocidad de respuesta así como su ancho de banda y cantidad de usuarios se ve limitada al ser un hosting gratuito. Puede acceder a la demo en el siguiente enlace: http://secretsocial.rf.gd/IniciarSesion/inicio A continación se detalla el ingreso del perfil de pruebas para ingresar<br><br>
+<p>Se ha habilitado un espacio dentro de un hosting gratuito para efectuar pruebas de este sistema, por favor tome en cuenta que la velocidad de respuesta así como su ancho de banda y cantidad de usuarios se ve limitada al ser un hosting gratuito. Puede acceder a la demo en el siguiente enlace: https://secretsocial.helioho.st/IniciarSesion/inicio A continación se detalla el ingreso del perfil de pruebas para ingresar<br><br>
 <br>
 <ul>
-  <li>correo: jprr@correo.com | clave: 1234567890</li>
+  <li>correo: jp@correo.com | clave: 123456789</li>
 </ul>
 
+![Captura de pantalla 2023-04-06 183300](https://user-images.githubusercontent.com/44457989/230517288-a8c47f9a-2fb2-4fd7-b21d-d2cbb14b6d30.png)
 
-
-![Captura web_26-12-2022_0481_secretsocial rf gd](https://user-images.githubusercontent.com/44457989/209513945-95983ec2-42b2-4c1a-99c7-5daa81f4cff5.jpeg)
-![Captura web_26-12-2022_04654_secretsocial rf gd](https://user-images.githubusercontent.com/44457989/209513947-cd60e26d-5696-45bc-acec-df2d1fb477f0.jpeg)
-![Captura web_26-12-2022_04637_secretsocial rf gd](https://user-images.githubusercontent.com/44457989/209513948-90debed4-62db-408c-9ad8-e8dfc41cac39.jpeg)
 
 
 <p>Para la subida de archivos multimedia, por favor tome nota que únicamente puede subir archivos hasta un máximo de 8MB. Además de tomar las diferentes restricciones dentro de la plataforma. NO existen roles de usuario estrictamente asignados.</p>
