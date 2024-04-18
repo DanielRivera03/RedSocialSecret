@@ -37,13 +37,15 @@
 
 ![CapturaModelo](https://user-images.githubusercontent.com/44457989/107604778-bf448e00-6bf6-11eb-992e-a9ace832ab0b.PNG)
 
-
+<!--
 <h2>¿Deseas probar la demo en vivo:</h2>
 <p>Se ha habilitado un espacio dentro de un hosting gratuito para efectuar pruebas de este sistema, por favor tome en cuenta que la velocidad de respuesta así como su ancho de banda y cantidad de usuarios se ve limitada al ser un hosting gratuito. Puede acceder a la demo en el siguiente enlace: https://secretsocial.helioho.st/IniciarSesion/inicio A continación se detalla el ingreso del perfil de pruebas para ingresar<br><br>
 <br>
 <ul>
   <li>correo: jp@correo.com | clave: 123456789</li>
 </ul>
+
+-->
 
 ![Captura de pantalla 2023-04-06 183300](https://user-images.githubusercontent.com/44457989/230517288-a8c47f9a-2fb2-4fd7-b21d-d2cbb14b6d30.png)
 
