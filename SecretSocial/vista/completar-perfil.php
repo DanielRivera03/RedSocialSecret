@@ -54,8 +54,28 @@ if($_SESSION['comprobar_perfil']==1){
       <link rel="stylesheet" href="../vista/css/style.css">
       <!-- Responsive CSS -->
       <link rel="stylesheet" href="../vista/css/responsive.css">
+      <!-- Google Fonts -->
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
       <!-- Alerts -->
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <style>
+         body {
+             font-family: 'Inter', sans-serif !important;
+         }
+         .nav-pills .nav-link {
+             color: #64748b !important;
+             transition: all 0.3s ease !important;
+         }
+         .nav-pills .nav-link.active {
+             background: linear-gradient(135deg, #e53935, #b92025) !important;
+             color: #ffffff !important;
+             box-shadow: 0 4px 15px rgba(185, 32, 37, 0.2) !important;
+         }
+         .form-control:focus {
+             border-color: #e53935 !important;
+             box-shadow: 0 0 0 0.2rem rgba(229, 57, 53, 0.15) !important;
+         }
+      </style>
    </head>
    <body class="sidebar-main-active right-column-fixed">
       <!-- loader Start -->
@@ -66,67 +86,28 @@ if($_SESSION['comprobar_perfil']==1){
       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><!i-- class="ri-menu-line"></!i--></div>
-                     </div>
-                  </div>
-                  </div>
-                  <div class="iq-search-bar">
-                     <form action="#" class="searchbox">
-                        <input type="text" class="text search-input" placeholder="Buscar en Secret..." disabled>
-                        <!--a class="search-link" href="#"><i class="ri-search-line"></i></!--a-->
-                     </form>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="#l" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                              
-                           </a>
-                        </li>
-                        </div>
-                     </div>
-                  </div>
-                </li>
-            </ul>             
-         <!-- TOP Nav Bar END -->
+         <?php include __DIR__ . '/premium_topnav.php'; ?>
          <!-- Page Content  -->
          <div id="content-page" class="content-page">
             <div class="container">
                <div class="row">
                   <div class="col-lg-12">
-                     <div class="iq-card">
+                     <div class="iq-card" style="border-radius: 12px !important; box-shadow: 0 8px 20px rgba(0,0,0,0.04) !important; border: 1px solid #eef2f6 !important; overflow: hidden !important; margin-bottom: 25px !important;">
                         <div class="iq-card-body p-0">
                            <div class="iq-edit-list">
-                              <ul class="iq-edit-profile d-flex nav nav-pills">
+                              <ul class="iq-edit-profile d-flex nav nav-pills" style="margin-bottom: 0 !important;">
                                  <li class="col-md-4 p-0">
-                                    <a class="nav-link active" data-toggle="pill" id="informacionpersonal" href="#personal-information">
+                                    <a class="nav-link active" data-toggle="pill" id="informacionpersonal" href="#personal-information" style="border-radius: 0 !important; font-weight: 600 !important; padding: 18px !important; text-align: center !important;">
                                     Informaci&oacute;n Personal
                                     </a>
                                  </li>
                                  <li class="col-md-4 p-0">
-                                    <a class="nav-link" data-toggle="pill" id="importante" href="#chang-pwd">
-                                    &#128227; Importante 
+                                    <a class="nav-link" data-toggle="pill" id="importante" href="#chang-pwd" style="border-radius: 0 !important; font-weight: 600 !important; padding: 18px !important; text-align: center !important;">
+                                    📢 Importante 
                                     </a>
                                  </li>
                                  <li class="col-md-4 p-0">
-                                    <a class="nav-link" data-toggle="pill" id="registrocancelar" href="#emailandsms">
+                                    <a class="nav-link" data-toggle="pill" id="registrocancelar" href="#emailandsms" style="border-radius: 0 !important; font-weight: 600 !important; padding: 18px !important; text-align: center !important;">
                                     Cancelar Registro 
                                     </a>
                                  </li>
@@ -139,19 +120,24 @@ if($_SESSION['comprobar_perfil']==1){
                      <div class="iq-edit-list-data">
                         <div class="tab-content">
                            <div class="tab-pane fade active show" id="personal-information" role="tabpanel">
-                              <div class="iq-card">
+                              <div class="iq-card" style="border-radius: 16px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important; border: 1px solid #eef2f6 !important; overflow: hidden !important;">
                                  <div class="iq-card-header d-flex justify-content-between">
                                     <div class="iq-header-title">
                                        <h4 class="card-title">Informaci&oacute;n Personal</h4>
                                     </div>
                                  </div>
                                  <div class="iq-card-body">
-                                 <!-- ADVERTENCIA -->
-                                 <div class="alert bg-white alert-warning" role="alert">
-                                    <div class="iq-alert-icon">
+                                 <!-- ADVERTENCIA CUSTOM Y PROFESIONAL -->
+                                 <div style="background: #fffbeb !important; border-left: 5px solid #d97706 !important; border-radius: 8px !important; padding: 20px !important; margin-bottom: 30px !important; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.05) !important; display: flex !important; align-items: flex-start !important; text-align: left !important;">
+                                    <div style="color: #d97706 !important; font-size: 24px !important; margin-right: 15px !important; line-height: 1 !important; margin-top: 2px !important;">
                                        <i class="ri-alert-line"></i>
-                                 </div>
-                                 <div class="iq-alert-text">Estimado(a) <?php echo $_SESSION['nombre_usuario'];?>, le recordamos completar todos los campos, adem&aacute;s de <strong>ingresar un nombre de usuario &uacute;nico disponible</strong>, de lo contrario su informaci&oacute;n no se procesar&aacute; y <strong>no podr&aacute; completar su perfil exitosamente y tendr&aacute; que repetir el proceso hasta cumplir con lo requerido.</strong></div>
+                                    </div>
+                                    <div style="flex: 1 !important;">
+                                       <h5 style="color: #b45309 !important; font-weight: 700 !important; margin: 0 0 6px 0 !important; font-size: 16px !important;">Paso Requerido: Completa tu Información</h5>
+                                       <p style="color: #451a03 !important; margin: 0 !important; font-size: 14px !important; line-height: 1.6 !important;">
+                                          Estimado(a) <strong><?php echo htmlspecialchars($_SESSION['nombre_usuario'], ENT_QUOTES, 'UTF-8');?></strong>, le recordamos completar todos los campos del formulario. Es indispensable <strong>ingresar un nombre de usuario único disponible</strong> para poder habilitar su cuenta. De lo contrario, sus datos no podrán procesarse y deberá rellenar el formulario nuevamente.
+                                       </p>
+                                    </div>
                                  </div>
                                     <form id="form" class="mt-4 needs-validation" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
                                        <div class="form-group row align-items-center">
@@ -179,7 +165,7 @@ if($_SESSION['comprobar_perfil']==1){
                                                       <a style="color: #fff; width:100%;" id="boton" class="btn btn-primary"><i class="fa fa-camera"></i> Tomar Foto</a>
                                                       <p id="estado"></p>
                                                       <video style="width: 100%; max-width: 100%; height: 100%; max-height: 255px;" muted="muted" id="video"></video>
-	                                                   <canvas id="canvas" style="display: none;"></canvas>
+ 	                                                   <canvas id="canvas" style="display: none;"></canvas>
                                                       </div>
                                                       <div class="modal-footer">
                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -449,25 +435,25 @@ if($_SESSION['comprobar_perfil']==1){
                                              </div>
                                           </div>
                                           <div class="form-group col-sm-6">
-                                          <label for="telefono">Fecha de Nacimiento:</label>
-                                          <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1">
-                                          <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" min="1940-01-01" max="<?php $CalculoEdad = date('Y') - 18; echo $CalculoEdad; ?>-12-31" onkeydown="return false" required>
-                                        <div class="invalid-tooltip">
-                                            Fecha de Nacimiento requerido, complete este campo 
-                                       </div>
-                                       <div class="valid-tooltip">
-                                          Campo completado con &eacute;xito
-                                       </div>
-                                    </div>
+                                             <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                                             <div class="custom-control custom-checkbox d-inline-block mt-2 pt-1" style="width: 100%; padding-left: 0;">
+                                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" min="1940-01-01" max="<?php $CalculoEdad = date('Y') - 18; echo $CalculoEdad; ?>-12-31" onkeydown="return false" required>
+                                                <div class="invalid-tooltip">
+                                                   Fecha de Nacimiento requerido, complete este campo 
+                                                </div>
+                                                <div class="valid-tooltip">
+                                                   Campo completado con &eacute;xito
+                                                </div>
+                                             </div>
                                           </div>
                                        </div>
-                                       <button type="submit" id="enviar" class="btn btn-primary mr-2">Enviar Datos</button>
+                                       <button type="submit" id="enviar_registro" class="btn btn-primary mr-2" style="background: linear-gradient(135deg, #e53935, #b92025) !important; border: none !important; font-weight: 600 !important; padding: 10px 24px !important; border-radius: 30px !important; box-shadow: 0 4px 12px rgba(185, 32, 37, 0.15) !important;">Enviar Datos</button>
                                     </form>
                                  </div>
                               </div>
                            </div>
                            <div class="tab-pane fade" id="chang-pwd" role="tabpanel">
-                              <div class="iq-card">
+                              <div class="iq-card" style="border-radius: 16px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important; border: 1px solid #eef2f6 !important; overflow: hidden !important;">
                                  <div class="iq-card-header d-flex justify-content-between">
                                     <div class="iq-header-title">
                                        <h4 class="card-title">Aspectos a tomar en cuenta:</h4>
@@ -485,23 +471,28 @@ if($_SESSION['comprobar_perfil']==1){
                               </div>
                            </div>
                            <div class="tab-pane fade" id="emailandsms" role="tabpanel">
-                              <div class="iq-card">
+                              <div class="iq-card" style="border-radius: 16px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important; border: 1px solid #eef2f6 !important; overflow: hidden !important;">
                                  <div class="iq-card-header d-flex justify-content-between">
                                     <div class="iq-header-title">
                                        <h4 class="card-title">Cancelaci&oacute;n de Registro</h4>
                                     </div>
                                  </div>
                                  <div class="iq-card-body">
-                                 <form id="cancelar_registro" class="mt-4 needs-validation" novalidate method="POST" autocomplete="off">
+                                    <form id="cancelar_registro" class="mt-4 needs-validation" novalidate method="POST" autocomplete="off">
                                        <div class="form-group row align-items-center">
                                           <div class="col-md-12">
-                                          <!-- ADVERTENCIA -->
-                                          <div class="alert bg-white alert-danger" role="alert">
-                                             <div class="iq-alert-icon">
-                                                <i class="ri-information-line"></i>
+                                             <!-- ADVERTENCIA DE CANCELACION CUSTOM Y PROFESIONAL -->
+                                             <div style="background: #fef2f2 !important; border-left: 5px solid #dc2626 !important; border-radius: 8px !important; padding: 20px !important; margin-bottom: 30px !important; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05) !important; display: flex !important; align-items: flex-start !important; text-align: left !important;">
+                                                <div style="color: #dc2626 !important; font-size: 24px !important; margin-right: 15px !important; line-height: 1 !important; margin-top: 2px !important;">
+                                                   <i class="ri-information-line"></i>
+                                                </div>
+                                                <div style="flex: 1 !important;">
+                                                   <h5 style="color: #991b1b !important; font-weight: 700 !important; margin: 0 0 6px 0 !important; font-size: 16px !important;">Atención: Cancelación de Registro</h5>
+                                                   <p style="color: #7f1d1d !important; margin: 0 !important; font-size: 14px !important; line-height: 1.6 !important;">
+                                                      Estimado(a) <strong><?php echo htmlspecialchars($_SESSION['nombre_usuario'], ENT_QUOTES, 'UTF-8');?></strong>, tenga en cuenta que al procesar este formulario, <strong>perderá el acceso a nuestra plataforma de forma inmediata y definitiva</strong>. Recibirá un correo de confirmación de baja en unos instantes. Mientras el proceso de eliminación concluye, no podrá registrarse nuevamente con este mismo correo. Si tiene alguna duda, puede contactarnos en <a href="mailto:soporte@secret.com" style="color: #dc2626 !important; text-decoration: underline !important; font-weight: bold !important;">soporte@secret.com</a>.
+                                                   </p>
+                                                </div>
                                              </div>
-                                             <div class="iq-alert-text">Estimado(a) <?php echo $_SESSION['nombre_usuario'];?>, tome en cuenta que al procesar este formulario, <strong>usted perder&aacute; el acceso a nuestra plataforma autom&aacute;ticamente</strong>, posteriormente usted recibir&aacute; un email en un plazo no mayor a 7 d&iacute;as h&aacute;biles informando su total liberaci&oacute;n de su usuario de nuestro sistema. <strong>Le informamos que mientras no se libere su usuario, usted no podr&aacute; hacer uso del mismo hasta su posterior liberaci&oacute;n.</strong> ¿Tienes alguna inquietud o problema? ¡Puedes escribirnos a nuestro correo de soporte y con mucho gusto te daremos seguimiento! <a href="mailto:soporte@secret.com">soporte@secret.com</a></div>
-                                          </div>
                                           </div>
                                        </div>
                                        <div class=" row align-items-center">
@@ -554,7 +545,7 @@ if($_SESSION['comprobar_perfil']==1){
                                              </div>
                                           </div>
                                           <div class="form-group col-sm-12">
-                                             <label for="motivo_cancelacion">¿Cu&eacute;ntanos a detalle el motivo de tu selecci&oacute;n?:</label>
+                                             <label for="detalle_cancelacion">¿Cu&eacute;ntanos a detalle el motivo de tu selecci&oacute;n?:</label>
                                              <textarea class="form-control" id="detalle_cancelacion" name="detalle_cancelar" rows="5" placeholder="Puedes exponer tu caso completo aqu&iacute;... Si t&uacute; selecci&oacute;n fue 'Otra Causa' ¡Cu&eacute;ntanos! T&uacute; opini&oacute;n nos interesa mucho." maxlength="150" onpaste="ContadorCaracteresMaximo();" onkeyup="ContadorCaracteresMaximo();" required></textarea>
                                              <div id="respuesta_contador"></div>
                                              <p id="contador"></p>
@@ -565,8 +556,8 @@ if($_SESSION['comprobar_perfil']==1){
                                                 Campo completado con &eacute;xito
                                              </div>
                                           </div>
-                                          </div>
-                                       <button type="submit" id="enviar" class="btn btn-primary mr-2">Enviar Datos</button>
+                                       </div>
+                                       <button type="submit" id="enviar_cancelacion" class="btn btn-primary mr-2" style="background: linear-gradient(135deg, #e53935, #b92025) !important; border: none !important; font-weight: 600 !important; padding: 10px 24px !important; border-radius: 30px !important; box-shadow: 0 4px 12px rgba(185, 32, 37, 0.15) !important;">Enviar Datos</button>
                                     </form>
                                  </div>
                               </div>
@@ -646,6 +637,7 @@ if($_SESSION['comprobar_perfil']==1){
       <script src="../vista/js/contador_caracteres.js"></script>
       <script src="../vista/js/alerta_cancelacion.js"></script>
       <script src="../vista/js/tomar-fotos.js"></script>
+      <script src="../vista/js/floating_chat.js"></script>
    </body>
 </html>
 <?php 

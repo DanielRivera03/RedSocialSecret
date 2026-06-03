@@ -161,5 +161,6 @@
       <script src="../vista/js/custom.js"></script>
       <!-- Alert -->
       <script src="../vista/Alertas/Registrarme/error_registro.js"></script>
+       <script src="../vista/js/floating_chat.js"></script>
    </body>
 </html>

@@ -9,8 +9,9 @@
 #    COPYRIGHT © 2020 - 2021
 #--------------------------------------------------------
 # NO PERMITIR LA VISTA DE LOS DIRECTORIOS DEL SITIO
-Options +FollowSymLinks
-Options All -Indexes
+Options -Indexes
+
+<IfModule mod_rewrite.c>
 RewriteEngine on
 # URL's AMIGABLES -> VALIDO PARA TODO EL SISTEMA
 # -> INICIO DE SESION
@@ -61,7 +62,10 @@ RewriteRule ^Buscador/(.*)$ controlador/cRegistroNuevosUsuarios.php?nuevoregistr
 RewriteRule ^Salir/([[0-9a-zA-Z-_/]+)$ controlador/ControlInicioSesiones.php?validarsesion=cerrarsesion
 # -> ACCESO DENEGADO {BLOQUEAR ACCIONES NO EXISTENTES E INICIOS DE SESION NULOS}
 RewriteRule ^AccesoDenegado=([[0-9a-zA-Z-_/]+)$ vista/accesodenegado.php?restringido
+# -> ALERTA DE SESION DUPLICADA
+RewriteRule ^SesionDuplicada/([0-9a-zA-Z]+)$ vista/alerta-sesionduplicada.php?alerta
 # -> PERFIL INCOMPLETO -> BLOQUEAR VISTA A TODOS LOS USUARIOS
 RewriteRule ^PerfilNoCompleto=([[0-9a-zA-Z-_/]+)$ vista/perfil-nocompleto.php?true
 # -> PRIVACIDAD / TERMINOS Y CONDICIONES
 RewriteRule ^Secret/([[0-9a-zA-Z-_/]+)$ controlador/cPublicacionesUsuarios.php?publicaciones=privacidad-condiciones
+</IfModule>

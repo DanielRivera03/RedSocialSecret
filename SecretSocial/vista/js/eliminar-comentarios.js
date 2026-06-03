@@ -11,8 +11,8 @@
 --------------------------------------------------------
 */ 
 $(document).ready(function(){  
-    // #eliminarhistorias IDENTIDICADOR DE ID -> ACCION A EJECUTAR
-    $(document).on('click', '#eliminarcomentarios', function(e){
+    // .eliminarcomentarios IDENTIDICADOR DE CLASE -> ACCION A EJECUTAR
+    $(document).on('click', '.eliminarcomentarios', function(e){
      var IDComentarios = $(this).data('id'); // ID ENVIADA POR GET DESDE EL CONTROLADOR HACIA EL MODELO
      BorrarComentario(IDComentarios); // ID UNICO DE HISTORIAS
      e.preventDefault();
@@ -24,14 +24,17 @@ $(document).ready(function(){
           url: '../controlador/cPublicacionesUsuarios.php?publicaciones=eliminar-comentarios&idcomentariopublicacion='+IDComentarios,
           type: 'POST',
              data: 'idcomentariopublicacion='+IDComentarios, // COMPARACION PREVIA ANTES DE EJECUTAR ACCION EN SERVIDOR
-             dataType: 'json'
+             dataType: 'text'
           })
           .done(function(respuesta){ // SI MODELO EJECUTA PETICION, REALIZA PETICION
-            if(respuesta=="OK"){
+            let cleaned = respuesta.trim().replace(/^"(.*)"$/, '$1'); // remove potential outer quotes
+            if(cleaned == "OK"){
                  // 0.70 SEGUNDOS DE RETRASO PARA MOSTRAR ALERTA Y REFRESCAR
                  setTimeout(function(){
                     location.reload();
                 }, 700);
+            } else {
+                 AlertaUsuarioMostrar("Error", "No se pudo eliminar el comentario: " + cleaned, "error");
             }
           })
           .fail(function(){

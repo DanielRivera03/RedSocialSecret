@@ -1,4 +1,6 @@
-<?php 
+<?php
+   $active_page = 'mostrareventos';
+ 
 /*
 --------------------------------------------------------
 ║            SECRET - RED SOCIAL PHP NATIVO            ║
@@ -14,19 +16,18 @@
    // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
    if(!isset($_GET['eventos_sociales'])){
       header('location:../AccesoDenegado=restringido');
-     }
-     // NO PERMITIR INGRESO SIN INICIAR SESION
-     if(!isset($_SESSION['nombre_usuario'])){
-        header('location:../AccesoDenegado=restringido');
-     }
-     // NO PERMITIR INGRESO SI PARAMETRO NO ES IGUAL AL INDICADO
-     if($_GET['eventos_sociales']!="mostrareventos"){
-        header('location:../AccesoDenegado=restringido');
-     }
-    // INCLUIR ARCHIVO CONTADOR DE PUBLICACIONES 
-    require('../modelo/mConteoPublicacionesPerfilPropietario.php');
-?>
-<?php
+   }
+   // NO PERMITIR INGRESO SIN INICIAR SESION
+   if(!isset($_SESSION['nombre_usuario'])){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR INGRESO SI PARAMETRO NO ES IGUAL AL INDICADO
+   if($_GET['eventos_sociales']!="mostrareventos"){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // INCLUIR ARCHIVO CONTADOR DE PUBLICACIONES 
+   require('../modelo/mConteoPublicacionesPerfilPropietario.php');
+
    // SOLAMENTE LOS USUARIOS CON PERFIL COMPLETO PODRAN CONSULTAR TODAS LAS PAGINAS
    // DE ESTA PLATAFORMA
    if($_SESSION['comprobar_perfil']==0){
@@ -46,6 +47,8 @@
       <link rel="mask-icon" href="../vista/favicon/safari-pinned-tab.svg" color="#5bbad5">
       <meta name="msapplication-TileColor" content="#da532c">
       <meta name="theme-color" content="#ffffff">
+      <!-- Google Fonts -->
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="../vista/css/bootstrap.min.css">
       <!-- Typography CSS -->
@@ -58,8 +61,161 @@
       <link href="../vista/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
       <!-- Bootstrap Dropzone CSS -->
       <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
-     <!-- Alerts -->
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <!-- Remix Icons -->
+      <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+      <!-- Alerts -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <style>
+          body, input, textarea, button, select, label {
+              font-family: 'Montserrat', sans-serif !important;
+          }
+          h1, h2, h3, h4, h5, h6, .card-title {
+              font-family: 'Poppins', sans-serif !important;
+          }
+          /* Custom styles for Events grid */
+          .event-card {
+              border-radius: 20px !important;
+              overflow: hidden;
+              border: 1px solid var(--iq-border-light) !important;
+              background: var(--iq-white);
+              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03) !important;
+              transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+          }
+          body.dark-theme .event-card {
+              background: #242526 !important;
+              border-color: #3a3b3c !important;
+              box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4) !important;
+          }
+          .event-img-container {
+              position: relative;
+              overflow: hidden;
+              height: 220px;
+              background: #e9ecef;
+          }
+          .event-img-container img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+          }
+          .badge-category {
+              position: absolute;
+              top: 15px;
+              left: 15px;
+              padding: 6px 12px;
+              font-size: 11px;
+              border-radius: 20px;
+              font-weight: 600;
+              color: #fff;
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              z-index: 2;
+          }
+          .badge-location {
+              position: absolute;
+              top: 15px;
+              right: 15px;
+              padding: 6px 12px;
+              font-size: 11px;
+              border-radius: 20px;
+              font-weight: 600;
+              background: rgba(0, 0, 0, 0.6);
+              backdrop-filter: blur(8px);
+              color: #fff;
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              z-index: 2;
+          }
+          .event-card-body {
+              padding: 24px !important;
+              display: flex;
+              flex-direction: column;
+              flex-grow: 1;
+          }
+          .event-title {
+              font-size: 19px;
+              font-weight: 700;
+              color: var(--iq-title-text);
+              margin-bottom: 8px;
+          }
+          body.dark-theme .event-title {
+              color: #fff;
+          }
+          .event-desc {
+              font-size: 13.5px;
+              color: var(--iq-body-text);
+              margin-bottom: 20px;
+          }
+          body.dark-theme .event-desc {
+              color: #b0b3b8;
+          }
+          .event-details-box {
+              background: var(--iq-light-secondary);
+              border-radius: 12px;
+              padding: 15px;
+              margin-bottom: 20px;
+              font-size: 13px;
+              border: 1px solid var(--iq-border-light);
+          }
+          body.dark-theme .event-details-box {
+              background: rgba(255, 255, 255, 0.02) !important;
+              border-color: #3a3b3c !important;
+          }
+          .detail-item {
+              display: flex;
+              align-items: flex-start;
+              margin-bottom: 10px;
+          }
+          .detail-item i {
+              font-size: 16px;
+              margin-right: 12px;
+              color: var(--iq-primary);
+          }
+          .attendance-group {
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+          }
+          .btn-att {
+              flex: 1;
+              min-width: 100px;
+              padding: 8px 12px;
+              font-size: 12.5px;
+              font-weight: 600;
+              border-radius: 30px;
+              border: 1px solid var(--iq-border-light);
+              background: transparent;
+              transition: all 0.2s;
+              cursor: pointer;
+          }
+          body.dark-theme .btn-att {
+              border-color: #3a3b3c;
+              color: #b0b3b8;
+          }
+          .btn-att.active {
+              background: var(--iq-primary) !important;
+              color: white !important;
+              border-color: var(--iq-primary) !important;
+          }
+          .event-organizer {
+              display: flex;
+              align-items: center;
+              border-top: 1px solid var(--iq-border-light);
+              padding-top: 15px;
+              margin-top: 15px;
+          }
+          body.dark-theme .event-organizer {
+              border-color: #3a3b3c;
+          }
+          .organizer-avatar {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              object-fit: cover;
+              margin-right: 10px;
+              border: 2px solid var(--iq-primary);
+          }
+      </style>
    </head>
    <body class="sidebar-main-active right-column-fixed">
       <!-- loader Start -->
@@ -67,220 +223,32 @@
          <div id="loading-center">
          </div>
       </div>
+      <script>
+          (function(){
+              var loader = document.getElementById('loading');
+              if (loader) {
+                  window.addEventListener('load', function() {
+                      setTimeout(function() {
+                          loader.style.transition = 'opacity 0.5s ease';
+                          loader.style.opacity = '0';
+                          setTimeout(function() { loader.style.display = 'none'; }, 500);
+                      }, 100);
+                  });
+                  setTimeout(function() {
+                      if (loader.style.display !== 'none') {
+                          loader.style.transition = 'opacity 0.5s ease';
+                          loader.style.opacity = '0';
+                          setTimeout(function() { loader.style.display = 'none'; }, 500);
+                      }
+                  }, 2500);
+              }
+          })();
+      </script>
       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <!-- Sidebar  -->
-         <div class="iq-sidebar">
-            <div id="sidebar-scrollbar">
-               <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li>
-                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
-                     </li>
-                     <li>
-                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
-                     </li>
-                     <li>
-                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="iq-waves-effect"><i class="las la-bell"></i><span>Mis Notificaciones</span></a>
-                     </li>
-                     <li>
-                        <a href="../EventosSociales/registrareventos" class="iq-waves-effect"><i class="las la-film"></i><span>Registrar Eventos</span></a>
-                     </li>
-                     <li class="active">
-                        <a href="../Eventos/mostrareventos" class="iq-waves-effect"><i class="las la-bullhorn"></i><span>Ver Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../ChatGeneral/mensajeria-secret" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Mensajes</span></a>
-                     </li>
-                     <li>
-                        <a href="../Videos/multimedia-secretvideos" class="iq-waves-effect"><i class="ri-play-circle-line"></i><span>M&uacute;sica Favorita</span></a>
-                     </li>
-                  </ul>
-               </nav>
-               <div class="p-3"></div>
-            </div>
-         </div>
-         <!-- TOP Nav Bar -->
-         <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                     </div>
-                  </div>
-                  </div>
-                  <div class="iq-search-bar">
-                     <form action="../Buscador/resultados-busqueda" class="searchbox needs-validation" novalidate method="POST" autocomplete="off">
-                        <input type="text" class="text search-input" name="buscador" placeholder="Buscar en Secret..." required>
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                     </form>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                           </a>
-                        </li>
-                        <li>
-                           <a href="../Feed/inicio" class="iq-waves-effect d-flex align-items-center">
-                           <i class="ri-home-line"></i>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown iq-sub-dropdown-large">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Solicitudes de Amigos<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadRecibidas($conectarsistema15,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <!-- INICIO BANDERA -> SOLICITUDES DE AMIGOS -->
-                                    <?php 
-                                       while($filas=mysqli_fetch_array($consulta)){
-                                          if($filas['estado']==0){
-                                             echo '
-                                             <div class="iq-friend-request">
-                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                                <div class="d-flex align-items-center">
-                                                   <div class="">
-                                                      <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="">
-                                                   </div>
-                                                   <div class="media-body ml-3">
-                                                      <h6 class="mb-0 ">'; echo $filas['nombres']; echo ' '; echo $filas['apellidos'];  echo'</h6>
-                                                   </div>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                   <a style="color: var( --iq-white);" id="aceptar-solicitudes" data-id="'; echo $filas['id']; echo'" class="mr-3 btn btn-primary rounded">Confirmar</a>
-                                                   <a style="color: var( --iq-white);" id="rechazar-solicitudes" data-id="'; echo $filas['idsolicitudamistad']; echo'" class="mr-3 btn btn-secondary rounded">Rechazar</a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          ';
-                                          }
-                                       }
-                                    ?>
-                                    <!-- FIN BANDERA -> SOLICITUDES DE AMIGOS -->
-                                 </div>
-                                 <div class="text-center">
-                                    <a href="../SolicitudesAmistad/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="las la-hand-point-right"></i> Ver todas las solicitudes de amistad</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                        <li class="nav-item">
-                           <a href="#" class="search-toggle iq-waves-effect">
-                              <div id="lottie-beil"></div>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Notificaciones<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadAceptadas($conectarsistema17,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <?php 
-                                    // CONSULTA DE SOLICITUDES DE AMISTAD APROBADAS
-                                       while($filas=mysqli_fetch_array($consulta1)){
-                                          echo'
-                                          <a href="#" class="iq-sub-card" >
-                                          <div class="media align-items-center">
-                                             <div class="">
-                                                <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo$filas['fotoperfil'];  echo'" alt="">
-                                             </div>
-                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Eres amigo de '; echo $filas['nombres']; echo' '; echo $filas['apellidos']; echo'</h6>
-                                                <small class="float-right font-size-12">
-                                                ';
-                                                // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                                $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                                $ObtenerMes = date("m", $FechaCompleta);
-                                                $ObtenerHoras = date("H:i", $FechaCompleta);
-                                                $ObtenerMinutos = date("m", $FechaCompleta);
-                                                echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                                echo'
-                                                </small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                          ';
-                                       }
-                                    ?>
-                                 </div>
-                              </div>
-                              <div class="text-center">
-                                 <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="ri-notification-3-fill"></i> Ver todas las notificaciones</a>
-                              </div>
-                           </div>
-                        </li>
-                     <ul class="navbar-list">
-                        <li>
-                           <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <i class="ri-arrow-down-s-fill"></i>
-                           </a>
-                           <div class="iq-sub-dropdown iq-user-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hola, <?php echo $_SESSION['nombre_usuario'];?> <?php echo $_SESSION['apellido_usuario'];?></h5>
-                                       <span class="text-white font-size-12">Secret&reg;</span>
-                                    </div>
-                                    <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Mi perfil</h6>
-                                             <p class="mb-0 font-size-12">Ver mi informaci&oacute;n personal</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="../EditarPerfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-warning-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-warning">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Editar Perfil</h6>
-                                             <p class="mb-0 font-size-12">Modificar foto y detalles de mi perfil</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="../Salir/cerrarsesion" role="button">Cerrar Sesi&oacute;n<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-         </div>
-         <!-- TOP Nav Bar END -->
+                  <?php include __DIR__ . '/premium_sidebar.php'; ?>
+         <?php include __DIR__ . '/premium_topnav.php'; ?>
          <div class="header-for-bg">
             <div class="background-header position-relative">
                <img style="height: 300px;" src="../vista/images/bg_portadaeventos.jpg" class="img-fluid w-100 rounded rounded" alt="header-bg">
@@ -295,110 +263,215 @@
          <div id="content-page" class="content-page">
             <div class="container">
                <div class="row">
+               
+               <!-- Alerta Responsabilidad Premium -->
                <div class="col-md-12 col-lg-12">
-               <div class="alert text-white bg-secondary" role="alert">
-                  <div class="iq-alert-icon">
-                     <i class="ri-information-line"></i>
-                  </div>
-                  <div class="iq-alert-text">Estimado(a) <?php echo $_SESSION['nombre_usuario']; ?> en estos momentos est&aacute;s consultando los eventos registrados por los usuarios de t&uacute; misma localidad <strong><?php echo $_SESSION['pais_usuarios']; ?></strong>. Te informamos que <strong>No nos hacemos responsables de dichos eventos, los mismos son publicados por los usuarios de esta comunidad y queda a t&uacute; discresi&oacute;n asistir o no a alguno de ellos.</strong></div>
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <i class="ri-close-line"></i>
-                     </button>
-                  </div>
+                   <div class="alert text-white alert-premium d-flex align-items-center" role="alert">
+                       <div class="iq-alert-icon mr-3" style="font-size: 24px;">
+                           <i class="ri-information-line"></i>
+                       </div>
+                       <div class="iq-alert-text">
+                           Estimado(a) <strong><?php echo $_SESSION['nombre_usuario']; ?></strong>, estás consultando los eventos de <strong><?php echo $_SESSION['pais_usuarios']; ?></strong>. 
+                           Publicaciones realizadas por la comunidad. Asistencia bajo tu propia discreción.
+                       </div>
+                       <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Close" style="color: #fff; opacity: 0.8;">
+                           <i class="ri-close-line"></i>
+                       </button>
+                   </div>
                </div>
-                   <!-- INICIO BANDERA -> EVENTOS -->
-                 <?php
-                    while($filas=mysqli_fetch_array($consulta2)){
-                        echo'
-                        <div class="col-md-6 col-lg-6">
-                        <div class="iq-card">
-                           <div class="top-bg-image">
-                              <img style="height: 250px;" src="../vista/images/fotoseventos/'; echo $filas['fotoevento']; echo'" class="img-fluid w-100" alt="group-bg">
+
+               <!-- Buscador y Filtros Premium -->
+               <div class="col-12 mb-4">
+                   <div class="iq-card p-3 filter-card">
+                       <div class="row align-items-center">
+                           <div class="col-lg-4 col-md-5 mb-3 mb-md-0">
+                               <div class="search-wrapper">
+                                   <i class="ri-search-line search-icon"></i>
+                                   <input type="text" id="search-eventos" class="form-control" placeholder="Buscar por nombre, descripción o lugar...">
+                               </div>
                            </div>
-                           <div class="iq-card-body text-center">
-                              <div class="group-icon">
-                                 <img src="../vista/images/logo.png" alt="profile-img" class="rounded-circle img-fluid avatar-120">
-                              </div>
-                              <div class="group-info pt-3 pb-3">
-                                 <h4>'; echo $filas['nombre']; echo'</h4>
-                                 <p>'; echo $filas['descripcion']; echo'</p>
-                                 <p>'; echo $filas['direccion']; echo'</p>
-                                 <p>Fecha Inicio: '; 
-                                 $FechaInicio = $filas['fechainicio']; $FechaCompleta = strtotime($FechaInicio); $ObtenerMes = date("m", $FechaCompleta); $ObtenerDia = date("d", $FechaCompleta); echo $ObtenerDia; echo " de ";
-                                 // VALIDACIONES SEGUN MES OBTENIDO
-                                 if($ObtenerMes==1){
-                                    echo "Enero";
-                                 }else if($ObtenerMes==2){
-                                    echo "Febrero";
-                                 }else if($ObtenerMes==3){
-                                    echo "Marzo";
-                                 }else if($ObtenerMes==4){
-                                    echo "Abril";
-                                 }else if($ObtenerMes==5){
-                                    echo "Mayo";
-                                 }else if($ObtenerMes==6){
-                                    echo "Junio";
-                                 }else if($ObtenerMes==7){
-                                    echo "Julio";
-                                 }else if($ObtenerMes==8){
-                                    echo "Agosto";
-                                 }else if($ObtenerMes==9){
-                                    echo "Septiembre";
-                                 }else if($ObtenerMes==10){
-                                    echo "Octubre";
-                                 }else if($ObtenerMes==11){
-                                    echo "Noviembre";
-                                 }else if($ObtenerMes==12){
-                                    echo "Diciembre";
-                                 }
-                                 echo'</p>
-                                 <p>Fecha Finalizaci&oacute;n: '; 
-                                 $FechaInicio = $filas['fechafin']; $FechaCompleta = strtotime($FechaInicio); $ObtenerMes = date("m", $FechaCompleta); $ObtenerDia = date("d", $FechaCompleta); echo $ObtenerDia; echo " de ";
-                                 // VALIDACIONES SEGUN MES OBTENIDO
-                                 if($ObtenerMes==1){
-                                    echo "Enero";
-                                 }else if($ObtenerMes==2){
-                                    echo "Febrero";
-                                 }else if($ObtenerMes==3){
-                                    echo "Marzo";
-                                 }else if($ObtenerMes==4){
-                                    echo "Abril";
-                                 }else if($ObtenerMes==5){
-                                    echo "Mayo";
-                                 }else if($ObtenerMes==6){
-                                    echo "Junio";
-                                 }else if($ObtenerMes==7){
-                                    echo "Julio";
-                                 }else if($ObtenerMes==8){
-                                    echo "Agosto";
-                                 }else if($ObtenerMes==9){
-                                    echo "Septiembre";
-                                 }else if($ObtenerMes==10){
-                                    echo "Octubre";
-                                 }else if($ObtenerMes==11){
-                                    echo "Noviembre";
-                                 }else if($ObtenerMes==12){
-                                    echo "Diciembre";
-                                 }
-                                 echo'</p>
-                                 <p>Hora Inicio: '; 
-                                 $FechaInicio = $filas['fechainicio']; $FechaCompleta = strtotime($FechaInicio); $ObtenerHora = date("H:i", $FechaCompleta); echo $ObtenerHora;
-                                 echo'</p>
-                                 <p>Hora Fin: '; 
-                                 $FechaInicio = $filas['fechafin']; $FechaCompleta = strtotime($FechaInicio); $ObtenerHora = date("H:i", $FechaCompleta); echo $ObtenerHora;
-                                 echo'</p>
-                              </div>
-                              ';
-                              if($filas['id']==$_SESSION['id_usuario']){
-                                 echo'<a id="eliminareventos" data-id="'; echo $filas['ideventos']; echo'" style="color: var(--iq-light);" class="btn btn-primary d-block w-100"><i class="fa fa-trash"></i> Eliminar Evento</a>';
-                              }
-                              echo'
+                           <div class="col-lg-8 col-md-7">
+                               <div class="categories-tabs d-flex flex-wrap justify-content-md-end">
+                                   <button class="btn btn-filter active" data-filter="all">Todos</button>
+                                   <button class="btn btn-filter" data-filter="Música">🎵 Música</button>
+                                   <button class="btn btn-filter" data-filter="Fiesta">🎉 Fiestas</button>
+                                   <button class="btn btn-filter" data-filter="Educación">📚 Educación</button>
+                                   <button class="btn btn-filter" data-filter="Deporte">⚽ Deportes</button>
+                                   <button class="btn btn-filter" data-filter="Cultura">🎨 Cultura</button>
+                                   <button class="btn btn-filter" data-filter="Comida">🍔 Comida</button>
+                                   <button class="btn btn-filter" data-filter="General">✨ Otros</button>
+                               </div>
                            </div>
-                        </div>
-                     </div>
-                        ';
-                    }
-                 ?>
+                       </div>
+                   </div>
+               </div>
+
+               <!-- INICIO BANDERA -> EVENTOS -->
+               <?php 
+                  // Helper function inside scope (checked before function_exists to prevent redeclaration)
+                  if (!function_exists('obtenerCategoriaEvento')) {
+                      function obtenerCategoriaEvento($nombre, $descripcion) {
+                          $texto = mb_strtolower($nombre . ' ' . $descripcion, 'UTF-8');
+                          
+                          if (preg_match('/(concierto|musica|música|banda|recital|festival|show|canto|karaoke|dj|tocada)/u', $texto)) {
+                              return [
+                                  'nombre' => 'Música',
+                                  'icon' => 'ri-music-2-line',
+                                  'class' => 'cat-musica',
+                                  'gradient' => 'linear-gradient(135deg, #ec4899, #8b5cf6)'
+                              ];
+                          }
+                          if (preg_match('/(fiesta|party|rumba|discoteca|cumpleaños|cumple|boda|celebracion|celebración|brindis|social)/u', $texto)) {
+                              return [
+                                  'nombre' => 'Fiesta',
+                                  'icon' => 'ri-cake-3-line',
+                                  'class' => 'cat-fiesta',
+                                  'gradient' => 'linear-gradient(135deg, #f59e0b, #ef4444)'
+                              ];
+                          }
+                          if (preg_match('/(charla|conferencia|taller|curso|seminario|clase|webinar|educacion|educación|aprender|confe)/u', $texto)) {
+                              return [
+                                  'nombre' => 'Educación',
+                                  'icon' => 'ri-book-open-line',
+                                  'class' => 'cat-educacion',
+                                  'gradient' => 'linear-gradient(135deg, #3b82f6, #06b6d4)'
+                              ];
+                          }
+                          if (preg_match('/(deporte|partido|torneo|futbol|fútbol|basquet|básquet|maraton|maratón|carrera|gym|entrenamiento|running)/u', $texto)) {
+                              return [
+                                  'nombre' => 'Deporte',
+                                  'icon' => 'ri-football-line',
+                                  'class' => 'cat-deporte',
+                                  'gradient' => 'linear-gradient(135deg, #10b981, #3b82f6)'
+                              ];
+                          }
+                          if (preg_match('/(exposicion|exposición|museo|arte|teatro|obra|cine|pelicula|película|cultura|cultural)/u', $texto)) {
+                              return [
+                                  'nombre' => 'Cultura',
+                                  'icon' => 'ri-palette-line',
+                                  'class' => 'cat-cultura',
+                                  'gradient' => 'linear-gradient(135deg, #8b5cf6, #ec4899)'
+                              ];
+                          }
+                          if (preg_match('/(comida|cena|almuerzo|desayuno|gastronomia|gastronomía|restaurante|cafe|café|bebida|tragos|degustacion)/u', $texto)) {
+                              return [
+                                  'nombre' => 'Comida',
+                                  'icon' => 'ri-restaurant-line',
+                                  'class' => 'cat-comida',
+                                  'gradient' => 'linear-gradient(135deg, #f97316, #eab308)'
+                              ];
+                          }
+                          return [
+                              'nombre' => 'General',
+                              'icon' => 'ri-sparkling-line',
+                              'class' => 'cat-general',
+                              'gradient' => 'linear-gradient(135deg, #6b7280, #4b5563)'
+                          ];
+                      }
+                  }
+
+                  // Loop through results
+                  while($filas=mysqli_fetch_array($consulta2)){
+                      $cat = obtenerCategoriaEvento($filas['nombre'], $filas['descripcion']);
+                      
+                      // Obtener estado de asistencia del usuario
+                      $asistencia_actual = $EventosSociales->ObtenerAsistenciaUsuario($conectarsistema2, $filas['ideventos'], $_SESSION['id_usuario']);
+                      
+                      // Contar asistencia
+                      $count_asistire = $EventosSociales->ContarAsistenciaEvento($conectarsistema2, $filas['ideventos'], 'asistire');
+                      $count_talvez = $EventosSociales->ContarAsistenciaEvento($conectarsistema2, $filas['ideventos'], 'talvez');
+                      $count_no_asistire = $EventosSociales->ContarAsistenciaEvento($conectarsistema2, $filas['ideventos'], 'no_asistire');
+
+                      // Formatear fechas
+                      $meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+                      
+                      $t_inicio = strtotime($filas['fechainicio']);
+                      $dia_inicio = date("d", $t_inicio);
+                      $mes_inicio = $meses[intval(date("m", $t_inicio))];
+                      $hora_inicio = date("H:i", $t_inicio);
+
+                      $t_fin = strtotime($filas['fechafin']);
+                      $dia_fin = date("d", $t_fin);
+                      $mes_fin = $meses[intval(date("m", $t_fin))];
+                      $hora_fin = date("H:i", $t_fin);
+
+                      // Generamos una cadena para búsqueda en minúsculas
+                      $search_string = htmlspecialchars(mb_strtolower(
+                          $filas['nombre'] . ' ' . 
+                          $filas['descripcion'] . ' ' . 
+                          $filas['direccion'] . ' ' . 
+                          $filas['usuario'] . ' ' . 
+                          $filas['pais'], 
+                          'UTF-8'
+                      ));
+
+                      echo '
+                      <div class="col-md-6 col-lg-6 mb-4 event-card-col" data-category="' . $cat['nombre'] . '" data-search="' . $search_string . '">
+                         <div class="event-card">
+                            <div class="event-img-container">
+                               <img src="../vista/images/fotoseventos/' . $filas['fotoevento'] . '" alt="event-cover">
+                               <div class="event-card-overlay"></div>
+                               <span class="badge-category" style="background: ' . $cat['gradient'] . ';">
+                                   <i class="' . $cat['icon'] . '"></i> ' . $cat['nombre'] . '
+                               </span>
+                               <span class="badge-location">
+                                   <i class="ri-map-pin-2-line"></i> ' . htmlspecialchars($filas['pais']) . '
+                               </span>
+                            </div>
+                            
+                            <div class="event-card-body">
+                               <div class="d-flex justify-content-between align-items-start mb-2">
+                                  <h4 class="event-title">' . htmlspecialchars($filas['nombre']) . '</h4>';
+                                  if($filas['id'] == $_SESSION['id_usuario']){
+                                     echo '<a id="eliminareventos" data-id="' . $filas['ideventos'] . '" class="btn-delete-event" title="Eliminar Evento"><i class="ri-delete-bin-7-line"></i></a>';
+                                  }
+                               echo '</div>
+                               
+                               <p class="event-desc">' . htmlspecialchars($filas['descripcion']) . '</p>
+                               
+                               <div class="event-details-box">
+                                  <div class="detail-item">
+                                     <i class="ri-map-pin-line"></i>
+                                     <span><strong>Lugar:</strong> ' . htmlspecialchars($filas['direccion']) . '</span>
+                                  </div>
+                                  <div class="detail-item">
+                                     <i class="ri-calendar-event-line"></i>
+                                     <span><strong>Inicio:</strong> ' . $dia_inicio . ' ' . $mes_inicio . ' | ' . $hora_inicio . '</span>
+                                  </div>
+                                  <div class="detail-item">
+                                     <i class="ri-time-line"></i>
+                                     <span><strong>Fin:</strong> ' . $dia_fin . ' ' . $mes_fin . ' | ' . $hora_fin . '</span>
+                                  </div>
+                                </div>
+
+                               <!-- Organizado por -->
+                               <div class="event-organizer">
+                                   <img src="../vista/images/logo.png" class="organizer-avatar" alt="organizer">
+                                   <div class="organizer-text">
+                                       Organizado por <strong>@' . htmlspecialchars($filas['usuario']) . '</strong>
+                                   </div>
+                               </div>
+
+                               <!-- Botones de asistencia Rediseñados -->
+                               <div class="mt-auto">
+                                  <h6 class="attendance-header">Tu respuesta de asistencia</h6>
+                                  <div class="attendance-group attendance-buttons" data-event-id="' . $filas['ideventos'] . '">
+                                     <button type="button" class="btn-att att-yes ' . ($asistencia_actual == 'asistire' ? 'active' : '') . '" data-status="asistire">
+                                        <i class="ri-checkbox-circle-line"></i> Asistiré <span class="badge badge-success">' . $count_asistire . '</span>
+                                     </button>
+                                     <button type="button" class="btn-att att-maybe ' . ($asistencia_actual == 'talvez' ? 'active' : '') . '" data-status="talvez">
+                                        <i class="ri-question-line"></i> Tal vez <span class="badge badge-warning text-white">' . $count_talvez . '</span>
+                                     </button>
+                                     <button type="button" class="btn-att att-no ' . ($asistencia_actual == 'no_asistire' ? 'active' : '') . '" data-status="no_asistire">
+                                        <i class="ri-close-circle-line"></i> No asistiré <span class="badge badge-danger">' . $count_no_asistire . '</span>
+                                     </button>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>';
+                  }
+               ?>
             </div>
          </div>
       </div>
@@ -467,6 +540,43 @@
       <script src="../vista/js/alerta_eliminar-eventos.js"></script>
       <script src="../vista/js/alerta-solicitudesaceptadas.js"></script>
       <script src="../vista/js/alerta-eliminarsolicitudamistad.js"></script>
+   
+      <!-- Client side search & filter for events -->
+      <script>
+      // Loader Failsafe
+      $(window).on('load', function() {
+          $('#loading').fadeOut('slow');
+      });
+      $(document).ready(function() {
+          function filterEvents() {
+              let text = $('#search-eventos').val().toLowerCase().trim();
+              let cat = $('.btn-filter.active').data('filter');
+              
+              $('.event-card-col').each(function() {
+                  let card = $(this);
+                  let cardText = card.data('search');
+                  let cardCat = card.data('category');
+                  
+                  let textMatch = (text === "" || cardText.indexOf(text) > -1);
+                  let catMatch = (cat === "all" || cardCat === cat);
+                  
+                  if (textMatch && catMatch) {
+                      card.fadeIn(300);
+                  } else {
+                      card.fadeOut(200);
+                  }
+              });
+          }
+          
+          $('#search-eventos').on('input', filterEvents);
+          
+          $('.btn-filter').on('click', function() {
+              $('.btn-filter').removeClass('active');
+              $(this).addClass('active');
+              filterEvents();
+          });
+      });
+      </script>
    </body>
 </html>
 <?php

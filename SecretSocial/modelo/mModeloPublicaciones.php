@@ -282,9 +282,18 @@ class PublicacionesUsuarios{
             }// CIERRE if(mysqli_num_rows($resultado)>0){
     }
     // INSERTAR NUEVAS PUBLICACIONES {TODOS} LOS USUARIOS DE ESTA PLATAFORMA
-    public function RegistrarNuevasPublicaciones($conectarsistema,$mensajepublicacion,$fotopublicacion,$IdUsuarios){
-        // LLAMADO DE RUTINA CON PASE DE PARAMETROS
-        $resultado=mysqli_query($conectarsistema,"CALL RegistrarPublicacionesNuevas('".$mensajepublicacion."','".$fotopublicacion."','".$IdUsuarios."');");
+    public function RegistrarNuevasPublicaciones($conectarsistema,$mensajepublicacion,$fotopublicacion,$IdUsuarios, $fondo_gradiente = null, $sentimiento = null){
+        $mensajepublicacion = mysqli_real_escape_string($conectarsistema, $mensajepublicacion);
+        $fotopublicacion = mysqli_real_escape_string($conectarsistema, $fotopublicacion);
+        $IdUsuarios = intval($IdUsuarios);
+        
+        $fondo_esc = $fondo_gradiente ? "'".mysqli_real_escape_string($conectarsistema, $fondo_gradiente)."'" : "NULL";
+        $sentimiento_esc = $sentimiento ? "'".mysqli_real_escape_string($conectarsistema, $sentimiento)."'" : "NULL";
+        
+        $query = "INSERT INTO publicaciones (mensaje_publicacion, foto_publicacion, id, fondo_gradiente, sentimiento) 
+                  VALUES ('$mensajepublicacion', '$fotopublicacion', $IdUsuarios, $fondo_esc, $sentimiento_esc)";
+                  
+        $resultado=mysqli_query($conectarsistema, $query);
         if($resultado){
             return "OK";
         }else{
@@ -416,6 +425,16 @@ class PublicacionesUsuarios{
         $resultado=mysqli_query($conectarsistema19,"CALL ConsultaNotificacionesComentariosCompleta('".$IdUsuarios."');");
         return $resultado;
     }
+     // CONSULTAR NOTIFICACIONES REACCIONES -> NUEVAS REACCIONES REGISTRADAS {VISTA COMPLETA}
+     public function ConsultarNotificacionesReaccionesCompleta($conectarsistema, $IdUsuarios){
+        $resultado=mysqli_query($conectarsistema, "SELECT * FROM vista_notificacionesreacciones WHERE id = '".$IdUsuarios."' ORDER BY fecha_notificacion DESC;");
+        return $resultado;
+    }
+     // CONSULTAR NOTIFICACIONES MENSAJES -> NUEVOS MENSAJES RECIBIDOS {VISTA COMPLETA}
+     public function ConsultarNotificacionesMensajesCompleta($conectarsistema, $IdUsuarios){
+        $resultado=mysqli_query($conectarsistema, "SELECT * FROM vista_notificacionesmensajes WHERE id = '".$IdUsuarios."' ORDER BY fecha_notificacion DESC;");
+        return $resultado;
+    }
     // FUNCION PARA ELIMINAR DEFINITIVAMENTE NOTIFICACIONES DE SOLICITUDES DE AMISTAD ACEPTADAS
     public function EliminarNotificacionSolicitudesAceptadas($conectarsistema,$IdSolicitudes){
         $resultado=mysqli_query($conectarsistema,"CALL EliminarNotificacionesSolicitudesAceptadas('".$IdSolicitudes."');");
@@ -436,6 +455,24 @@ class PublicacionesUsuarios{
         }
         return $resultado;
     }
+     // FUNCION PARA ELIMINAR DEFINITIVAMENTE NOTIFICACIONES DE REACCIONES REGISTRADAS POR LOS DEMAS USUARIOS
+     public function EliminarNotificacionReaccionesRegistradas($conectarsistema,$IdSolicitudes){
+         $resultado=mysqli_query($conectarsistema,"DELETE FROM notificacionreacciones WHERE idnotificacionreacciones = '".$IdSolicitudes."';");
+         if($resultado){
+             return "OK";
+         }else{
+             return "Error: Lo sentimos ha ocurrido un error inesperado. Intenta más tarde...";
+         }
+     }
+     // FUNCION PARA ELIMINAR DEFINITIVAMENTE NOTIFICACIONES DE MENSAJES RECIBIDOS
+     public function EliminarNotificacionMensajesRecibidos($conectarsistema,$IdSolicitudes){
+         $resultado=mysqli_query($conectarsistema,"DELETE FROM notificacionmensajes WHERE idnotificacionmensajes = '".$IdSolicitudes."';");
+         if($resultado){
+             return "OK";
+         }else{
+             return "Error: Lo sentimos ha ocurrido un error inesperado. Intenta más tarde...";
+         }
+     }
     // CONSULTAR SOLICITUDES NUEVAS DE AMISTAD {VISTA COMPLETA}
     public function ConsultarSolicitudesAmistadCompleta($conectarsistema20,$IdSolicitudAmigo){
         $resultado=mysqli_query($conectarsistema20,"CALL ConsultaSolicitudesAmistadCompleta('".$IdSolicitudAmigo."');");
@@ -460,13 +497,36 @@ class PublicacionesUsuarios{
 		return $resultado;
     }
     // REGISTRAR NUEVAS REACCIONES {ME GUSTA} -> TODOS LOS USUARIOS -> TODA LA PLATAFORMA
-    public function RegistrarNuevasReacciones($conectarsistema,$IdUsuarios,$IdPublicaciones){
-        // LLAMADO DE RUTINA CON PASE DE PARAMETROS
-        $resultado=mysqli_query($conectarsistema,"CALL RegistrarNuevasReaccionesPublicaciones('".$IdUsuarios."','".$IdPublicaciones."');");
-        if($resultado){
-            return "OK";
-        }else{
-            return "Error: Lo sentimos ha ocurrido un error inesperado. Intenta más tarde...";
+    public function RegistrarNuevasReacciones($conectarsistema,$IdUsuarios,$IdPublicaciones, $TipoReaccion = 1){
+        // Primero, verificar si ya existe la reacción del usuario para esta publicación
+        $check = mysqli_query($conectarsistema, "SELECT * FROM reacciones WHERE id='".$IdUsuarios."' AND idpublicacion='".$IdPublicaciones."'");
+        if(mysqli_num_rows($check) > 0) {
+            $row = mysqli_fetch_assoc($check);
+            if ($row['tipo_reaccion'] == $TipoReaccion) {
+                // Si ya existe y es la misma, la eliminamos (toggle off)
+                $resultado = mysqli_query($conectarsistema, "DELETE FROM reacciones WHERE id='".$IdUsuarios."' AND idpublicacion='".$IdPublicaciones."'");
+                if($resultado) {
+                    return "OK";
+                } else {
+                    return "Error: No se pudo eliminar la reacción.";
+                }
+            } else {
+                // Si ya existe pero es de diferente tipo, la actualizamos
+                $resultado = mysqli_query($conectarsistema, "UPDATE reacciones SET tipo_reaccion='".$TipoReaccion."' WHERE id='".$IdUsuarios."' AND idpublicacion='".$IdPublicaciones."'");
+                if($resultado) {
+                    return "OK";
+                } else {
+                    return "Error: No se pudo actualizar la reacción.";
+                }
+            }
+        } else {
+            // Si no existe, la insertamos
+            $resultado=mysqli_query($conectarsistema, "INSERT INTO reacciones (id, idpublicacion, tipo_reaccion) VALUES ('".$IdUsuarios."', '".$IdPublicaciones."', '".$TipoReaccion."')");
+            if($resultado){
+                return "OK";
+            }else{
+                return "Error: Lo sentimos ha ocurrido un error inesperado. Intenta más tarde...";
+            }
         }
     }
     // CONSULTAR TODOS LOS CUMPLEAÑEROS DE ESTE DIA
@@ -541,10 +601,15 @@ class PublicacionesUsuarios{
         }
     }
     // CONSULTAR VIDEOS MUSICALES SUBIDOS -> TODOS LOS USUARIOS
-    // VERSION COMPLETA -> SE LIMITO LA VISTA A 60 ELEMENTOS MAXIMO
-    public function ConsultarVideosMusicales($conectarsistema){
-        $resultado=mysqli_query($conectarsistema,"CALL ConsultarVideosMusicalesSubidos();");
+    public function ConsultarVideosMusicales($conectarsistema, $limite = 30, $offset = 0){
+        $resultado=mysqli_query($conectarsistema,"SELECT * FROM vista_videosmusicalessubidos ORDER BY fechasubida DESC LIMIT $limite OFFSET $offset");
         return $resultado;
+    }
+
+    public function ContarTotalVideosMusicales($conectarsistema){
+        $resultado=mysqli_query($conectarsistema,"SELECT COUNT(*) as total FROM vista_videosmusicalessubidos");
+        $row = mysqli_fetch_assoc($resultado);
+        return $row ? intval($row['total']) : 0;
     }
     // FUNCION PARA ELIMINAR DEFINITIVAMENTE VIDEOS MUSICALES SUBIDOS
     // SEGUN FILTRO POR ID DE USUARIO QUE LO PUBLICO -> {IdVideo}
@@ -556,6 +621,34 @@ class PublicacionesUsuarios{
             return "Error: Lo sentimos ha ocurrido un error inesperado. Intenta más tarde...";
         }
         return $resultado;
+    }
+
+    public function ConsultarReels($conectarsistema, $current_user_id) {
+        $query = "SELECT r.idvideos, r.video, r.titulo_video,
+                         u.usuario, u.id, u.fotoperfil, u.nombres, u.apellidos,
+                         (SELECT COUNT(*) FROM reels_likes rl WHERE rl.reel_id = r.idvideos) as total_likes,
+                         (SELECT COUNT(*) FROM reels_likes rl WHERE rl.reel_id = r.idvideos AND rl.usuario_id = $current_user_id) as liked
+                  FROM reels r
+                  JOIN usuarios u ON r.usuario_id = u.id
+                  ORDER BY r.fecha_creacion DESC";
+        return mysqli_query($conectarsistema, $query);
+    }
+
+    public function ReaccionarReel($conectarsistema, $reel_id, $usuario_id) {
+        $reel_id = intval($reel_id);
+        $usuario_id = intval($usuario_id);
+        $check = mysqli_query($conectarsistema, "SELECT * FROM reels_likes WHERE usuario_id = $usuario_id AND reel_id = $reel_id");
+        if (mysqli_num_rows($check) > 0) {
+            mysqli_query($conectarsistema, "DELETE FROM reels_likes WHERE usuario_id = $usuario_id AND reel_id = $reel_id");
+            $liked = 0;
+        } else {
+            mysqli_query($conectarsistema, "INSERT INTO reels_likes (usuario_id, reel_id) VALUES ($usuario_id, $reel_id)");
+            $liked = 1;
+        }
+        $resLikes = mysqli_query($conectarsistema, "SELECT COUNT(*) as total FROM reels_likes WHERE reel_id = $reel_id");
+        $rowLikes = mysqli_fetch_assoc($resLikes);
+        $total = isset($rowLikes['total']) ? intval($rowLikes['total']) : 0;
+        return ["status" => "OK", "liked" => $liked, "total" => $total];
     }
 }// CIERRE class PublicacionesUsuarios
 ?>

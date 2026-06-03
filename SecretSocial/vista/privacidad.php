@@ -130,87 +130,7 @@
             }
             if(!empty($_SESSION['usuario_unico'])){
          ?>
-          <!-- TOP Nav Bar -->
-          <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                     </div>
-                  </div>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                           </a>
-                        </li>
-                        <li>
-                           <a href="../Feed/inicio" class="iq-waves-effect d-flex align-items-center">
-                           <i class="ri-home-line"></i>
-                           </a>
-                        </li>
-                        
-                     <ul class="navbar-list">
-                        <li>
-                           <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <i class="ri-arrow-down-s-fill"></i>
-                           </a>
-                           <div class="iq-sub-dropdown iq-user-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hola, <?php echo $_SESSION['nombre_usuario'];?> <?php echo $_SESSION['apellido_usuario'];?></h5>
-                                       <span class="text-white font-size-12">Secret&reg;</span>
-                                    </div>
-                                    <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Mi perfil</h6>
-                                             <p class="mb-0 font-size-12">Ver mi informaci&oacute;n personal</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="../EditarPerfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-warning-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-warning">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Editar Perfil</h6>
-                                             <p class="mb-0 font-size-12">Modificar foto y detalles de mi perfil</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="../Salir/cerrarsesion" role="button">Cerrar Sesi&oacute;n<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-         </div>
-         <!-- TOP Nav Bar END -->
+          <?php include __DIR__ . '/premium_topnav.php'; ?>
          <?php } ?>
          <!-- Page Content  -->
          <div id="content-page" class="content-page">
@@ -318,5 +238,6 @@
       <script src="../vista/js/chart-custom.js"></script>
       <!-- Custom JavaScript -->
       <script src="../vista/js/custom.js"></script>
+       <script src="../vista/js/floating_chat.js"></script>
    </body>
 </html>

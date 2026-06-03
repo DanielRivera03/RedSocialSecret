@@ -50,7 +50,7 @@ $(document).ready(function(){
                     // DESHABILITAR CAMPOS LUEGO DE INGRESAR ACCION A BASE DE DATOS
                     $('#motivo_cancelacion').prop('disabled', true);
                     $('#detalle_cancelacion').prop('disabled', true);
-                    $('#enviar').prop('disabled', true);
+                    $('#enviar_cancelacion').prop('disabled', true);
                     // DESHABILITAR NAVEGACION DE MENU SUPERIOR
                     $('#informacionpersonal').prop('disabled', true);
                     $('#importante').prop('disabled', true);

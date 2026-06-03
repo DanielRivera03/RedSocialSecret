@@ -21,8 +21,6 @@ $(document).ready(function(){
         var TelefonoUsuario = document.getElementById("telefono").value; // TELEFONO DE USUARIO
         var PrivacidadUsuario = document.getElementById("privacidad").value; // PRIVACIDAD PERFIL DE USUARIO
         var FechaNacimiento = document.getElementById("fecha_nacimiento").value; // FECHA DE NACIMIENTO
-        var ClaveNueva = document.getElementById("clavenueva").value; // CONTRASEÑA NUEVA DE USUARIO
-        var ClaveRepetida = document.getElementById("claverepetida").value; // CONTRIL INGRESO CONTRASEÑA
         /*
             --> ALERTAS DE ERRORES
         */
@@ -65,28 +63,8 @@ $(document).ready(function(){
          if(FechaNacimiento ==""){
             AlertaUsuarioMostrar("Campo Incompleto","Fecha de Nacimiento es requerido, ingrese una fecha válida","warning");
             return false;
-            /*
-                --> SI TODO SE CUMPLE, ENTONCES...
-                    INGRESA ACCION A BASE DE DATOS
-            */
         }
-        // ALERTA FECHA NACIMIENTO VACIO
-        if(ClaveNueva ==""){
-            AlertaUsuarioMostrar("Campo Incompleto","Contraseña es requerida, ingrese una contraseña válida","warning");
-            return false;
-        }
-        if(ClaveRepetida ==""){
-            AlertaUsuarioMostrar("Campo Incompleto","Debe repetir su nueva contraseña ingresada","warning");
-            return false;
-        }
-        if(ClaveNueva!=ClaveRepetida){
-            AlertaUsuarioMostrar("Error","Lo sentimos, la contraseña debe coincidir","error");
-            return false;
-             /*
-                --> SI TODO SE CUMPLE, ENTONCES...
-                    INGRESA ACCION A BASE DE DATOS
-            */
-        }else{
+        
         e.preventDefault(e); // "e" IDENTIFICADOR DE ACCION PARA CAPTURAR EVENTO DE FORMULARIO
         $.ajax({
             url: "../controlador/cRegistroNuevosUsuarios.php?nuevoregistro=peticion-editarperfil",
@@ -106,9 +84,6 @@ $(document).ready(function(){
                 $('#nombre').prop('disabled', true);
                 $('#apellido').prop('disabled', true);
                 $('#usuariounico').prop('disabled', true);
-                $('#correo').prop('disabled', true);
-                $('#clavenueva').prop('disabled', true);
-                $('#claverepetida').prop('disabled', true);
                 $('#correo').prop('disabled', true);
                 $('#genero').prop('disabled', true);
                 $('#pais').prop('disabled', true);
@@ -131,9 +106,60 @@ $(document).ready(function(){
         }).fail(function(respuesta) {
             AlertaUsuarioMostrar("Error",respuesta,"error");
         });
+    }));
+
+    // NUEVO FORMULARIO PARA CAMBIAR CONTRASEÑA
+    $("#form_cambiar_clave").on('submit',(function(e){
+        e.preventDefault();
+        
+        var ClaveActual = document.getElementById("clave_actual").value;
+        var ClaveNueva = document.getElementById("clave_nueva").value;
+        var ClaveNuevaRepetida = document.getElementById("clave_nueva_repetida").value;
+        
+        if(ClaveActual == ""){
+            AlertaUsuarioMostrar("Campo Incompleto","La contraseña actual es requerida.","warning");
+            return false;
         }
+        if(ClaveNueva == ""){
+            AlertaUsuarioMostrar("Campo Incompleto","La nueva contraseña es requerida.","warning");
+            return false;
+        }
+        if(ClaveNueva.length < 8){
+            AlertaUsuarioMostrar("Contraseña muy corta","La nueva contraseña debe tener al menos 8 caracteres.","warning");
+            return false;
+        }
+        if(ClaveNuevaRepetida == ""){
+            AlertaUsuarioMostrar("Campo Incompleto","Debe confirmar su nueva contraseña.","warning");
+            return false;
+        }
+        if(ClaveNueva !== ClaveNuevaRepetida){
+            AlertaUsuarioMostrar("Error de coincidencia","Las nuevas contraseñas no coinciden.","error");
+            return false;
+        }
+        
+        $.ajax({
+            url: "../controlador/cRegistroNuevosUsuarios.php?nuevoregistro=peticion-cambiarclave",
+            type: "POST",
+            dataType: 'json',
+            data: {
+                clave_actual: ClaveActual,
+                clave_nueva: ClaveNueva
+            }
+        }).done(function(respuesta){
+            if(respuesta == "OK"){
+                AlertaUsuarioMostrar("Contraseña Actualizada","Enhorabuena 🔑 tu contraseña ha sido cambiada con éxito. Se ha enviado un correo de confirmación de seguridad.","success");
+                $("#form_cambiar_clave")[0].reset();
+            }else if(respuesta == "INCORRECT_CURRENT"){
+                AlertaUsuarioMostrar("Contraseña Incorrecta","La contraseña actual ingresada es incorrecta. Por favor verifícala.","error");
+            }else{
+                AlertaUsuarioMostrar("Error", respuesta || "Hubo un error al intentar cambiar la contraseña.","error");
+            }
+        }).fail(function(respuesta) {
+            AlertaUsuarioMostrar("Error","No se pudo procesar la solicitud. Por favor intenta más tarde.","error");
+        });
     }));
 });
+
 // FUNCION PARA MOSTRAR ALERTAS A USUARIOS
 function AlertaUsuarioMostrar(titulo, descripcion, icono) {
     Swal.fire(

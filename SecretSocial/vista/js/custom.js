@@ -42,44 +42,49 @@ Index Of Script
 
     "use strict";
 
+    // Define options globally to prevent undefined errors
+    var options = {};
+
     jQuery(document).ready(function() {
 
         /*---------------------------------------------------------------------
         Tooltip
         -----------------------------------------------------------------------*/
-        jQuery('[data-toggle="popover"]').popover();
-        jQuery('[data-toggle="tooltip"]').tooltip();
+        if (jQuery.fn.popover) jQuery('[data-toggle="popover"]').popover();
+        if (jQuery.fn.tooltip) jQuery('[data-toggle="tooltip"]').tooltip();
 
        
 
         /*---------------------------------------------------------------------
         Magnific Popup
         -----------------------------------------------------------------------*/
-        jQuery('.popup-gallery').magnificPopup({
-            delegate: 'a.popup-img',
-            type: 'image',
-            tLoading: 'Loading image #%curr%...',
-            mainClass: 'mfp-img-mobile',
-            gallery: {
-                enabled: true,
-                navigateByImgClick: true,
-                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
-            },
-            image: {
-                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-                titleSrc: function(item) {
-                    return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+        if (jQuery.fn.magnificPopup) {
+            jQuery('.popup-gallery').magnificPopup({
+                delegate: 'a.popup-img',
+                type: 'image',
+                tLoading: 'Loading image #%curr%...',
+                mainClass: 'mfp-img-mobile',
+                gallery: {
+                    enabled: true,
+                    navigateByImgClick: true,
+                    preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+                },
+                image: {
+                    tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+                    titleSrc: function(item) {
+                        return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';
+                    }
                 }
-            }
-        });
-        jQuery('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-            disableOn: 700,
-            type: 'iframe',
-            mainClass: 'mfp-fade',
-            removalDelay: 160,
-            preloader: false,
-            fixedContentPos: false
-        });
+            });
+            jQuery('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+                disableOn: 700,
+                type: 'iframe',
+                mainClass: 'mfp-fade',
+                removalDelay: 160,
+                preloader: false,
+                fixedContentPos: false
+            });
+        }
 
 
         /*---------------------------------------------------------------------
@@ -142,52 +147,56 @@ Index Of Script
         /*---------------------------------------------------------------------
        Owl Carousel
        -----------------------------------------------------------------------*/
-        jQuery('.owl-carousel').each(function() {
-            let jQuerycarousel = jQuery(this);
-            jQuerycarousel.owlCarousel({
-                items: jQuerycarousel.data("items"),
-                loop: jQuerycarousel.data("loop"),
-                margin: jQuerycarousel.data("margin"),
-                nav: jQuerycarousel.data("nav"),
-                dots: jQuerycarousel.data("dots"),
-                autoplay: jQuerycarousel.data("autoplay"),
-                autoplayTimeout: jQuerycarousel.data("autoplay-timeout"),
-                navText: ["<i class='fa fa-angle-left fa-2x'></i>", "<i class='fa fa-angle-right fa-2x'></i>"],
-                responsiveClass: true,
-                responsive: {
-                    // breakpoint from 0 up
-                    0: {
-                        items: jQuerycarousel.data("items-mobile-sm"),
-                        nav: false,
-                        dots: true
-                    },
-                    // breakpoint from 480 up
-                    480: {
-                        items: jQuerycarousel.data("items-mobile"),
-                        nav: false,
-                        dots: true
-                    },
-                    // breakpoint from 786 up
-                    786: {
-                        items: jQuerycarousel.data("items-tab")
-                    },
-                    // breakpoint from 1023 up
-                    1023: {
-                        items: jQuerycarousel.data("items-laptop")
-                    },
-                    1199: {
-                        items: jQuerycarousel.data("items")
+        if (jQuery.fn.owlCarousel) {
+            jQuery('.owl-carousel').each(function() {
+                let jQuerycarousel = jQuery(this);
+                jQuerycarousel.owlCarousel({
+                    items: jQuerycarousel.data("items"),
+                    loop: jQuerycarousel.data("loop"),
+                    margin: jQuerycarousel.data("margin"),
+                    nav: jQuerycarousel.data("nav"),
+                    dots: jQuerycarousel.data("dots"),
+                    autoplay: jQuerycarousel.data("autoplay"),
+                    autoplayTimeout: jQuerycarousel.data("autoplay-timeout"),
+                    navText: ["<i class='fa fa-angle-left fa-2x'></i>", "<i class='fa fa-angle-right fa-2x'></i>"],
+                    responsiveClass: true,
+                    responsive: {
+                        // breakpoint from 0 up
+                        0: {
+                            items: jQuerycarousel.data("items-mobile-sm"),
+                            nav: false,
+                            dots: true
+                        },
+                        // breakpoint from 480 up
+                        480: {
+                            items: jQuerycarousel.data("items-mobile"),
+                            nav: false,
+                            dots: true
+                        },
+                        // breakpoint from 786 up
+                        786: {
+                            items: jQuerycarousel.data("items-tab")
+                        },
+                        // breakpoint from 1023 up
+                        1023: {
+                            items: jQuerycarousel.data("items-laptop")
+                        },
+                        1199: {
+                            items: jQuerycarousel.data("items")
+                        }
                     }
-                }
+                });
             });
-        });
+        }
 
         /*---------------------------------------------------------------------
         Select input
         -----------------------------------------------------------------------*/
-        jQuery('.select2jsMultiSelect').select2({
-            tags: true
-        });
+        if (jQuery.fn.select2) {
+            jQuery('.select2jsMultiSelect').select2({
+                tags: true
+            });
+        }
 
         /*---------------------------------------------------------------------
         Search input
@@ -225,12 +234,14 @@ Index Of Script
         Scrollbar
         -----------------------------------------------------------------------*/
         let Scrollbar = window.Scrollbar;
-        if (jQuery('#sidebar-scrollbar').length) {
-            Scrollbar.init(document.querySelector('#sidebar-scrollbar'), options);
-        }
-        let Scrollbar1 = window.Scrollbar;
-        if (jQuery('#right-sidebar-scrollbar').length) {
-            Scrollbar1.init(document.querySelector('#right-sidebar-scrollbar'), options);
+        if (typeof Scrollbar !== 'undefined') {
+            if (jQuery('#sidebar-scrollbar').length) {
+                Scrollbar.init(document.querySelector('#sidebar-scrollbar'), options);
+            }
+            let Scrollbar1 = window.Scrollbar;
+            if (jQuery('#right-sidebar-scrollbar').length) {
+                Scrollbar1.init(document.querySelector('#right-sidebar-scrollbar'), options);
+            }
         }
 
 
@@ -238,109 +249,113 @@ Index Of Script
         /*---------------------------------------------------------------------
         Counter
         -----------------------------------------------------------------------*/
-        jQuery('.counter').counterUp({
-            delay: 10,
-            time: 1000
-        });
+        if (jQuery.fn.counterUp) {
+            jQuery('.counter').counterUp({
+                delay: 10,
+                time: 1000
+            });
+        }
 
         /*---------------------------------------------------------------------
         slick
         -----------------------------------------------------------------------*/
-        jQuery('.slick-slider').slick({
-            centerMode: true,
-            centerPadding: '60px',
-            slidesToShow: 9,
-            slidesToScroll: 1,
-            focusOnSelect: true,
-            responsive: [{
-                breakpoint: 992,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    centerPadding: '30',
-                    slidesToShow: 3
-                }
-            }, {
-                breakpoint: 480,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    centerPadding: '15',
-                    slidesToShow: 1
-                }
-            }],
-            nextArrow: '<a href="#" class="ri-arrow-left-s-line left"></a>',
-            prevArrow: '<a href="#" class="ri-arrow-right-s-line right"></a>',
-        });
+        if (jQuery.fn.slick) {
+            jQuery('.slick-slider').slick({
+                centerMode: true,
+                centerPadding: '60px',
+                slidesToShow: 9,
+                slidesToScroll: 1,
+                focusOnSelect: true,
+                responsive: [{
+                    breakpoint: 992,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        centerPadding: '30',
+                        slidesToShow: 3
+                    }
+                }, {
+                    breakpoint: 480,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        centerPadding: '15',
+                        slidesToShow: 1
+                    }
+                }],
+                nextArrow: '<a href="#" class="ri-arrow-left-s-line left"></a>',
+                prevArrow: '<a href="#" class="ri-arrow-right-s-line right"></a>',
+            });
 
-        jQuery('#new-music').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            focusOnSelect: true,
-            arrows: false,
-            responsive: [{
-                breakpoint: 992,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    slidesToShow: 3
-                }
-            }, {
-                breakpoint: 480,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    slidesToShow: 1
-                }
-            }],
-           
-        });
+            jQuery('#new-music').slick({
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                focusOnSelect: true,
+                arrows: false,
+                responsive: [{
+                    breakpoint: 992,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        slidesToShow: 3
+                    }
+                }, {
+                    breakpoint: 480,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        slidesToShow: 1
+                    }
+                }],
+               
+            });
 
-         jQuery('#recent-music').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            focusOnSelect: true,
-            arrows: false,
-            responsive: [{
-                breakpoint: 992,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    slidesToShow: 3
-                }
-            }, {
-                breakpoint: 480,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    slidesToShow: 1
-                }
-            }],
-           
-        });
+             jQuery('#recent-music').slick({
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                focusOnSelect: true,
+                arrows: false,
+                responsive: [{
+                    breakpoint: 992,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        slidesToShow: 3
+                    }
+                }, {
+                    breakpoint: 480,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        slidesToShow: 1
+                    }
+                }],
+               
+            });
 
-          jQuery('#top-music').slick({
-            slidesToShow: 6,
-            slidesToScroll: 1,
-            focusOnSelect: true,
-            arrows: false,
-            responsive: [{
-                breakpoint: 992,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    slidesToShow: 3
-                }
-            }, {
-                breakpoint: 480,
-                settings: {
-                    arrows: false,
-                    centerMode: true,
-                    slidesToShow: 1
-                }
-            }],
-           
-        });
+              jQuery('#top-music').slick({
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                focusOnSelect: true,
+                arrows: false,
+                responsive: [{
+                    breakpoint: 992,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        slidesToShow: 3
+                    }
+                }, {
+                    breakpoint: 480,
+                    settings: {
+                        arrows: false,
+                        centerMode: true,
+                        slidesToShow: 1
+                    }
+                }],
+               
+            });
+        }
 
 
 
@@ -355,9 +370,13 @@ Index Of Script
             });
 
             setTimeout(function() {
-                progressBar.appear(function() {
+                if (jQuery.fn.appear) {
+                    progressBar.appear(function() {
+                        progressBar.css('width', width + '%');
+                    });
+                } else {
                     progressBar.css('width', width + '%');
-                });
+                }
             }, 100);
         });
 
@@ -378,14 +397,16 @@ Index Of Script
         /*---------------------------------------------------------------------
         Wow Animation
         -----------------------------------------------------------------------*/
-        let wow = new WOW({
-            boxClass: 'wow',
-            animateClass: 'animated',
-            offset: 0,
-            mobile: false,
-            live: true
-        });
-        wow.init();
+        if (typeof WOW !== 'undefined') {
+            let wow = new WOW({
+                boxClass: 'wow',
+                animateClass: 'animated',
+                offset: 0,
+                mobile: false,
+                live: true
+            });
+            wow.init();
+        }
 
 
         /*---------------------------------------------------------------------
@@ -499,6 +520,35 @@ Index Of Script
 
         
 
+
+        /*------------------------------------------------------------------
+        Dark Mode Theme Preference & Toggle
+        * -----------------------------------------------------------------*/
+        try {
+            if (localStorage.getItem('dark-theme') === 'true') {
+                jQuery('body').addClass('dark-theme');
+                jQuery('#dark-mode-toggle i').removeClass('ri-moon-line').addClass('ri-sun-line');
+            }
+        } catch (e) {
+            console.warn('localStorage is blocked or not supported:', e);
+        }
+        
+        jQuery(document).on('click', '#dark-mode-toggle', function(e) {
+            e.preventDefault();
+            jQuery('body').toggleClass('dark-theme');
+            let isDark = jQuery('body').hasClass('dark-theme');
+            try {
+                localStorage.setItem('dark-theme', isDark);
+            } catch (err) {
+                console.warn('Could not save theme to localStorage:', err);
+            }
+            
+            if (isDark) {
+                jQuery('#dark-mode-toggle i').removeClass('ri-moon-line').addClass('ri-sun-line');
+            } else {
+                jQuery('#dark-mode-toggle i').removeClass('ri-sun-line').addClass('ri-moon-line');
+            }
+        });
 
     });
 

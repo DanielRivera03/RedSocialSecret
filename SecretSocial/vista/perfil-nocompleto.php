@@ -90,5 +90,6 @@
       <script src="vista/js/chart-custom.js"></script>
       <!-- Custom JavaScript -->
       <script src="vista/js/custom.js"></script>
+       <script src="../vista/js/floating_chat.js"></script>
    </body>
 </html>

@@ -1,0 +1,677 @@
+<?php
+   // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
+   if(!isset($_GET['publicaciones'])){
+    header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR INGRESO SIN INICIAR SESION
+   if(!isset($_SESSION['nombre_usuario'])){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR INGRESO SI PARAMETRO NO ES IGUAL AL INDICADO
+   if($_GET['publicaciones']!="perfil-usuario"){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // INCLUIR ARCHIVO CONTADOR DE PUBLICACIONES -> EXCLUSIVO PERFILES PROPIETARIOS
+   require('../modelo/mConteoPublicacionesPerfilPropietario.php');
+?>
+<!-- 
+--------------------------------------------------------
+║            SECRET - RED SOCIAL PHP NATIVO            ║
+--------------------------------------------------------           
+    AUTOR: DANIEL RIVERA (danielrivera03)
+    Github: https://github.com/DanielRivera03
+    VERSIONES TESTEADAS: 7.3 a 8.0
+    -> VERSIONES INFERIORES PROBABLEMENTE TENGAN
+    ALGUN CONFLICTO. TOMAR EN CUENTA.
+    COPYRIGHT © 2020 - 2021
+--------------------------------------------------------
+-->
+<?php
+   // SOLAMENTE LOS USUARIOS CON PERFIL COMPLETO PODRAN CONSULTAR TODAS LAS PAGINAS
+   // DE ESTA PLATAFORMA
+   if($_SESSION['comprobar_perfil']==0){
+?>
+<!doctype html>
+<html lang="ES-SV">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <script type="text/javascript" src="../vista/js/jquery.ui.core.min.js"></script>
+     <script type="text/javascript" src="../vista/js/jquery.ui.widget.min.js"></script>
+     <script type="text/javascript" src="../vista/js/jquery.ui.rlightbox.min.js"></script>
+     <script type="text/javascript">
+         jQuery(function($) {
+	         $( ".expandir_imagen" ).rlightbox();
+         });
+   </script>
+   </head>
+   <body class="sidebar-main-active right-column-fixed">
+      <!-- loader Start -->
+      <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>
+      <!-- loader END -->
+      <!-- Wrapper Start -->
+      <div class="wrapper">
+         <!-- Sidebar  -->
+         <div class="iq-sidebar">
+            <div id="sidebar-scrollbar">
+               <nav class="iq-sidebar-menu">
+                  <ul id="iq-sidebar-toggle" class="iq-menu">
+                  <li>
+                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
+                     </li>
+                     <li class="active">
+                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
+                     </li>
+                     <li>
+                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
+                     </li>
+                     <li>
+                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                echo '
+                                                <li class="col-md-4 col-6 pl-2 pr-0 pb-3">
+                                                <div class="friend-container2">
+                                                   <a href="javascript:void();">
+                                                   <img src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="gallary-image" class="img-fluid" /></a>
+                                                <h6 class="mt-2">'; echo $filas['nombres']; echo'</h6>
+                                                </div>
+                                             </li>
+                                                ';
+                                             }
+                                          ?>
+                                          <!-- FIN BANDERA AMIGOS CONFIRMADOS -->
+                                          </ul>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-8">
+                                    <div id="post-modal-data" class="iq-card">
+                                       <div class="iq-card-header d-flex justify-content-between">
+                                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- BANDERA -> PUBLICACIONES -->
+                                    <?php 
+                                       while($filas=mysqli_fetch_array($consulta)){
+                                          $time_diff = time() - strtotime($filas['fecha_publicacion']);
+                                          $hours_passed = $time_diff / 3600;
+                                          $percentage = ($hours_passed < 24) ? round(((24 - $hours_passed) / 24) * 100) : 0;
+                                          // TODO -> PUBLICACIONES DE X USUARIOS REGISTRADOS
+                                          // SOLAMENTE PUBLICACIONES AL INGRESAR AL PERFIL DE USUARIO
+                                          echo '<div class="iq-card" id="publicaciones_usuariosperfil">
+                                          <div class="iq-card-body">
+                                             <div class="post-item">
+                                                <div class="user-post-data p-3">
+                                                   <div class="d-flex flex-wrap">
+                                                      <div class="media-support-user-img mr-3">
+                                                         <img class="rounded-circle img-fluid profile-img-history" style="--ring-percentage: ' . $percentage . ';" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo '" alt="">
+                                                      </div>
+                                                      <div class="media-support-info mt-2">
+                                                         <h5 class="mb-0 d-inline-block"><a href="#" class="">'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo '</a></h5>
+                                                         <p class="ml-1 mb-0 d-inline-block">public&oacute; una nueva historia</p>
+                                                         <p class="mb-0 text-primary"><i class="ri-timer-flash-line"></i> <time class="timeago" datetime="'; echo $filas['fecha_publicacion']; echo'"></time></p>
+                                                      </div>
+                                                      <div class="iq-card-post-toolbar">
+                                                         <div class="dropdown">
+                                                            <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                            <i class="ri-more-fill"></i></span>
+                                                            <div class="dropdown-menu m-0 p-0">
+                                                            <!-- BORRAR HISTORIA -->
+                                                            <a class="dropdown-item p-3" id="eliminarhistorias" data-id="'.$filas['idpublicacion'].'">
+                                                               <div class="d-flex align-items-top">
+                                                                  <div class="icon font-size-20"><i class="ri-delete-bin-7-line"></i></div>
+                                                                  <div class="data ml-2">
+                                                                     <h6>Eliminar Historia</h6>
+                                                                     <p class="mb-0">¡Cuidado! Est&aacute; acci&oacute;n no es reversible</p>
+                                                                  </div>
+                                                               </div>
+                                                            </a>
+                                                            <!-- MAS OPCIONES Y MANTENIMIENTOS SON POSIBLES -->
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="user-post">
+                                             <p>'; echo $filas['mensaje_publicacion']; echo '</p>
+                                                <a title="'; echo $filas['mensaje_publicacion']; echo '" class="expandir_imagen" href="../vista/images/fotospublicaciones/'; echo $filas['foto_publicacion']; echo '"><img src="../vista/images/fotospublicaciones/'; echo $filas['foto_publicacion']; echo '" alt="post-image" class="img-fluid w-100" /></a>
+                                             </div>
+                                       <iframe class="coment-profile" src="../CargarDatosPublicacion/'; echo $filas['idpublicacion']; echo '"></iframe>
+                                 </div>
+                              </div>
+                                 </div>';
+                                       }
+                                       ?>
+                                             </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        <!-- FIN BANDERA -> PUBLICACIONES -->
+                        <!--  SECCION SOBRE MI -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          </li>
+                                       </ul>
+                                    </div>
+                                    <div class="col-md-9 pl-4">
+                                       <div class="tab-content">
+                                          <div class="tab-pane fade active show" id="basicinfo" role="tabpanel">
+                                             <h4>Informaci&oacute;n B&aacute;sica</h4>
+                                             <hr>
+                                             <div class="alert bg-white alert-danger" role="alert">
+                                                <div class="iq-alert-icon">
+                                                   <i class="ri-information-line"></i>
+                                                </div>
+                                             <div class="iq-alert-text">Estimado(a) <?php echo $_SESSION['nombre_usuario']; echo" "; echo $_SESSION['apellido_usuario']; ?> usted no ha completado la secci&oacute;n <strong>Sobre M&iacute;</strong>. Si bien no es obligatorio hacerlo, lamentablemente le informamos que mientras no lo haga, <strong> todos sus detalles de usuarios no los podr&aacute; ver, adem&aacute;s que su perfil de usuario no podr&aacute; ser consultado por los dem&aacute;s usuarios.</strong> Le sugerimos completar dicha secci&oacute;n. Lo anterior no afecta a m&aacute;s funciones dentro de esta plataforma.</div>
+                                             </div>
+                                             </div>
+                                          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                   }else if($ObtenerMes==10){
+                                                      echo "Octubre";
+                                                   }else if($ObtenerMes==11){
+                                                      echo "Noviembre";
+                                                   }else if($ObtenerMes==12){
+                                                      echo "Diciembre";
+                                                   }
+                                                   ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>A&ntilde;o:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php $Fecha = $Publicaciones->getFechaNacimientoUsuario(); $FechaCompleta = strtotime($Fecha); $ObtenerAnio = date("Y", $FechaCompleta); echo $ObtenerAnio; ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>¿Cu&aacute;ntos A&ntilde;os Tengo?</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php 
+                                                  // OBTENER FECHA COMPLETA REGISTRADA
+                                                  $Fecha = $Publicaciones->getFechaNacimientoUsuario();
+         

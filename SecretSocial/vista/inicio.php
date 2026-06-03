@@ -1,4 +1,5 @@
 <?php
+   $active_page = 'inicio';
    // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
    if(!isset($_GET['publicaciones'])){
     header('location:../AccesoDenegado=restringido');
@@ -58,10 +59,55 @@
       <link href="../vista/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
       <!-- Bootstrap Dropzone CSS -->
       <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
-     <!-- Alerts -->
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+     <!-- Notifications Premium -->
+     <script src="../vista/js/notificaciones-premium.js"></script>
    </head>
    <body class="right-column-fixed">
+   <!-- 
+--------------------------------------------------------
+║            SECRET - RED SOCIAL PHP NATIVO            ║
+    AUTOR: DANIEL RIVERA (danielrivera03)
+    Github: https://github.com/DanielRivera03
+    VERSIONES TESTEADAS: 7.3 a 8.0
+    -> VERSIONES INFERIORES PROBABLEMENTE TENGAN
+    ALGUN CONFLICTO. TOMAR EN CUENTA.
+    COPYRIGHT © 2020 - 2021
+--------------------------------------------------------
+-->
+<!doctype html>
+<html lang="ES-SV">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Secret - Inicio</title>
+      <!-- Favicon -->
+      <link rel="apple-touch-icon" sizes="180x180" href="../vista/favicon/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="../vista/favicon/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="../vista/favicon/favicon-16x16.png">
+      <link rel="manifest" href="../vista/favicon/site.webmanifest">
+      <link rel="mask-icon" href="../vista/favicon/safari-pinned-tab.svg" color="#5bbad5">
+      <meta name="msapplication-TileColor" content="#da532c">
+      <meta name="theme-color" content="#ffffff">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="../vista/css/bootstrap.min.css">
+      <!-- Typography CSS -->
+      <link rel="stylesheet" href="../vista/css/typography.css">
+      <!-- Style CSS -->
+      <link rel="stylesheet" href="../vista/css/style.css">
+      <!-- Responsive CSS -->
+      <link rel="stylesheet" href="../vista/css/responsive.css">
+      <!-- Bootstrap Dropzone CSS -->
+      <link href="../vista/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
+      <!-- Bootstrap Dropzone CSS -->
+      <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
+     <!-- Notifications Premium -->
+     <script src="../vista/js/notificaciones-premium.js"></script>
+   </head>
+   <body class="right-column-fixed">
+      <!-- Hidden user ID and photo for JS -->
+      <input type="hidden" id="mi-id-usuario" value="<?php echo $_SESSION['id_usuario']; ?>">
+      <input type="hidden" id="mi-foto-perfil" value="<?php echo $_SESSION['fotos_perfiles']; ?>">
       <!-- loader Start -->
       <div id="loading">
          <div id="loading-center">
@@ -70,222 +116,19 @@
       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <!-- Sidebar  -->
-         <div class="iq-sidebar">
-            <div id="sidebar-scrollbar">
-               <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                     <li class="active">
-                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
-                     </li>
-                     <li>
-                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
-                     </li>
-                     <li>
-                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="iq-waves-effect"><i class="las la-bell"></i><span>Mis Notificaciones</span></a>
-                     </li>
-                     <li>
-                        <a href="../EventosSociales/registrareventos" class="iq-waves-effect"><i class="las la-film"></i><span>Registrar Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Eventos/mostrareventos" class="iq-waves-effect"><i class="las la-bullhorn"></i><span>Ver Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../ChatGeneral/mensajeria-secret" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Mensajes</span></a>
-                     </li>
-                     <li>
-                        <a href="../Videos/multimedia-secretvideos" class="iq-waves-effect"><i class="ri-play-circle-line"></i><span>M&uacute;sica Favorita</span></a>
-                     </li>
-                  </ul>
-               </nav>
-               <div class="p-3"></div>
-            </div>
-         </div>
-         <!-- TOP Nav Bar -->
-         <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                     </div>
-                  </div>
-                  </div>
-                  <div class="iq-search-bar">
-                     <form action="../Buscador/resultados-busqueda" class="searchbox needs-validation" novalidate method="POST" autocomplete="off">
-                        <input type="text" class="text search-input" name="buscador" placeholder="Buscar en Secret..." required>
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                     </form>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                           </a>
-                        </li>
-                        <li>
-                           <a href="../Feed/inicio" class="iq-waves-effect d-flex align-items-center">
-                           <i class="ri-home-line"></i>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown iq-sub-dropdown-large">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Solicitudes de Amigos<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadRecibidas($conectarsistema15,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <!-- INICIO BANDERA -> SOLICITUDES DE AMIGOS -->
-                                    <?php 
-                                       while($filas=mysqli_fetch_array($consulta1)){
-                                          if($filas['estado']==0){
-                                             echo '
-                                             <div class="iq-friend-request">
-                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                                <div class="d-flex align-items-center">
-                                                   <div class="">
-                                                      <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="">
-                                                   </div>
-                                                   <div class="media-body ml-3">
-                                                      <h6 class="mb-0 ">'; echo $filas['nombres']; echo ' '; echo $filas['apellidos'];  echo'</h6>
-                                                   </div>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                   <a style="color: var( --iq-white);" id="aceptar-solicitudes" data-id="'; echo $filas['id']; echo'" class="mr-3 btn btn-primary rounded">Confirmar</a>
-                                                   <a style="color: var( --iq-white);" id="rechazar-solicitudes" data-id="'; echo $filas['idsolicitudamistad']; echo'" class="mr-3 btn btn-secondary rounded">Rechazar</a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          ';
-                                          }
-                                       }
-                                    ?>
-                                    <!-- FIN BANDERA -> SOLICITUDES DE AMIGOS -->
-                                 </div>
-                              </div>
-                              <div class="text-center">
-                                <a href="../SolicitudesAmistad/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="las la-hand-point-right"></i> Ver todas las solicitudes de amistad</a>
-                            </div>
-                           </div>
-                        </li>
-                        <li class="nav-item">
-                           <a href="#" class="search-toggle iq-waves-effect">
-                              <div id="lottie-beil"></div>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Notificaciones<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadAceptadas($conectarsistema17,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <?php 
-                                    // CONSULTA DE SOLICITUDES DE AMISTAD APROBADAS
-                                       while($filas=mysqli_fetch_array($consulta2)){
-                                          echo'
-                                          <a href="#" class="iq-sub-card" >
-                                          <div class="media align-items-center">
-                                             <div class="">
-                                                <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo$filas['fotoperfil'];  echo'" alt="">
-                                             </div>
-                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Eres amigo de '; echo $filas['nombres']; echo' '; echo $filas['apellidos']; echo'</h6>
-                                                <small class="float-right font-size-12">
-                                                ';
-                                                // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                                $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                                $ObtenerMes = date("m", $FechaCompleta);
-                                                $ObtenerHoras = date("H:i", $FechaCompleta);
-                                                $ObtenerMinutos = date("m", $FechaCompleta);
-                                                echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                                echo'
-                                                </small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                          ';
-                                       }
-                                    ?>
-                                    <div class="text-center">
-                                       <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="ri-notification-3-fill"></i> Ver todas las notificaciones</a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     <ul class="navbar-list">
-                        <li>
-                           <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <i class="ri-arrow-down-s-fill"></i>
-                           </a>
-                           <div class="iq-sub-dropdown iq-user-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hola, <?php echo $_SESSION['nombre_usuario'];?> <?php echo $_SESSION['apellido_usuario'];?></h5>
-                                       <span class="text-white font-size-12">Secret&reg;</span>
-                                    </div>
-                                    <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Mi perfil</h6>
-                                             <p class="mb-0 font-size-12">Ver mi informaci&oacute;n personal</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="../EditarPerfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-warning-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-warning">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Editar Perfil</h6>
-                                             <p class="mb-0 font-size-12">Modificar foto y detalles de mi perfil</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="../Salir/cerrarsesion" role="button">Cerrar Sesi&oacute;n<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-         </div>
-         <!-- TOP Nav Bar END -->
+         <?php include __DIR__ . '/premium_sidebar.php'; ?>
+         <?php include __DIR__ . '/premium_topnav.php'; ?>
          <!-- Page Content  -->
          <div id="content-page" class="content-page">
             <div class="container">
                <div class="row">
-               <div class="col-lg-8">
+                <div class="col-lg-8">
+                                    <!-- NOTAS DE MUSICA -->
+                                    <div id="notas-musica-container"></div>
+
+                                    <!-- HISTORIAS (STORIES BAR) -->
+                                    <div id="historias-envivo-container"></div>
+
                                     <div id="post-modal-data" class="iq-card">
                                        <div class="iq-card-header d-flex justify-content-between">
                                           <div class="iq-header-title">
@@ -301,95 +144,12 @@
                                                 <input type="text" class="form-control rounded" placeholder="<?php echo $_SESSION['nombre_usuario'] ?> ¿En qu&eacute; est&aacute;s pensando?" style="border:none;">
                                              </form>
                                           </div>
-                                       <hr>
-                                 </li>
-                              </ul>
-                           </div>
-                           <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style="display: none;">
-                              <div class="modal-dialog" role="document">
-                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                       <h5 class="modal-title" id="post-modalLabel">Crear nueva publicaci&oacute;n</h5>
-                                       <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ri-close-fill"></i></button>
-                                    </div>
-                                    <div class="modal-body">
-                                       <div class="d-flex align-items-center">
-                                          <div class="user-img">
-                                          <img src="../vista/images/fotosperfiles/<?php echo  $_SESSION['fotos_perfiles'];?>" alt="userimg" class="avatar-70 rounded-circle" style="margin-top: -17em;">
-                                          </div>
-                                          <form id="form" class="post-text ml-3 w-100" action="javascript:void();" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
-                                             <textarea name="historiausuario" id="publicaciones_usuarios" class="form-control rounded" placeholder="<?php echo $_SESSION['nombre_usuario'] ?> ¿En qu&eacute; est&aacute;s pensando?" maxlength="150" onpaste="ContadorCaracteresMaximoPublicaciones();" onkeyup="ContadorCaracteresMaximoPublicaciones();"></textarea>
-                                             <div id="respuesta_contador"></div>
-                                             <p id="contador"></p><br>
-                                             <p>Adjuntar foto ac&aacute;:</p>
-                                             <input type="file" name="fotospublicaciones" id="input-file-max-fs" class="dropify" data-max-file-size="2M" data-max-width="1921" data-max-height="1081" data-min-height="900" accept="image/x-png,image/jpeg,image/jpg" />
-                                             <hr>
-                                             <button type="submit" id="enviar" class="btn btn-primary d-block w-100 mt-3">Publicar Historia</button>
-                                          </form>
-                                          </div>
-                                                </div>
-                                             </div>
-                                          </div>
                                        </div>
                                     </div>
-                                    <!-- BANDERA -> PUBLICACIONES -->
-                                    <?php 
-                                       while($filas=mysqli_fetch_array($consulta)){
-                                       /*
-                                          -> MOSTRAR UNICAMENTE PUBLICACIONES DE USUARIOS QUE SEAN AMIGOS
-                                          O SEGUIDORES ACEPTADOS DEL USUARIO LOGUEADO... CASO CONTRARIO NO SE MUESTRA NADA
-                                       */
-                                          echo '<div class="iq-card" id="publicaciones_usuariosperfil">
-                                          <div class="iq-card-body">
-                                             <div class="post-item">
-                                                <div class="user-post-data p-3">
-                                                   <div class="d-flex flex-wrap">
-                                                      <div class="media-support-user-img mr-3">
-                                                      <a target="_blank" href="../Perfiles/'; echo $filas['usuario']; echo'=';echo $filas['idsolicitudamigo']; echo'"><img class="rounded-circle img-fluid profile-img-history" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo '" alt=""></a>
-                                                      </div>
-                                                      <div class="media-support-info mt-2">
-                                                         <h5 class="mb-0 d-inline-block"><a target="_blank" href="../Perfiles/'; echo $filas['usuario']; echo'=';echo $filas['idsolicitudamigo'];  echo'">'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo '</a></h5>
-                                                         <p class="ml-1 mb-0 d-inline-block">public&oacute; una nueva historia</p>
-                                                         <p class="mb-0 text-primary"><i class="ri-timer-flash-line"></i> <time class="timeago" datetime="'; echo $filas['fecha_publicacion']; echo'"></time></p>
-                                                      </div>
-                                                      <div class="iq-card-post-toolbar">
-                                                         <div class="dropdown">';
-                                                         if($filas['usuario']==$_SESSION['usuario_unico']){
-                                                            // SOLAMENTE EL DUEÑO DE ESTE PERFIL TIENE HABILITADO ESTE MANTENIMIENTO
-                                                            echo '
-                                                            <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                            <i class="ri-more-fill"></i></span>
-                                                            <div class="dropdown-menu m-0 p-0">
-                                                            <!-- BORRAR HISTORIA -->
-                                                         <a class="dropdown-item p-3" id="eliminarhistorias" data-id="'.$filas['idpublicacion'].'">
-                                                            <div class="d-flex align-items-top">
-                                                               <div class="icon font-size-20"><i class="ri-delete-bin-7-line"></i></div>
-                                                               <div class="data ml-2">
-                                                                  <h6>Eliminar Historia</h6>
-                                                                  <p class="mb-0">¡Cuidado! Est&aacute; acci&oacute;n no es reversible</p>
-                                                               </div>
-                                                            </div>
-                                                         </a>
-                                                         <!-- MAS OPCIONES Y MANTENIMIENTOS SON POSIBLES -->
-                                                         </div>
-                                                            ';
-                                                         }echo '
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <div class="user-post">
-                                             <p>'; echo $filas['mensaje_publicacion']; echo '</p>
-                                                <a href="javascript:void();"><img src="../vista/images/fotospublicaciones/'; echo $filas['foto_publicacion']; echo '" alt="post-image" class="img-fluid w-100" /></a>
-                                             </div>
-                                       <iframe class="coment-profile" src="../CargarDatosPublicacion/'; echo $filas['idpublicacion']; echo '"></iframe>
-                                       </div>
-                                    </div>
-                                 </div>';
-                                 }
-                              ?>
-                              </div>
-                  <!-- FIN BANDERA -> PUBLICACIONES -->
+                                    <!-- FEED INFINITO CON SKELETON LOADING -->
+                                     <div id="feed-publications"></div>
+                                     <!-- FIN FEED INFINITO -->
+                                  </div>
                   <div class="col-lg-4">
                      <div class="iq-card">
                         <div class="iq-card-header d-flex justify-content-between">
@@ -480,6 +240,73 @@
                </div>
             </div>
          </div>
+      <!-- MODAL PUBLICAR -->
+      <div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style="display:none;">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="post-modalLabel">Crear nueva publicaci&oacute;n</h5>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ri-close-fill"></i></button>
+               </div>
+               <div class="modal-body">
+                  <div class="d-flex align-items-start">
+                     <div class="user-img mr-2 mt-1">
+                        <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" alt="userimg" class="avatar-70 rounded-circle">
+                     </div>
+                     <form id="form" class="post-text ml-2 w-100" action="javascript:void();" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
+                        <textarea name="historiausuario" id="publicaciones_usuarios" class="form-control rounded" placeholder="<?php echo $_SESSION['nombre_usuario'] ?> ¿En qu&eacute; est&aacute;s pensando?" maxlength="150" onpaste="ContadorCaracteresMaximoPublicaciones();" onkeyup="ContadorCaracteresMaximoPublicaciones();"></textarea>
+                        
+                        <!-- Gradient selector -->
+                        <div class="form-group mt-2">
+                             <label class="d-block font-weight-600 text-muted mb-2" style="font-size: 13px;">Fondo degradado (Opcional):</label>
+                             <div class="d-flex align-items-center" style="gap: 8px;">
+                                 <button type="button" class="btn btn-outline-secondary rounded-circle btn-gradient-select active" data-gradient="" style="width: 32px; height: 32px; padding: 0;" title="Sin Fondo"><i class="ri-close-line"></i></button>
+                                 <button type="button" class="btn rounded-circle btn-gradient-select" data-gradient="post-gradient-sunset" style="width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #ff7e5f, #feb47b);" title="Atardecer"></button>
+                                 <button type="button" class="btn rounded-circle btn-gradient-select" data-gradient="post-gradient-ocean" style="width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #2b5876, #4e4376);" title="Océano"></button>
+                                 <button type="button" class="btn rounded-circle btn-gradient-select" data-gradient="post-gradient-fire" style="width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #f12711, #f5af19);" title="Fuego"></button>
+                                 <button type="button" class="btn rounded-circle btn-gradient-select" data-gradient="post-gradient-neon" style="width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #0575e6, #00f260);" title="Neon"></button>
+                                 <button type="button" class="btn rounded-circle btn-gradient-select" data-gradient="post-gradient-glass" style="width: 32px; height: 32px; padding: 0; background: linear-gradient(135deg, #8a2be2, #4a00e0);" title="Mágico"></button>
+                             </div>
+                             <input type="hidden" name="fondo_gradiente" id="fondo_gradiente_input" value="">
+                         </div>
+
+                         <!-- Sentiments selector -->
+                         <div class="form-group mt-2">
+                             <label class="font-weight-600 text-muted mb-1" style="font-size: 13px;">¿Cómo te sientes? (Opcional):</label>
+                             <select name="sentimiento" class="form-control rounded" style="font-size: 13px;">
+                                 <option value="">Ninguno</option>
+                                 <option value="😊 entusiasmado(a)">😊 entusiasmado(a)</option>
+                                 <option value="😎 feliz">😎 feliz</option>
+                                 <option value="😴 cansado(a)">😴 cansado(a)</option>
+                                 <option value="🤔 pensativo(a)">🤔 pensativo(a)</option>
+                                 <option value="😍 enamorado(a)">😍 enamorado(a)</option>
+                                 <option value="😢 triste">😢 triste</option>
+                                 <option value="😡 enojado(a)">😡 enojado(a)</option>
+                                 <option value="🤪 divertido(a)">🤪 divertido(a)</option>
+                                 <option value="🎶 escuchando música">🎶 escuchando música</option>
+                             </select>
+                         </div>
+                        
+                        <div id="respuesta_contador"></div>
+                        <p id="contador"></p><br>
+                        <p>Adjuntar fotos (máximo 5):</p>
+                         <div class="custom-file-upload-container">
+                             <div class="drag-drop-area" id="drag-drop-area" onclick="document.getElementById('input-file-max-fs').click();">
+                                 <i class="ri-gallery-upload-line" style="font-size: 32px; color: var(--iq-primary);"></i>
+                                 <p class="mt-2 mb-0" style="font-weight: 600;">Selecciona hasta 5 fotos (JPG, PNG)</p>
+                                 <span class="text-muted" style="font-size: 12px;">o arrastra y suelta tus imágenes aquí</span>
+                             </div>
+                             <input type="file" name="fotospublicaciones[]" id="input-file-max-fs" multiple accept="image/x-png,image/jpeg,image/jpg" style="display: none;" onchange="previewImages(this);" />
+                             <div id="image-collage-preview" class="image-collage-preview mt-3"></div>
+                         </div>
+                         <hr>
+                        <button type="submit" id="enviar" class="btn btn-primary d-block w-100 mt-3">Publicar Historia</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
       </div>
       <!-- Wrapper END -->
       <!-- Footer -->
@@ -557,14 +384,139 @@
     <script src="../vista/js/alerta_eliminarhistorias.js"></script>
     <script src="../vista/js/alerta-enviosolicitudamistad.js"></script>
     <script src="../vista/js/alerta-solicitudesaceptadas.js"></script>
-    <script src="../vista/js/alerta-solicitudesaceptadas.js"></script>
     <script src="../vista/js/alerta-eliminarsolicitudamistad.js"></script>
     <script src="../vista/js/alerta_buscador.js"></script>
+    <script src="../vista/js/conexion_envivo.js"></script>
+    <script src="../vista/js/feed_envivo.js"></script>
+    <script src="../vista/js/historias_envivo.js"></script>
+    <script src="../vista/js/notas_musica.js"></script>
+    <script src="../vista/js/floating_chat.js?v=3"></script>
+    <!-- Feed Infinito -->
+    <script src="../vista/js/feed-infinito.js"></script>
+    <script>
+      $(document).ready(function() {
+        FeedInfinito.init({ tipo: 'inicio', contenedor: 'feed-publications' });
+      });
+    </script>
+    <script>
+    function previewImages(input) {
+        const previewContainer = document.getElementById('image-collage-preview');
+        if (!previewContainer) return;
+        previewContainer.innerHTML = '';
+        
+        let files = Array.from(input.files);
+        if (files.length > 5) {
+            Swal.fire({
+                title: 'Límite de imágenes',
+                text: 'Solo se pueden subir un máximo de 5 fotos. Las primeras 5 fotos han sido seleccionadas.',
+                icon: 'warning'
+            });
+            files = files.slice(0, 5);
+            
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            input.files = dataTransfer.files;
+        }
+        
+        if (files.length === 0) return;
+        
+        previewContainer.className = `image-collage-preview grid-${files.length}`;
+        
+        files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+                item.style.backgroundImage = `url('${e.target.result}')`;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-preview-btn';
+                removeBtn.innerHTML = '<i class="ri-close-line"></i>';
+                removeBtn.onclick = function(event) {
+                    event.stopPropagation();
+                    removeFile(index, input);
+                };
+                
+                item.appendChild(removeBtn);
+                previewContainer.appendChild(item);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function removeFile(indexToRemove, input) {
+        const dataTransfer = new DataTransfer();
+        const files = Array.from(input.files);
+        
+        files.forEach((file, index) => {
+            if (index !== indexToRemove) {
+                dataTransfer.items.add(file);
+            }
+        });
+        
+        input.files = dataTransfer.files;
+        previewImages(input);
+    }
+
+    $(document).ready(function() {
+
+        $('.btn-gradient-select').on('click', function() {
+            $('.btn-gradient-select').removeClass('active border-primary').addClass('border-secondary');
+            $(this).addClass('active border-primary').removeClass('border-secondary');
+            let gradient = $(this).data('gradient');
+            $('#fondo_gradiente_input').val(gradient);
+            
+            let textarea = $('#publicaciones_usuarios');
+            textarea.removeClass('post-gradient-sunset post-gradient-ocean post-gradient-fire post-gradient-neon post-gradient-glass');
+            if (gradient) {
+                textarea.addClass(gradient);
+                textarea.css({
+                    'text-align': 'center',
+                    'font-weight': 'bold',
+                    'font-size': '18px',
+                    'padding': '30px 10px',
+                    'color': '#ffffff'
+                });
+            } else {
+                textarea.css({
+                    'text-align': '',
+                    'font-weight': '',
+                    'font-size': '',
+                    'padding': '',
+                    'color': ''
+                });
+            }
+        });
+
+        const dragArea = document.getElementById('drag-drop-area');
+        const fileInput = document.getElementById('input-file-max-fs');
+        if (dragArea && fileInput) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dragArea.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dragArea.classList.add('dragover');
+                }, false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dragArea.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dragArea.classList.remove('dragover');
+                }, false);
+            });
+            dragArea.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fileInput.files = files;
+                previewImages(fileInput);
+            }, false);
+        }
+    });
+    </script>
+     <?php include __DIR__ . '/fb_viewer_modal.php'; ?>
+     <?php include __DIR__ . '/stories_viewer.php'; ?>
    </body>
 </html>
 <?php
-/*SI UN USUARIO CON PERFIL INCOMPLETO INTENTA ACCEDER AL FEED DE LA APLICACION
-SE LE BLOQUEA SU ACCESO Y DEBE OBLIGATORIAMENTE COMPLETAR SU PERFIL PARA PODER
-ACCEDER A TODAS LAS FUNCIONES DE ESTA APLICACION*/
 }else{header('location:../Controlador/cRegistroNuevosUsuarios.php?nuevoregistro=completarperfil');}
 ?>

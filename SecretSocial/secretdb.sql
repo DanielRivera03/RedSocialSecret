@@ -496,6 +496,8 @@ INSERT INTO `reacciones` (`idreacciones`, `fecha`, `id`, `idpublicacion`) VALUES
 DELIMITER $$
 CREATE TRIGGER `ActualizacionReaccionMeGusta` AFTER INSERT ON `reacciones` FOR EACH ROW UPDATE publicaciones SET megusta = megusta + 1 WHERE idpublicacion=new.idpublicacion
 $$
+CREATE TRIGGER `ActualizacionReaccionMeGustaDelete` AFTER DELETE ON `reacciones` FOR EACH ROW UPDATE publicaciones SET megusta = GREATEST(0, megusta - 1) WHERE idpublicacion=old.idpublicacion
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -1364,6 +1366,40 @@ ALTER TABLE `solicitudamistad`
 --
 ALTER TABLE `videos`
   ADD CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
+
+--
+-- Estructura de tabla para la tabla `asistencia_eventos`
+--
+CREATE TABLE IF NOT EXISTS `asistencia_eventos` (
+  `id_asistencia` int(11) NOT NULL AUTO_INCREMENT,
+  `idevento` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `estado` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_asistencia`),
+  UNIQUE KEY `idevento` (`idevento`,`id_usuario`),
+  CONSTRAINT `asistencia_eventos_ibfk_1` FOREIGN KEY (`idevento`) REFERENCES `eventos` (`ideventos`) ON DELETE CASCADE,
+  CONSTRAINT `asistencia_eventos_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Estructura de tabla para la tabla `marketplace_productos`
+--
+CREATE TABLE IF NOT EXISTS `marketplace_productos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_vendedor` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `imagen` varchar(255) NOT NULL DEFAULT 'default.png',
+  `ciudad` varchar(255) NOT NULL,
+  `latitud` decimal(10,8) NOT NULL,
+  `longitud` decimal(11,8) NOT NULL,
+  `estado` int(1) NOT NULL DEFAULT 1,
+  `fecha_publicacion` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `marketplace_productos_ibfk_1` FOREIGN KEY (`id_vendedor`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

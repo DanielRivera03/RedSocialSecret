@@ -226,22 +226,14 @@
                 $this->setSobreMiUsuario($Usuarios['sobremi']);
             }
         }
-        // FUNCION PARA INSERTAR NUEVOS USUARIOS A BASE DE DATOS
         public function InsertarNuevosUsuarios($conectarsistema,$NombreUsuarios,$ApellidoUsuarios,$CorreoUsuarios,$ClaveUsuarios){
-            // LLAMADO DE RUTINA CON PASE DE PARAMETROS
-            $resultado=mysqli_query($conectarsistema,"CALL RegistrarUsuariosNuevos('".$NombreUsuarios."','".$ApellidoUsuarios."','".$CorreoUsuarios."','".$ClaveUsuarios."');");
-            /*
-                INFORMAR AL USUARIO ESTADO DE ACCION
-                -> IMPORTANTE: EN ESTA ACCION SE DECIDIO DEJAR QUE PHP DECIDA DONDE ENVIAR AL USUARIO
-                MEDIANTE LAS URL'S PREPARADAS ESPECIFICAMENTE PARA TAL ACCION. TODOS LOS DEMAS PROCESOS
-                SE MANEJAN CON AJAX. {1}
-            */
-            if($resultado){
-                header('location:../RegistroExitoso/confirmacionregistro');
-            }else{
-                header('location:../RegistroFallido/error_registro');
+            try {
+                // LLAMADO DE RUTINA CON PASE DE PARAMETROS
+                $resultado=mysqli_query($conectarsistema,"CALL RegistrarUsuariosNuevos('".$NombreUsuarios."','".$ApellidoUsuarios."','".$CorreoUsuarios."','".$ClaveUsuarios."');");
+                return $resultado;
+            } catch (\mysqli_sql_exception $e) {
+                return false;
             }
-            return $resultado;
         }
         // FUNCION PARA COMPLETAR PERFIL DE USUARIOS NUEVOS REGISTRADOS CON FOTO
         public function CompletarPerfilNuevosUsuarios($conectarsistema,$IdUsuarios,$NombreUsuarios,$ApellidoUsuarios,$UsuarioUnico,$CorreoUsuarios,$FotoPerfil,$Pais,$Ciudad,$Telefono,$Genero,$FechaNacimiento,$Privacidad,$EstadoPerfil){
@@ -395,7 +387,15 @@
         }
         // BUSCADOR SECRET SOCIAL -> CONSULTA DE USUARIOS
         public function BuscadorSecretSocialUsuarios($conectarsistema,$Busqueda){
-            $resultado=mysqli_query($conectarsistema,"CALL ConsultarBuscadorSecret('".$Busqueda."');");
+            $safeBusqueda = mysqli_real_escape_string($conectarsistema, $Busqueda);
+            $resultado = mysqli_query($conectarsistema, "SELECT * FROM usuarios WHERE estado_usuario = 'activo' AND (nombres LIKE '%$safeBusqueda%' OR apellidos LIKE '%$safeBusqueda%' OR usuario LIKE '%$safeBusqueda%')");
+            return $resultado;
+        }
+
+        // BUSCADOR SECRET SOCIAL -> CONSULTA DE PUBLICACIONES
+        public function BuscadorSecretSocialPublicaciones($conectarsistema,$Busqueda){
+            $safeBusqueda = mysqli_real_escape_string($conectarsistema, $Busqueda);
+            $resultado = mysqli_query($conectarsistema, "SELECT p.*, u.nombres, u.apellidos, u.usuario, u.fotoperfil FROM publicaciones p JOIN usuarios u ON p.id = u.id WHERE p.mensaje_publicacion LIKE '%$safeBusqueda%' ORDER BY p.fecha_publicacion DESC");
             return $resultado;
         }
     }// CIERRE class RegistroUsuariosNuevos

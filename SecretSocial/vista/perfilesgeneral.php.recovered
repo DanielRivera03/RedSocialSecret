@@ -1,0 +1,975 @@
+<?php
+/*
+--------------------------------------------------------
+║            SECRET - RED SOCIAL PHP NATIVO            ║
+--------------------------------------------------------           
+    AUTOR: DANIEL RIVERA (danielrivera03)
+    Github: https://github.com/DanielRivera03
+    VERSIONES TESTEADAS: 7.3 a 8.0
+    -> VERSIONES INFERIORES PROBABLEMENTE TENGAN
+    ALGUN CONFLICTO. TOMAR EN CUENTA.
+    COPYRIGHT © 2020 - 2021
+--------------------------------------------------------
+*/
+   // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
+   if(!isset($_GET['publicaciones'])){
+    header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR INGRESO SIN INICIAR SESION
+   if(!isset($_SESSION['nombre_usuario'])){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
+   if(!isset($_GET['id'])){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR INGRESO SI PARAMETRO NO ES IGUAL AL INDICADO
+   if($_GET['publicaciones']!="perfil-general"){
+      header('location:../AccesoDenegado=restringido');
+   }
+   // NO PERMITIR VISTA DE PERFIL GENERAL SI EL ID DE USUARIO COINCIDE CON SU SESION
+   // PARA VER PERFIL PERSONAL -> ES EXCLUSIVO DE PERFILES PROPIETARIOS
+   if($_GET['id']==$_SESSION['id_usuario']){
+      header('
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <link rel="icon" type="image/png" sizes="16x16" href="../vista/favicon/favicon-16x16.png">
+      <link rel="manifest" href="../vista/favicon/site.webmanifest">
+      <link rel="mask-icon" href="../vista/favicon/safari-pinned-tab.svg" color="#5bbad5">
+      <meta name="msapplication-TileColor" content="#da532c">
+      <meta name="theme-color" content="#ffffff">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="../vista/css/bootstrap.min.css">
+      <!-- Typography CSS -->
+      <link rel="stylesheet" href="../vista/css/typography.css">
+      <!-- Style CSS -->
+      <link rel="stylesheet" href="../vista/css/style.css">
+      <!-- Responsive CSS -->
+      <link rel="stylesheet" href="../vista/css/responsive.css">
+      <!-- Bootstrap Dropzone CSS -->
+      <link href="../vista/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
+      <!-- Bootstrap Dropzone CSS -->
+      <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
+     <!-- Alerts -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+     <!-- Image -->
+     <link type="text/css" rel="stylesheet" href="../vista/css/jquery-ui-1.8.16.custom.css" />
+     <link type="text/css" rel="stylesheet" href="../vista/css/lightbox.min.css" />
+     <script type="text/javascript" src="../vista/js/jquery-1.6.4.min.js"></script>
+     <script type="text/javascript" src="../vista/js/jquery.ui.core.min.js"></script>
+     <script type="text/javascript" src="../vista/js/jquery.ui.widget.min.js"></script>
+     <script type="text/javascript" src="../vista/js/jquery.ui.rlightbox.min.js"></script>
+     <script type="text/javascript">
+         jQuery(function($) {
+
+
+
+
+
+      <!-- loader Start -->
+      <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>
+      <!-- loader END -->
+      <!-- Wrapper Start -->
+      <div class="wrapper">
+         <!-- Sidebar  -->
+         <div class="iq-sidebar">
+            <div id="sidebar-scrollbar">
+               <nav class="iq-sidebar-menu">
+                  <ul id="iq-sidebar-toggle" class="iq-menu">
+                  <li>
+                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
+                     </li>
+                     <li>
+                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
+                     </li>
+                     <li>
+                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
+                     </li>
+                     <li>
+                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
+                     </li>
+                     <li>
+                        <a href="../Notificaciones/<?php echo $_SESSI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              <div class="row">
+                                 <div class="col-lg-4">
+                                    <div class="iq-card">
+                                       <div class="iq-card-header d-flex justify-content-between">
+                                          <div class="iq-header-title">
+                                             <h4 class="card-title">Fotos</h4>
+                                          </div>
+                                       </div>
+                                       <div class="iq-card-body">
+                                          <ul class="profile-img-gallary d-flex flex-wrap p-0 m-0">
+                                          <?php 
+                                             // FOTOS SUBIDAS POR USUARIOS -> MAXIMO 9 ELEMENTOS
+                                             // MINIATURAS
+                                             while($filas=mysqli_fetch_array($consulta2)){
+                                                echo '
+                                                <li class="col-md-4 col-6 pl-2 pr-0 pb-3"><a href="javascript:void();"><img style="width: 100%; height: 100%;" src="../vista/images/fotospublicaciones/'; echo $filas['foto_publicacion']; echo '" alt="gallary-image" class="img-fluid" /></a></li>
+                                                ';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                             <hr>
+                                             <button type="submit" id="enviar" class="btn btn-primary d-block w-100 mt-3">Publicar Historia</button>
+                                          </form>
+                                          </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- BANDERA -> PUBLICACIONES -->
+                                    <?php 
+                                       while($filas=mysqli_fetch_array($consulta)){
+                                          // TODO -> PUBLICACIONES DE X USUARIOS REGISTRADOS
+                                          // SOLAMENTE PUBLICACIONES AL INGRESAR AL PERFIL DE USUARIO
+                                          echo '<div class="iq-card" id="publicaciones_usuariosperfil">
+                                          <div class="iq-card-body">
+                                             <div class="post-item">
+                                                <div class="user-post-data p-3">
+                                                   <div class="d-flex flex-wrap">
+            
+
+                                                      </div>
+                                                      <div class="media-support-info mt-2">
+                                                         <h5 class="mb-0 d-inline-block"><a href="#" class="">'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo '</a></h5>
+                                                         <p class="ml-1 mb-0 d-inline-block">public&oacute; una nueva historia</p>
+                                                         <p class="mb-0 text-primary"><time class="timeago" datetime="'; echo $filas['fecha_publicacion']; echo'"></time></p>
+                                                      </div>
+                                                      <div class="iq-card-post-toolbar">
+                                                         <div class="dropdown">';
+                                                            if($filas['usuario']==$_SESSION['usuario_unico']){
+                                                               // SOLAMENTE EL DUEÑO DE ESTE PERFIL TIENE HABILITADO ESTE MANTENIMIENTO
+                                                               echo '
+                                                               <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                               <i class="ri-more-fill"></i></span>
+                                                               <div class="dropdown-menu m-0 p-0">
+                                                               <!-- BORRAR HISTORIA -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getNombreUsuario(); ?> <?php echo $Publicaciones->getApellidoUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Correo Electr&oacute;nico:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><a href="mailto:<?php echo $Publicaciones->getCorreoUsuario();?>"><?php echo $Publicaciones->getCorreoUsuario(); ?></a></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Tel&eacute;fono:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                <?php 
+                                                   if($Publicaciones->getUsuarioUnico()==$_SESSION['usuario_unico']){
+                                                      echo '<p class="mb-0">'; echo $Publicaciones->getTelefonoUsuario();  echo '</p>';
+                                                   }else{
+                                                      echo '<p class="mb-0">Lo sentimos, esta informaci&oacute;n solo la puede ver el due&ntilde;o de este perfil</p>';
+                                                   }
+                                                ?>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Pa&iacute;s de Residencia:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getPaisUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Ciudad de Residencia:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getCiudadUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>G&eacute;nero</h6>
+                                                </div>
+                                                <div class="col-9">
+                           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                          <div class="tab-pane fade" id="details" role="tabpanel">
+                                          <h4 class="mb-3">Detalles Sobre M&iacute;</h4>
+                                          <hr>
+                                          <div class="row">
+                                             <div class="col-3">
+                                                   <h6>Religi&oacute;n:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getReligionUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Profesi&oacute;n:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getEmpleoUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Educaci&oacute;n Inicial</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getEscuelaUsuario(); ?></p>
+                                                </div>
+                                                <div class="co
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                   <p class="mb-0"><?php echo $Publicaciones->getInteresesUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>M&uacute;sica Favorita:</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getGenerosMusicalesUsuario(); ?></p>
+                                                </div>
+                                                <div class="col-3">
+                                                   <h6>Situaci&oacute;n Sentimental</h6>
+                                                </div>
+                                                <div class="col-9">
+                                                   <p class="mb-0"><?php echo $Publicaciones->getSituacionSentimentalUsuario(); ?></p>
+                                                </div>
+                                             </div>
+                                             <hr>
+                                             <h4 class="mb-3">Peque&ntilde;a Rese&ntilde;a Sobre M&iacute;</h4>
+                                             <p><?php echo $Publicaciones->getSobreMiUsuario(); ?></p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="tab-pane fade" id="friends" role="tabpanel">
+                           <div class="iq-card">
+                              <div class="iq-card-body">
+                                 <h2>Amigos</h2>
+                                 <div class="friend-list-tab mt-2">
+                                    <ul class="nav nav-pills d-flex align-items-center justify-content-left friend-list-items p-0 mb-2">
+                                       <li>
+                                          <a class="nav-link" data-toggle="pill" href="#all-friends">Todos los amigos (<?php $retorno =  $Publicaciones->getIdUsuario(); echo NumeroAmigosPerfilPropietarioSecundarioPrincipal($conectarsistema10,$retorno); ?>)</a>
+                                       </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                       <div class="tab-pane fade active show" id="all-friends" role="tabpanel">
+                                          <div class="iq-card-body p-0">
+                                             <div class="row">
+                                             <!-- INICIO BANDERA AMIGOS -> MENU SECUNDARIO PRINCIPAL -->
+                                             <?php 
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <?php
+         }else{
+            // PERFIL PRIVADO -> 1
+            // MOSTRAR A LOS USUARIOS MENSAJE RESPECTIVO 
+         ?>
+         <div class="col-sm-12">
+            <img class="privado" src="../vista/images/carpeta.svg">
+            <h3 class="texto-principalprivacidad"><span style="padding: .5rem; border-radius:4px;background:#636e72; color: #fff;"><strong>Lo sentimos, esta cuenta es privada</strong></span></h3>
+            <h5 style="margin: 1rem 0 4rem 0;" class="texto-principalprivacidad">Lamentablemente el due&ntilde;o de este perfil ha decidido proteger todas sus publicaciones</h5>
+         </div>
+           </div>
+           </div>
+           </div>                                     
+      <?php } ?>
+      <!-- Wrapper END -->
+      <!-- Footer -->
+      <footer class="bg-white iq-footer">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-lg-6">
+                  <ul class="list-inline mb-0">
+                     <li class="list-inline-item"><a href="../Secret/privacidad-condiciones">T&eacute;rminos y Condiciones de Uso</a></li>
+                  </ul>
+               </div>
+               <div class="col-lg-6 text-right">
+               &copy; Copyright <?php echo date('Y'); ?> Secret&reg;<br>Derechos Reservados
+               </div>
+            </div>
+         </div>
+      </footer>
+      <!-- Footer END -->
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="../vista/js/jquery.min.js"></script>
+      <script src="../vista/js/popper.min.js"></script>
+      <script src="../vista/js/bootstrap.min.js"></script>
+      <!-- Appear JavaScript -->
+      <script src="../vista/js/jquery.appear.js"></script>
+      <!-- Countdown JavaScript -->
+      <script src="../vista/js/countdown.min.js"></script>
+      <!-- Counterup JavaScript -->
+      <script src="../vista/js/waypoints.min.js"></script>
+      <script src="../vista/js/jquery.counterup.min.js"></script>
+      <!-- Wow JavaScript -->
+      <script src="../vista/js/wow.min.js"></script>
+      <!-- Apexcharts JavaScript -->
+      <script src="../vista/js/apexcharts.js"></script>
+      <!-- Slick JavaScript -->
+      <script src="../vista/js/slick.min.js"></script>
+      <!-- Select2 JavaScript -->
+      <script src="../vista/js/select2.min.js"></script>
+      <!-- Owl Carousel JavaScript -->
+      <script src="../vista/js/owl.carousel.min.js"></script>
+      <!-- Magnific Popup JavaScript -->
+      <script src="../vista/js/jquery.magnific-popup.min.js"></script>
+      <!-- Smooth Scrollbar JavaScrip
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <script src="../vista/js/custom.js"></script>
+      <!-- Dropzone JavaScript -->
+      <script src="../vista/dropzone/dist/dropzone.js"></script>
+      <!-- Dropify JavaScript -->
+      <script src="../vista/dropify/dist/js/dropify.min.js"></script>
+      <!-- Form Flie Upload Data JavaScript -->
+      <script src="../vista/js/form-file-upload-data.js"></script>
+      <script src="../vista/js/contador_caracteres.js"></script>
+      <!-- Time ago -->
+      <script src="../vista/js/jquery.timeago.js"></script>
+      <script src="../vista/js/control_tiempo.js"></script>
+      <!-- Alert -->
+      <script src="../vista/js/alerta_publicaciones.js"></script>
+      <script src="../vista/js/alerta_eliminarhistorias.js"></script>
+      <script src="../vista/js/alerta-enviosolicitudamistad.js"></script>
+      <script src="../vista/js/alerta-solicitudesaceptadas.js"></script>
+      <script src="../vista/js/alerta-solicitudesaceptadas.js"></script>
+      <script src="../vista/js/alerta-eliminarsolicitudamistad.js"></script>
+   </body>
+</html>
+<?php 
+      /*SI UN USUARIO CON PERFIL INCOMPLETO INTENTA ACCEDER AL FEED DE LA APLICACION
+      SE LE BLOQUEA SU ACCESO Y DEBE OBLIGATORIAMENTE COMPLETAR SU PERFIL PARA PODER
+      ACCEDER A TODAS LAS FUNCIONES DE ESTA APLICACION*/
+      }else{header('location:../Controlador/cRegistroNuevosUsuarios.php?nuevoregistro=completarperfil');} 
+   }// CIERRE if(empty($Publicaciones->getFotoPerfilUsuario()) && empty($Publicaciones->getFotoPortadaUsuario()) && empty($Publicaciones->getNombreUsuario()) && empty($Publicaciones->getApellidoUsuario()))
+}// CIERRE  if($_SESSION['usuario_unico']==$Publicaciones->getUsuarioUnico())?>
+

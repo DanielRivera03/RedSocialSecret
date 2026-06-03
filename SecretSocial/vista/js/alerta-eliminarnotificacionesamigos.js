@@ -15,11 +15,12 @@ $(document).ready(function(){
     // #eliminar-notificacion-amigos IDENTIDICADOR DE ID -> ACCION A EJECUTAR
     $(document).on('click', '#eliminar-notificacion-amigos', function(e){
      var IDNotificaciones = $(this).data('id'); // ID ENVIADA POR GET DESDE EL CONTROLADOR HACIA EL MODELO
-     BorrarNotificaciones(IDNotificaciones); // ID UNICO DE HISTORIAS
+     var element = $(this);
+     BorrarNotificaciones(IDNotificaciones, element); // ID UNICO DE HISTORIAS
      e.preventDefault();
     });
    });
-   function BorrarNotificaciones(IDNotificaciones){ 
+   function BorrarNotificaciones(IDNotificaciones, element){ 
     Swal.fire({
         title: '¿Realmente desea eliminar esta notificación?',
         text: "Al hacer clic en el botón confirmar, no habrá forma de recuperarlo",
@@ -29,24 +30,52 @@ $(document).ready(function(){
         cancelButtonColor: '#5758BB',
         confirmButtonText: 'Confirmar',
         cancelButtonText: 'Cancelar',
-     preConfirm: function() {
-       return new Promise(function() {
-          $.ajax({
-          url: '../controlador/cPublicacionesUsuarios.php?publicaciones=eliminar-notificaciones-amigos&idnotificacion='+IDNotificaciones,
-          type: 'POST',
-             data: 'idnotificacion='+IDNotificaciones, // COMPARACION PREVIA ANTES DE EJECUTAR ACCION EN SERVIDOR
-             dataType: 'json'
-          })
-          .done(function(respuesta){ // SI MODELO EJECUTA PETICION, REALIZA PETICION
-            if(respuesta=="OK"){
-                    location.reload();
-            }
-          })
-          .fail(function(){
-            AlertaUsuarioMostrar("Error","Lo sentimos, en estos momentos no podemos procesar tu solicitud, por favor vuelve más tarde...","error");
+        showLoaderOnConfirm: true,
+        preConfirm: function() {
+          return new Promise(function(resolve) {
+             $.ajax({
+             url: '../controlador/cPublicacionesUsuarios.php?publicaciones=eliminar-notificaciones-amigos&idnotificacion='+IDNotificaciones,
+             type: 'POST',
+                data: 'idnotificacion='+IDNotificaciones, // COMPARACION PREVIA ANTES DE EJECUTAR ACCION EN SERVIDOR
+                dataType: 'json'
+             })
+             .done(function(respuesta){ // SI MODELO EJECUTA PETICION, REALIZA PETICION
+                resolve(respuesta);
+             })
+             .fail(function(){
+                resolve("error");
+             });
           });
-       });
         },    
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var respuesta = result.value;
+            if (respuesta === "OK") {
+                Swal.fire({
+                    title: 'Notificación Eliminada',
+                    text: 'Se ha eliminado la notificación.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                
+                // Dynamic DOM update without reload
+                if (element && element.length) {
+                    var cardItem = element.closest('.iq-card');
+                    if (!cardItem.length) {
+                        cardItem = element.closest('li'); // fallback if styled differently
+                    }
+                    if (cardItem.length) {
+                        cardItem.fadeOut(400, function() {
+                            $(this).remove();
+                        });
+                    }
+                }
+            } else {
+                AlertaUsuarioMostrar("Error", "Lo sentimos, en estos momentos no podemos procesar tu solicitud, por favor vuelve más tarde...", "error");
+            }
+        }
     }); 
    }
 

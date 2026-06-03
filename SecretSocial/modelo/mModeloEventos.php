@@ -47,5 +47,41 @@ class Eventos{
         }
         return $resultado;
     }
+    // REGISTRAR O ACTUALIZAR ASISTENCIA A EVENTO
+    public function RegistrarAsistenciaEvento($conectarsistema,$IdEvento,$IdUsuario,$Estado){
+        $safeIdEvento = mysqli_real_escape_string($conectarsistema, $IdEvento);
+        $safeIdUsuario = mysqli_real_escape_string($conectarsistema, $IdUsuario);
+        $safeEstado = mysqli_real_escape_string($conectarsistema, $Estado);
+        $resultado = mysqli_query($conectarsistema, "INSERT INTO asistencia_eventos (idevento, id_usuario, estado) VALUES ('$safeIdEvento', '$safeIdUsuario', '$safeEstado') ON DUPLICATE KEY UPDATE estado = '$safeEstado'");
+        if($resultado){
+            return "OK";
+        }else{
+            return "Error: Lo sentimos ha ocurrido un error inesperado. Intenta más tarde...";
+        }
+    }
+
+    // OBTENER ASISTENCIA ACTUAL DE UN USUARIO PARA UN EVENTO
+    public function ObtenerAsistenciaUsuario($conectarsistema,$IdEvento,$IdUsuario){
+        $safeIdEvento = mysqli_real_escape_string($conectarsistema, $IdEvento);
+        $safeIdUsuario = mysqli_real_escape_string($conectarsistema, $IdUsuario);
+        $resultado = mysqli_query($conectarsistema, "SELECT estado FROM asistencia_eventos WHERE idevento = '$safeIdEvento' AND id_usuario = '$safeIdUsuario' LIMIT 1");
+        if($resultado && mysqli_num_rows($resultado) > 0) {
+            $row = mysqli_fetch_assoc($resultado);
+            return $row['estado'];
+        }
+        return "";
+    }
+
+    // CONTAR RESPUESTAS DE ASISTENCIA A UN EVENTO
+    public function ContarAsistenciaEvento($conectarsistema,$IdEvento,$Estado){
+        $safeIdEvento = mysqli_real_escape_string($conectarsistema, $IdEvento);
+        $safeEstado = mysqli_real_escape_string($conectarsistema, $Estado);
+        $resultado = mysqli_query($conectarsistema, "SELECT COUNT(*) as total FROM asistencia_eventos WHERE idevento = '$safeIdEvento' AND estado = '$safeEstado'");
+        if($resultado) {
+            $row = mysqli_fetch_assoc($resultado);
+            return intval($row['total']);
+        }
+        return 0;
+    }
 }// CIERRE class Eventos{
 ?>

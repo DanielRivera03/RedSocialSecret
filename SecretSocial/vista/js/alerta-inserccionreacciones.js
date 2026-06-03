@@ -24,14 +24,17 @@ $(document).ready(function(){
           url: '../controlador/cPublicacionesUsuarios.php?publicaciones=registro-reacciones&idpublicacion='+IDPublicaciones,
           type: 'POST',
              data: 'idpublicacion='+IDPublicaciones, // COMPARACION PREVIA ANTES DE EJECUTAR ACCION EN SERVIDOR
-             dataType: 'json'
+             dataType: 'text'
           })
           .done(function(respuesta){ // SI MODELO EJECUTA PETICION, REALIZA PETICION
-            if(respuesta=="OK"){
+            let cleaned = respuesta.trim().replace(/^"(.*)"$/, '$1');
+            if(cleaned == "OK"){
                  // 0.70 SEGUNDOS DE RETRASO PARA MOSTRAR ALERTA Y REFRESCAR
                  setTimeout(function(){
                     location.reload();
                 }, 700);
+            } else {
+                 AlertaUsuarioMostrar("Error", "No se pudo registrar la reacción: " + cleaned, "error");
             }
           })
           .fail(function(){

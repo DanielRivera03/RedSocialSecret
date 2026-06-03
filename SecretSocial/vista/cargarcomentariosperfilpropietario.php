@@ -145,17 +145,17 @@
                            <img src="../vista/images/fotosperfiles/'.$filas['fotoperfil'].'" alt="userimg" class="avatar-35 rounded-circle img-fluid">
                         </div>
                         <div class="comment-data-block ml-3">';
-                           if($filas['id']==$_SESSION['id_usuario']){
-                              // NO PERMITIR VISTA DE PERFIL GENERAL A USUARIO LOGUEADO
-                              echo'
-                                 <h6>'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo' </h6>
-                              ';
-                           }else{
-                              // CONSULTA DE PERFIL GENERAL -> OTROS USUARIOS
-                              echo '
-                              <h6><a target="_blank" href="../Perfiles/'; echo $filas['usuario']; echo'=';echo $filas['id'];  echo'">'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo' </a></h6>
-                              ';
-                           }
+                            if($filas['id']==$_SESSION['id_usuario']){
+                               // ENLACE A PERFIL PERSONAL DE USUARIO LOGUEADO
+                               echo'
+                                  <h6><a target="_blank" href="../Perfil/'; echo $_SESSION['usuario_unico']; echo'">'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo' </a></h6>
+                               ';
+                            }else{
+                               // CONSULTA DE PERFIL GENERAL -> OTROS USUARIOS
+                               echo '
+                               <h6><a target="_blank" href="../Perfiles/'; echo $filas['usuario']; echo'=';echo $filas['id'];  echo'">'; echo $filas['nombres']; echo " "; echo $filas['apellidos']; echo' </a></h6>
+                               ';
+                            }
                            echo'
                            <p class="mb-0">'.$filas['comentario'].'</p>
                            <div class="d-flex flex-wrap align-items-center comment-activity">

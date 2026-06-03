@@ -1,4 +1,6 @@
-<?php 
+<?php
+   $active_page = 'notificaciones';
+ 
    // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
    if(!isset($_GET['publicaciones'])){
       header('location:../AccesoDenegado=restringido');
@@ -58,8 +60,269 @@
       <link href="../vista/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
       <!-- Bootstrap Dropzone CSS -->
       <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
-     <!-- Alerts -->
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <!-- Remix Icons -->
+      <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+      <!-- Alerts -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+      <style>
+         .notification-panel-card {
+             border-radius: 20px !important;
+             border: 1px solid var(--iq-border-light) !important;
+             box-shadow: 0 10px 30px rgba(0,0,0,0.03) !important;
+             overflow: hidden;
+             background: var(--iq-white);
+             margin-bottom: 30px;
+         }
+         body.dark-theme .notification-panel-card {
+             border-color: #3a3b3c !important;
+             box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+             background: #242526 !important;
+         }
+
+         .notification-feed-list {
+             display: flex;
+             flex-direction: column;
+         }
+
+         .notif-item {
+             display: flex;
+             align-items: center;
+             padding: 20px 24px;
+             border-bottom: 1px solid var(--iq-border-light);
+             transition: all 0.3s ease;
+             position: relative;
+         }
+         body.dark-theme .notif-item {
+             border-color: #3a3b3c;
+         }
+         .notif-item:last-child {
+             border-bottom: none;
+         }
+         .notif-item:hover {
+             background-color: var(--iq-light-primary);
+         }
+         body.dark-theme .notif-item:hover {
+             background-color: rgba(255, 255, 255, 0.02);
+         }
+
+         .notif-avatar-wrapper {
+             position: relative;
+             margin-right: 18px;
+             flex-shrink: 0;
+         }
+
+         .notif-avatar {
+             width: 48px;
+             height: 48px;
+             border-radius: 50%;
+             object-fit: cover;
+             border: 2px solid var(--iq-white);
+             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+         }
+         body.dark-theme .notif-avatar {
+             border-color: #242526;
+         }
+
+         .notif-badge-icon {
+             position: absolute;
+             bottom: -2px;
+             right: -2px;
+             width: 20px;
+             height: 20px;
+             border-radius: 50%;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             color: white;
+             font-size: 11px;
+             border: 2px solid var(--iq-white);
+             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+         }
+         body.dark-theme .notif-badge-icon {
+             border-color: #242526;
+         }
+
+         .notif-badge-friend {
+             background: linear-gradient(135deg, #10b981, #059669);
+         }
+
+         .notif-badge-comment {
+             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+         }
+
+         .notif-content {
+             flex-grow: 1;
+             margin-right: 15px;
+         }
+
+         .notif-title {
+             font-size: 14.5px;
+             font-weight: 500;
+             line-height: 1.4;
+             color: var(--iq-title-text);
+             margin-bottom: 5px;
+         }
+         body.dark-theme .notif-title {
+             color: #e4e6eb;
+         }
+         .notif-title strong {
+             font-weight: 700;
+         }
+
+         .notif-time {
+             font-size: 12px;
+             color: var(--iq-body-text);
+             display: flex;
+             align-items: center;
+             gap: 4px;
+         }
+         body.dark-theme .notif-time {
+             color: #a1a1aa;
+         }
+
+         .notif-actions {
+             display: flex;
+             align-items: center;
+             gap: 10px;
+         }
+
+         .btn-notif-action {
+             width: 36px;
+             height: 36px;
+             border-radius: 50%;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             background: var(--iq-light-secondary);
+             color: var(--iq-body-text) !important;
+             transition: all 0.2s ease;
+             border: none;
+         }
+         body.dark-theme .btn-notif-action {
+             background: #3a3b3c;
+             color: #b0b3b8 !important;
+         }
+         .btn-notif-action:hover {
+             background: var(--iq-primary);
+             color: white !important;
+             transform: scale(1.05);
+         }
+
+         .notif-empty-state {
+             padding: 60px 24px;
+             text-align: center;
+         }
+         .notif-empty-icon {
+             font-size: 55px;
+             color: var(--iq-body-text);
+             opacity: 0.4;
+             margin-bottom: 15px;
+             display: block;
+         }
+         body.dark-theme .notif-empty-icon {
+             color: #8c91b6;
+         }
+
+         /* Premium Skeleton Loader */
+         .notif-skeleton {
+             display: none;
+             flex-direction: column;
+         }
+         .skeleton-item {
+             display: flex;
+             align-items: center;
+             padding: 20px 24px;
+             border-bottom: 1px solid var(--iq-border-light);
+         }
+         body.dark-theme .skeleton-item {
+             border-color: #3a3b3c;
+         }
+         .skeleton-avatar {
+             width: 48px;
+             height: 48px;
+             border-radius: 50%;
+             background: #e4e6eb;
+             margin-right: 18px;
+             position: relative;
+             overflow: hidden;
+         }
+         .skeleton-content {
+             flex-grow: 1;
+         }
+         .skeleton-line {
+             height: 12px;
+             background: #e4e6eb;
+             border-radius: 6px;
+             margin-bottom: 8px;
+             position: relative;
+             overflow: hidden;
+         }
+         .skeleton-line.short {
+             width: 60%;
+         }
+         .skeleton-line.mini {
+             width: 30%;
+             height: 8px;
+         }
+         body.dark-theme .skeleton-avatar,
+         body.dark-theme .skeleton-line {
+             background: #3a3b3c;
+         }
+
+         /* Shimmer animation */
+         .skeleton-avatar::after,
+         .skeleton-line::after {
+             content: "";
+             position: absolute;
+             top: 0; left: 0; right: 0; bottom: 0;
+             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+             animation: shimmer 1.5s infinite;
+         }
+         body.dark-theme .skeleton-avatar::after,
+         body.dark-theme .skeleton-line::after {
+             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+         }
+         @keyframes shimmer {
+             0% { transform: translateX(-100%); }
+             100% { transform: translateX(100%); }
+         }
+
+         /* Filter controls style */
+         .notif-filters {
+             display: flex;
+             gap: 12px;
+             padding: 15px 24px;
+             background: var(--iq-light-secondary);
+             border-bottom: 1px solid var(--iq-border-light);
+             align-items: center;
+         }
+         body.dark-theme .notif-filters {
+             background: #2b2c2d;
+             border-color: #3a3b3c;
+         }
+         .filter-select {
+             padding: 8px 16px;
+             border-radius: 20px;
+             border: 1px solid var(--iq-border-light);
+             background: var(--iq-white);
+             color: var(--iq-body-text);
+             font-size: 13.5px;
+             outline: none;
+             cursor: pointer;
+             min-width: 130px;
+             transition: all 0.25s;
+         }
+         .filter-select:focus {
+             border-color: var(--iq-primary);
+             box-shadow: 0 0 0 3px rgba(185, 32, 37, 0.15);
+         }
+         body.dark-theme .filter-select {
+             background: #242526;
+             border-color: #3a3b3c;
+             color: #e4e6eb;
+         }
+      </style>
    </head>
    <body class="sidebar-main-active right-column-fixed">
       <!-- loader Start -->
@@ -70,217 +333,8 @@
       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <!-- Sidebar  -->
-         <div class="iq-sidebar">
-            <div id="sidebar-scrollbar">
-               <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li>
-                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
-                     </li>
-                     <li>
-                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
-                     </li>
-                     <li>
-                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
-                     </li>
-                     <li class="active">
-                        <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="iq-waves-effect"><i class="las la-bell"></i><span>Mis Notificaciones</span></a>
-                     </li>
-                     <li>
-                        <a href="../EventosSociales/registrareventos" class="iq-waves-effect"><i class="las la-film"></i><span>Registrar Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Eventos/mostrareventos" class="iq-waves-effect"><i class="las la-bullhorn"></i><span>Ver Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../ChatGeneral/mensajeria-secret" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Mensajes</span></a>
-                     </li>
-                     <li>
-                        <a href="../Videos/multimedia-secretvideos" class="iq-waves-effect"><i class="ri-play-circle-line"></i><span>M&uacute;sica Favorita</span></a>
-                     </li>
-                  </ul>
-               </nav>
-               <div class="p-3"></div>
-            </div>
-         </div>
-         <!-- TOP Nav Bar -->
-         <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                     </div>
-                  </div>
-                  </div>
-                  <div class="iq-search-bar">
-                     <form action="../Buscador/resultados-busqueda" class="searchbox needs-validation" novalidate method="POST" autocomplete="off">
-                        <input type="text" class="text search-input" name="buscador" placeholder="Buscar en Secret..." required>
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                     </form>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                           </a>
-                        </li>
-                        <li>
-                           <a href="../Feed/inicio" class="iq-waves-effect d-flex align-items-center">
-                           <i class="ri-home-line"></i>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown iq-sub-dropdown-large">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Solicitudes de Amigos<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadRecibidas($conectarsistema15,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <!-- INICIO BANDERA -> SOLICITUDES DE AMIGOS -->
-                                    <?php 
-                                       while($filas=mysqli_fetch_array($consulta)){
-                                          if($filas['estado']==0){
-                                             echo '
-                                             <div class="iq-friend-request">
-                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                                <div class="d-flex align-items-center">
-                                                   <div class="">
-                                                      <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="">
-                                                   </div>
-                                                   <div class="media-body ml-3">
-                                                      <h6 class="mb-0 ">'; echo $filas['nombres']; echo ' '; echo $filas['apellidos'];  echo'</h6>
-                                                   </div>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                   <a style="color: var( --iq-white);" id="aceptar-solicitudes" data-id="'; echo $filas['id']; echo'" class="mr-3 btn btn-primary rounded">Confirmar</a>
-                                                   <a style="color: var( --iq-white);" id="rechazar-solicitudes" data-id="'; echo $filas['idsolicitudamistad']; echo'" class="mr-3 btn btn-secondary rounded">Rechazar</a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          ';
-                                          }
-                                       }
-                                    ?>
-                                    <!-- FIN BANDERA -> SOLICITUDES DE AMIGOS -->
-                                 </div>
-                              </div>
-                              <div class="text-center">
-                                <a href="../SolicitudesAmistad/" class="mr-3 btn text-primary"><i class="las la-hand-point-right"></i> Ver todas las solicitudes de amistad</a>
-                            </div>
-                           </div>
-                        </li>
-                        <li class="nav-item">
-                           <a href="#" class="search-toggle iq-waves-effect">
-                              <div id="lottie-beil"></div>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Notificaciones<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadAceptadas($conectarsistema17,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <?php 
-                                    // CONSULTA DE SOLICITUDES DE AMISTAD APROBADAS
-                                       while($filas=mysqli_fetch_array($consulta1)){
-                                          echo'
-                                          <a href="#" class="iq-sub-card" >
-                                          <div class="media align-items-center">
-                                             <div class="">
-                                                <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo$filas['fotoperfil'];  echo'" alt="">
-                                             </div>
-                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Eres amigo de '; echo $filas['nombres']; echo' '; echo $filas['apellidos']; echo'</h6>
-                                                <small class="float-right font-size-12">
-                                                ';
-                                                // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                                $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                                $ObtenerMes = date("m", $FechaCompleta);
-                                                $ObtenerHoras = date("H:i", $FechaCompleta);
-                                                $ObtenerMinutos = date("m", $FechaCompleta);
-                                                echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                                echo'
-                                                </small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                          ';
-                                       }
-                                    ?>
-                                    <div class="text-center">
-                                       <a href="../Notificaciones/" class="mr-3 btn text-primary"><i class="ri-notification-3-fill"></i> Ver todas las notificaciones</a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     <ul class="navbar-list">
-                        <li>
-                           <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <i class="ri-arrow-down-s-fill"></i>
-                           </a>
-                           <div class="iq-sub-dropdown iq-user-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hola, <?php echo $_SESSION['nombre_usuario'];?> <?php echo $_SESSION['apellido_usuario'];?></h5>
-                                       <span class="text-white font-size-12">Secret&reg;</span>
-                                    </div>
-                                    <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Mi perfil</h6>
-                                             <p class="mb-0 font-size-12">Ver mi informaci&oacute;n personal</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="../EditarPerfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-warning-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-warning">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Editar Perfil</h6>
-                                             <p class="mb-0 font-size-12">Modificar foto y detalles de mi perfil</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="../Salir/cerrarsesion" role="button">Cerrar Sesi&oacute;n<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-         </div>
-         <!-- TOP Nav Bar END -->
+                  <?php include __DIR__ . '/premium_sidebar.php'; ?>
+         <?php include __DIR__ . '/premium_topnav.php'; ?>
          <!-- Page Content  -->
          <div id="content-page" class="content-page">
             <div class="container">
@@ -293,94 +347,208 @@
                      </div>
                   </div>
                   <div class="col-sm-12">
-                      <!-- INICIO BANDERA TODAS LAS NOTIFICACIONES -->
-                      <?php 
-                        // CONSULTA DE SOLICITUDES DE AMISTAD APROBADAS
-                        while($filas=mysqli_fetch_array($consulta2)){
-                            echo'
-                            <div class="iq-card">
-                            <div class="iq-card-body">
-                               <ul class="notification-list m-0 p-0">
-                                  <li class="d-flex align-items-center">
-                                     <div class="user-img img-fluid"><img src="../vista/images/fotosperfiles/';echo $filas['fotoperfil']; echo'" alt="story-img" class="rounded-circle avatar-40"></div>
-                                     <div class="media-support-info ml-3">
-                                        <h6>&#128076; ¡Felicidades! Ahora eres amigo de '; echo $filas['nombres']; echo' '; echo $filas['apellidos']; echo'.</h6>
-                                        <p class="mb-0">'; 
-                                        // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                        $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                        $ObtenerMes = date("m", $FechaCompleta);
-                                        $ObtenerHoras = date("H:i", $FechaCompleta);
-                                        $ObtenerMinutos = date("m", $FechaCompleta);
-                                        echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                        echo'</p>
-                                     </div>
-                                     <div class="d-flex align-items-center">
-                                        <a href="javascript:void();" class="mr-3 iq-notify iq-bg-danger rounded"><i class="ri-heart-line"></i></a>
-                                        <div class="iq-card-header-toolbar d-flex align-items-center">
-                                           <div class="dropdown">
-                                              <span class="dropdown-toggle" data-toggle="dropdown">
-                                              <i class="ri-more-fill"></i>
-                                              </span>
-                                              <div class="dropdown-menu dropdown-menu-right">
-                                                 <a class="dropdown-item" href="../controlador/cPublicacionesUsuarios.php?publicaciones=retorno-notificaciones"><i class="ri-eye-fill mr-2"></i>Ir al perfil para ver notificaci&oacute;n</a>
-                                                 <a id="eliminar-notificacion-amigos" data-id="'; echo $filas['idnotificacionamigos']; echo'" class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Eliminar Notificaci&oacute;n</a>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
-                                  </li>
-                               </ul>
-                            </div>
+                     <div class="iq-card notification-panel-card">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                           <div class="iq-header-title">
+                              <h4 class="card-title"><i class="ri-notification-3-line text-primary mr-2"></i> Todas tus notificaciones</h4>
+                           </div>
                          </div>
-                            ';
-                        }
-                      ?>
-                      <?php 
-                        // CONSULTA DE NUEVOS COMENTARIOS REGISTRADOS EN PUBLICACIONES
-                        while($filas=mysqli_fetch_array($consulta3)){
-                            if($filas['usuario']!=$_SESSION['usuario_unico']){
-                                // SOLAMENTE MOSTRAR NOTIFICACIONES DE OTROS USUARIOS
-                                // NOTIFICACIONES PROPIAS SE REGISTRAN PERO NO SE MUESTRAN
-                                // SI DESEA CAMBIAR LO ANTERIOR, SOLAMENTE ELIMINE LA CONDICIONAL
-                                echo'
-                                <div class="iq-card">
-                                <div class="iq-card-body">
-                                <ul class="notification-list m-0 p-0">
-                                    <li class="d-flex align-items-center">
-                                        <div class="user-img img-fluid"><img src="../vista/images/fotospublicaciones/'; echo $filas['foto_publicacion']; echo'" alt="story-img" class="rounded-circle avatar-40">';echo' ';echo'<i style="color:var(--iq-primary);" class="las la-hand-point-right"></i>';echo' '; echo'<img src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="story-img" class="rounded-circle avatar-40"></div>
-                                        <div class="media-support-info ml-3">
-                                            <h6><i style="color:var(--iq-info);" class="las la-comment-dots"></i>';echo' '; echo $filas['nombres']; echo ' '; echo $filas['apellidos']; echo' ha comentado t&uacute; publicaci&oacute;n ¡Apres&uacute;rate y ve a interactuar!</h6>
-                                            <p class="mb-0">'; 
-                                                // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                            $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                            $ObtenerMes = date("m", $FechaCompleta);
-                                            $ObtenerHoras = date("H:i", $FechaCompleta);
-                                            $ObtenerMinutos = date("m", $FechaCompleta);
-                                            echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                            echo'</p>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <a href="javascript:void();" class="mr-3 iq-notify iq-bg-success rounded"><i class="ri-chat-4-line"></i></a>
-                                            <div class="iq-card-header-toolbar d-flex align-items-center">
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" data-toggle="dropdown">
-                                                <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="../controlador/cPublicacionesUsuarios.php?publicaciones=retorno-notificaciones"><i class="ri-eye-fill mr-2"></i>Ir al perfil para ver notificaci&oacute;n</a>
-                                                <a id="eliminar-notificacion-comentarios" data-id="'; echo $filas['idnotificacioncomentarios']; echo'" class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Eliminar Notificaci&oacute;n</a>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                         <div class="notif-filters">
+                            <div style="font-size: 13.5px; font-weight: 600; color: var(--iq-title-text);">Filtrar por fecha:</div>
+                            <select id="filter-month" class="filter-select">
+                               <option value="all">Cualquier mes</option>
+                               <option value="01">Enero</option>
+                               <option value="02">Febrero</option>
+                               <option value="03">Marzo</option>
+                               <option value="04">Abril</option>
+                               <option value="05">Mayo</option>
+                               <option value="06">Junio</option>
+                               <option value="07">Julio</option>
+                               <option value="08">Agosto</option>
+                               <option value="09">Septiembre</option>
+                               <option value="10">Octubre</option>
+                               <option value="11">Noviembre</option>
+                               <option value="12">Diciembre</option>
+                            </select>
+                            <select id="filter-year" class="filter-select">
+                               <option value="all">Cualquier año</option>
+                               <option value="2026">2026</option>
+                               <option value="2025">2025</option>
+                               <option value="2024">2024</option>
+                               <option value="2023">2023</option>
+                               <option value="2022">2022</option>
+                               <option value="2021">2021</option>
+                            </select>
+                         </div>
+                         <div class="iq-card-body p-0">
+                            <!-- SKELETON LOADER -->
+                            <div class="notif-skeleton" id="notif-skeleton">
+                               <?php for($i = 0; $i < 4; $i++): ?>
+                               <div class="skeleton-item">
+                                  <div class="skeleton-avatar"></div>
+                                  <div class="skeleton-content" style="flex:1;">
+                                     <div class="skeleton-line" style="width: 80%;"></div>
+                                     <div class="skeleton-line short" style="width: 50%;"></div>
+                                     <div class="skeleton-line mini" style="width: 25%;"></div>
+                                  </div>
                                 </div>
+                               <?php endfor; ?>
                             </div>
-                            ';
-                            }
-                        }
-                      ?>
+                            <div class="notification-feed-list">
+                              <?php
+                              // Helper function inside scope (checked before function_exists to prevent redeclaration)
+                              if (!function_exists('tiempoRelativo')) {
+                                  function tiempoRelativo($fecha) {
+                                      $timestamp = strtotime($fecha);
+                                      $diferencia = time() - $timestamp;
+                                      
+                                      if ($diferencia < 1) {
+                                          return 'Ahora mismo';
+                                      }
+                                      
+                                      $intervalos = [
+                                          31536000 => 'año',
+                                          2592000  => 'mes',
+                                          604800   => 'sem',
+                                          86400    => 'día',
+                                          3600     => 'h',
+                                          60       => 'min',
+                                          1        => 'seg'
+                                      ];
+                                      
+                                      foreach ($intervalos as $segundos => $nombre) {
+                                          $division = $diferencia / $segundos;
+                                          if ($division >= 1) {
+                                              $valor = round($division);
+                                              if ($nombre == 'mes' && $valor > 1) {
+                                                  return 'Hace ' . $valor . ' meses';
+                                              }
+                                              if ($nombre == 'día') {
+                                                  return 'Hace ' . $valor . ' ' . ($valor > 1 ? 'días' : 'día');
+                                              }
+                                              return 'Hace ' . $valor . ' ' . $nombre . ($valor > 1 && $nombre != 'sem' && $nombre != 'min' && $nombre != 'seg' ? 's' : '');
+                                          }
+                                      }
+                                      return $fecha;
+                                  }
+                              }
+
+                              $num_notif = 0;
+
+                              // Loop for Friend requests accepted
+                              while($filas=mysqli_fetch_array($consulta2)){
+                                  $num_notif++;
+                                  $timeText = tiempoRelativo($filas['fecha_notificacion']);
+                                  echo '
+                                  <div class="notif-item" data-fecha="' . $filas['fecha_notificacion'] . '">
+                                     <div class="notif-avatar-wrapper">
+                                        <img src="../vista/images/fotosperfiles/' . $filas['fotoperfil'] . '" class="notif-avatar" alt="avatar">
+                                        <span class="notif-badge-icon notif-badge-friend"><i class="ri-heart-fill"></i></span>
+                                     </div>
+                                     <div class="notif-content">
+                                        <div class="notif-title">
+                                           ¡Felicidades! Ahora eres amigo de <strong>' . htmlspecialchars($filas['nombres'] . ' ' . $filas['apellidos']) . '</strong>. ¡Salúdalo!
+                                        </div>
+                                        <div class="notif-time">
+                                           <i class="ri-time-line"></i> ' . $timeText . '
+                                        </div>
+                                     </div>
+                                     <div class="notif-actions">
+                                        <a id="eliminar-notificacion-amigos" data-id="' . $filas['idnotificacionamigos'] . '" class="btn-notif-action" title="Eliminar"><i class="ri-delete-bin-line"></i></a>
+                                     </div>
+                                  </div>';
+                              }
+
+                              // Loop for Comment notifications
+                              while($filas=mysqli_fetch_array($consulta3)){
+                                  if($filas['usuario'] != $_SESSION['usuario_unico']){
+                                      $num_notif++;
+                                      $timeText = tiempoRelativo($filas['fecha_notificacion']);
+                                      echo '
+                                      <div class="notif-item" data-fecha="' . $filas['fecha_notificacion'] . '">
+                                         <div class="notif-avatar-wrapper">
+                                            <img src="../vista/images/fotosperfiles/' . $filas['fotoperfil'] . '" class="notif-avatar" alt="avatar">
+                                            <span class="notif-badge-icon notif-badge-comment"><i class="ri-chat-3-fill"></i></span>
+                                         </div>
+                                         <div class="notif-content">
+                                            <div class="notif-title">
+                                               <strong>' . htmlspecialchars($filas['nombres'] . ' ' . $filas['apellidos']) . '</strong> ha comentado tu publicación. ¡Interactúa con él!
+                                            </div>
+                                            <div class="notif-time">
+                                               <i class="ri-time-line"></i> ' . $timeText . '
+                                            </div>
+                                         </div>
+                                         <div class="notif-actions">
+                                            <a id="eliminar-notificacion-comentarios" data-id="' . $filas['idnotificacioncomentarios'] . '" class="btn-notif-action" title="Eliminar"><i class="ri-delete-bin-line"></i></a>
+                                         </div>
+                                      </div>';
+                                  }
+                              }
+
+                              // Loop for Reaction notifications
+                              while($filas=mysqli_fetch_array($consulta4)){
+                                  if($filas['usuario'] != $_SESSION['usuario_unico']){
+                                      $num_notif++;
+                                      $timeText = tiempoRelativo($filas['fecha_notificacion']);
+                                      echo '
+                                      <div class="notif-item" data-fecha="' . $filas['fecha_notificacion'] . '">
+                                         <div class="notif-avatar-wrapper">
+                                            <img src="../vista/images/fotosperfiles/' . $filas['fotoperfil'] . '" class="notif-avatar" alt="avatar">
+                                            <span class="notif-badge-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);"><i class="ri-heart-fill"></i></span>
+                                         </div>
+                                         <div class="notif-content">
+                                            <div class="notif-title">
+                                               A <strong>' . htmlspecialchars($filas['nombres'] . ' ' . $filas['apellidos']) . '</strong> le gusta tu publicación. ¡Interactúa con él!
+                                            </div>
+                                            <div class="notif-time">
+                                               <i class="ri-time-line"></i> ' . $timeText . '
+                                            </div>
+                                         </div>
+                                         <div class="notif-actions">
+                                            <a id="eliminar-notificacion-reacciones" data-id="' . $filas['idnotificacionreacciones'] . '" class="btn-notif-action" title="Eliminar"><i class="ri-delete-bin-line"></i></a>
+                                         </div>
+                                      </div>';
+                                  }
+                              }
+
+                              // Loop for Message notifications
+                              while($filas=mysqli_fetch_array($consulta5)){
+                                  if($filas['usuario'] != $_SESSION['usuario_unico']){
+                                      $num_notif++;
+                                      $timeText = tiempoRelativo($filas['fecha_notificacion']);
+                                      echo '
+                                      <div class="notif-item" data-fecha="' . $filas['fecha_notificacion'] . '">
+                                         <div class="notif-avatar-wrapper">
+                                            <img src="../vista/images/fotosperfiles/' . $filas['fotoperfil'] . '" class="notif-avatar" alt="avatar">
+                                            <span class="notif-badge-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"><i class="ri-chat-4-fill"></i></span>
+                                         </div>
+                                         <div class="notif-content">
+                                            <div class="notif-title">
+                                               <strong>' . htmlspecialchars($filas['nombres'] . ' ' . $filas['apellidos']) . '</strong> te envió un mensaje privado: "' . htmlspecialchars(substr($filas['mensaje'], 0, 60)) . '..."
+                                            </div>
+                                            <div class="notif-time">
+                                               <i class="ri-time-line"></i> ' . $timeText . '
+                                            </div>
+                                         </div>
+                                         <div class="notif-actions">
+                                            <a id="eliminar-notificacion-mensajes" data-id="' . $filas['idnotificacionmensajes'] . '" class="btn-notif-action" title="Eliminar"><i class="ri-delete-bin-line"></i></a>
+                                         </div>
+                                      </div>';
+                                  }
+                              }
+
+                              if($num_notif == 0){
+                                  echo '
+                                  <div class="notif-empty-state">
+                                     <i class="ri-notification-off-line notif-empty-icon"></i>
+                                     <h5>No tienes notificaciones por el momento</h5>
+                                     <p class="text-muted mt-2 mb-0">Cuando la comunidad interactúe contigo, aparecerá aquí.</p>
+                                  </div>';
+                              }
+                              ?>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                </div>
             </div>
@@ -452,6 +620,195 @@
       <script src="../vista/js/alerta-eliminarsolicitudamistad.js"></script>
       <script src="../vista/js/alerta-eliminarnotificacionesamigos.js"></script>
       <script src="../vista/js/alerta-eliminarnotificacionescomentarios.js"></script>
+
+      <!-- Polling script for notifications and filtering -->
+      <script>
+      $(document).ready(function() {
+          let currentCount = <?php echo $num_notif; ?>;
+          
+          setInterval(function() {
+              $.ajax({
+                  url: '../controlador/cPublicacionesUsuarios.php?publicaciones=count-notificaciones',
+                  type: 'GET',
+                  dataType: 'json',
+                  success: function(response) {
+                      if (response && response.status === "OK") {
+                          if (response.count !== currentCount) {
+                              location.reload();
+                          }
+                      }
+                  }
+              });
+          }, 15000); // 15 seconds
+
+          // Delete Reaction Notification Handler
+          $(document).on('click', '#eliminar-notificacion-reacciones', function(e) {
+              e.preventDefault();
+              var IDNotificaciones = $(this).data('id');
+              var element = $(this);
+              Swal.fire({
+                  title: '¿Realmente desea eliminar esta notificación?',
+                  text: "Al hacer clic en el botón confirmar, no habrá forma de recuperarlo",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#EA2027',
+                  cancelButtonColor: '#5758BB',
+                  confirmButtonText: 'Confirmar',
+                  cancelButtonText: 'Cancelar',
+                  showLoaderOnConfirm: true,
+                  preConfirm: function() {
+                      return new Promise(function(resolve) {
+                          $.ajax({
+                              url: '../controlador/cPublicacionesUsuarios.php?publicaciones=eliminar-notificaciones-reacciones&idnotificacion='+IDNotificaciones,
+                              type: 'GET',
+                              dataType: 'json'
+                          })
+                          .done(function(respuesta){
+                              resolve(respuesta);
+                          })
+                          .fail(function() {
+                              resolve("error");
+                          });
+                      });
+                  },
+                  allowOutsideClick: () => !Swal.isLoading()
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      var respuesta = result.value;
+                      if (respuesta == "OK" || respuesta === true) {
+                          element.closest('.notif-item').fadeOut(400, function() {
+                              $(this).remove();
+                              if ($('.notification-feed-list').children('.notif-item').length === 0) {
+                                  $('.notification-feed-list').html(`
+                                      <div class="notif-empty-state">
+                                         <i class="ri-notification-off-line notif-empty-icon"></i>
+                                         <h5>No tienes notificaciones por el momento</h5>
+                                         <p class="text-muted mt-2 mb-0">Cuando la comunidad interactúe contigo, aparecerá aquí.</p>
+                                      </div>`);
+                              }
+                          });
+                      } else {
+                          Swal.fire("Error", "No se pudo eliminar la notificación", "error");
+                      }
+                  }
+              });
+          });
+
+          // Delete Message Notification Handler
+          $(document).on('click', '#eliminar-notificacion-mensajes', function(e) {
+              e.preventDefault();
+              var IDNotificaciones = $(this).data('id');
+              var element = $(this);
+              Swal.fire({
+                  title: '¿Realmente desea eliminar esta notificación?',
+                  text: "Al hacer clic en el botón confirmar, no habrá forma de recuperarlo",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#EA2027',
+                  cancelButtonColor: '#5758BB',
+                  confirmButtonText: 'Confirmar',
+                  cancelButtonText: 'Cancelar',
+                  showLoaderOnConfirm: true,
+                  preConfirm: function() {
+                      return new Promise(function(resolve) {
+                          $.ajax({
+                              url: '../controlador/cPublicacionesUsuarios.php?publicaciones=eliminar-notificaciones-mensajes&idnotificacion='+IDNotificaciones,
+                              type: 'GET',
+                              dataType: 'json'
+                          })
+                          .done(function(respuesta){
+                              resolve(respuesta);
+                          })
+                          .fail(function() {
+                              resolve("error");
+                          });
+                      });
+                  },
+                  allowOutsideClick: () => !Swal.isLoading()
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      var respuesta = result.value;
+                      if (respuesta == "OK" || respuesta === true) {
+                          element.closest('.notif-item').fadeOut(400, function() {
+                              $(this).remove();
+                              if ($('.notification-feed-list').children('.notif-item').length === 0) {
+                                  $('.notification-feed-list').html(`
+                                      <div class="notif-empty-state">
+                                         <i class="ri-notification-off-line notif-empty-icon"></i>
+                                         <h5>No tienes notificaciones por el momento</h5>
+                                         <p class="text-muted mt-2 mb-0">Cuando la comunidad interactúe contigo, aparecerá aquí.</p>
+                                      </div>`);
+                              }
+                          });
+                      } else {
+                          Swal.fire("Error", "No se pudo eliminar la notificación", "error");
+                      }
+                  }
+              });
+          });
+
+          // Filter by Month and Year Logic
+          function filterNotifications() {
+              let selectedMonth = $('#filter-month').val();
+              let selectedYear = $('#filter-year').val();
+              
+              let container = $('.notification-feed-list');
+              let skeleton = $('#notif-skeleton');
+              
+              // Hide existing empty state
+              $('#notif-empty-filter').remove();
+              
+              // Show skeleton, hide actual content
+              container.children('.notif-item').hide();
+              container.children('.notif-empty-state').hide();
+              skeleton.css('display', 'flex');
+              
+              setTimeout(function() {
+                  // Hide skeleton
+                  skeleton.css('display', 'none');
+                  
+                  let visibleCount = 0;
+                  container.children('.notif-item').each(function() {
+                      let item = $(this);
+                      let dateStr = item.data('fecha'); // e.g. "2026-05-29 15:32:33"
+                      if (!dateStr) {
+                          item.fadeIn(200);
+                          visibleCount++;
+                          return;
+                      }
+                      
+                      // Parse date
+                      let parts = dateStr.split(' ')[0].split('-'); // ["2026", "05", "29"]
+                      let year = parts[0];
+                      let month = parts[1];
+                      
+                      let matchMonth = (selectedMonth === 'all' || selectedMonth === month);
+                      let matchYear = (selectedYear === 'all' || selectedYear === year);
+                      
+                      if (matchMonth && matchYear) {
+                          item.fadeIn(200);
+                          visibleCount++;
+                      } else {
+                          item.hide();
+                      }
+                  });
+                  
+                  if (visibleCount === 0) {
+                      // Show empty state for filter
+                      container.append(`
+                          <div class="notif-empty-state" id="notif-empty-filter">
+                             <i class="ri-notification-off-line notif-empty-icon"></i>
+                             <h5>No hay notificaciones para el período seleccionado</h5>
+                             <p class="text-muted mt-2 mb-0">Prueba cambiando los filtros de mes o año.</p>
+                          </div>
+                      `);
+                  }
+              }, 700); // 700ms transition for skeleton feel
+          }
+          
+          $('#filter-month, #filter-year').on('change', filterNotifications);
+      });
+      </script>
    </body>
 </html>
 <?php

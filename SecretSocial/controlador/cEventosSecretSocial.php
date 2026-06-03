@@ -44,6 +44,7 @@ switch($peticion_url){
         // TODAS LAS CONSULTAS ANIDADAS EN UNA SOLA PAGINA
         require('../vista/listadoeventosregistrados.php');
         $conectarsistema->close(); // CERRANDO CONEXION
+        $conectarsistema2->close(); // CERRANDO AUXILIAR 2
         $conectarsistema14->close(); // CIERRE DE CONEXION AUXILIAR 14
         $conectarsistema16->close(); // CIERRE DE CONEXION AUXILIAR 16
     break;
@@ -85,6 +86,19 @@ switch($peticion_url){
             // COPIA ARCHIVO SUBIDO CON NOMBRE FINAL A LA RUTA ESTABLECIDA
             copy($_FILES['foto_evento']['tmp_name'],$RutaDestino);
             // ENVIANDO RESPUESTA A MODELO
+            echo json_encode($consulta);
+        }
+        $conectarsistema->close(); // CERRANDO CONEXION
+    break;
+    // REGISTRAR ASISTENCIA A EVENTO SOCIAL
+    case "registrar-asistencia":
+        $IdEvento = $_POST['idevento'];
+        $Estado = $_POST['estado'];
+        $IdUsuario = $_SESSION['id_usuario'];
+        if(empty($IdEvento) || empty($Estado)){
+            echo json_encode("Error: Datos insuficientes.");
+        }else{
+            $consulta = $EventosSociales->RegistrarAsistenciaEvento($conectarsistema,$IdEvento,$IdUsuario,$Estado);
             echo json_encode($consulta);
         }
         $conectarsistema->close(); // CERRANDO CONEXION

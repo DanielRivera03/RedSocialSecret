@@ -1,8 +1,19 @@
 <?php
+     if (session_status() === PHP_SESSION_NONE) {
+         session_start();
+     }
      // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
      if(!isset($_GET['nuevoregistro'])){
-        header('location:../AccesoDenegado=restringido');
-       }
+         header('location:../AccesoDenegado=restringido');
+         exit();
+     }
+     
+     // Obtener mensaje de error si existe
+     $errorMsg = '';
+     if (isset($_SESSION['registro_error'])) {
+         $errorMsg = $_SESSION['registro_error'];
+         unset($_SESSION['registro_error']);
+     }
 ?>
 <!-- 
 --------------------------------------------------------
@@ -86,6 +97,17 @@
                         <div class="sign-in-from">
                             <h1 class="mb-0">Registrarme</h1>
                             <p>Por favor complete todos los campos <span style="color: #F00;">(*)</span></p>
+                            <?php if (!empty($errorMsg)): ?>
+                                <div style="display: block !important; background-color: #fff5f5 !important; border: 1px solid #feb2b2 !important; border-left: 4px solid #e53935 !important; border-radius: 12px !important; padding: 16px 20px !important; margin-bottom: 25px !important; text-align: left !important; font-family: 'Inter', sans-serif !important; box-shadow: 0 4px 12px rgba(229, 57, 53, 0.08) !important;">
+                                    <div style="display: flex !important; align-items: center !important; margin-bottom: 8px !important; flex-direction: row !important; justify-content: flex-start !important;">
+                                        <span style="font-size: 20px !important; margin-right: 10px !important; line-height: 1 !important; display: inline-block !important;">⚠️</span>
+                                        <strong style="color: #9b2c2c !important; font-size: 15px !important; font-weight: 700 !important; display: inline-block !important; font-family: 'Inter', sans-serif !important;">Error de Registro</strong>
+                                    </div>
+                                    <div style="color: #742a2a !important; font-size: 13.5px !important; line-height: 1.6 !important; margin-left: 30px !important; text-align: left !important; display: block !important; font-family: 'Inter', sans-serif !important;">
+                                        <?php echo htmlspecialchars($errorMsg, ENT_QUOTES, 'UTF-8'); ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                             <form class="mt-4 needs-validation" novalidate method="POST" action="../RegistrarUsuario/nuevoregistro" autocomplete="off">
                                 <!-- NOMBRE DE USUARIO -->
                                 <div class="form-group">
@@ -136,7 +158,7 @@
                                     <div class="input-group">
                                        <input type="password" class="form-control mb-0" id="validationTooltipUsername" aria-describedby="validationTooltipUsernamePrepend" name="clave_usuario" placeholder="Por favor ingrese su contrase&ntilde;a..." minlength="8" maxlength="255" required>
                                        <div class="invalid-tooltip">
-                                        Contrase&ntilde;a es requerido, complete este campo
+                                         Contrase&ntilde;a es requerido, complete este campo
                                        </div>
                                        <div class="valid-tooltip">
                                           Campo completado con &eacute;xito
@@ -201,5 +223,18 @@
       <!-- Controlador de alertas personalizadas -->
       <script src="../vista/SweetAlert/controlador-alertas.js"></script>
       <script src="../vista/SweetAlert/sweetalert2.all.min.js"></script>
+       <script src="../vista/js/floating_chat.js"></script>
+       <?php if (!empty($errorMsg)): ?>
+       <script>
+           $(document).ready(function() {
+               Swal.fire({
+                   icon: 'warning',
+                   title: '¡Correo ya registrado!',
+                   text: '<?php echo htmlspecialchars($errorMsg, ENT_QUOTES, 'UTF-8'); ?>',
+                   confirmButtonColor: '#b92025'
+               });
+           });
+       </script>
+       <?php endif; ?>
    </body>
 </html>

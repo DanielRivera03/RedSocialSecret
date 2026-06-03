@@ -1,4 +1,6 @@
-<?php 
+<?php
+   $active_page = 'registrareventos';
+ 
 /*
 --------------------------------------------------------
 ║            SECRET - RED SOCIAL PHP NATIVO            ║
@@ -46,6 +48,8 @@
       <link rel="mask-icon" href="../vista/favicon/safari-pinned-tab.svg" color="#5bbad5">
       <meta name="msapplication-TileColor" content="#da532c">
       <meta name="theme-color" content="#ffffff">
+      <!-- Google Fonts -->
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="../vista/css/bootstrap.min.css">
       <!-- Typography CSS -->
@@ -58,229 +62,320 @@
       <link href="../vista/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css"/>
       <!-- Bootstrap Dropzone CSS -->
       <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
-     <!-- Alerts -->
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <!-- Remix Icons -->
+      <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+      <!-- Alerts -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+      <style>
+          body, input, textarea, button, select, label {
+              font-family: 'Montserrat', sans-serif !important;
+          }
+          h1, h2, h3, h4, h5, h6, .card-title {
+              font-family: 'Poppins', sans-serif !important;
+          }
+         /* Stepper/Wizard Custom Styling */
+         .stepwizard {
+             background: transparent;
+             padding: 0;
+             margin-bottom: 30px;
+             border-bottom: 1px solid var(--iq-border-light);
+         }
+         body.dark-theme .stepwizard {
+             border-color: #3a3b3c;
+         }
+         .stepwizard-row {
+             display: flex;
+             justify-content: space-between;
+             position: relative;
+             padding: 10px 0;
+         }
+         .wizard-step {
+             flex: 1;
+             text-align: center;
+             position: relative;
+         }
+         .wizard-step a.btn {
+             display: inline-flex;
+             flex-direction: column;
+             align-items: center;
+             gap: 8px;
+             background: transparent !important;
+             border: none;
+             color: var(--iq-body-text) !important;
+             padding: 10px 15px;
+             font-weight: 600;
+             font-size: 14px;
+             transition: all 0.3s ease;
+             border-bottom: 3px solid transparent;
+             border-radius: 0;
+             width: 100%;
+             box-shadow: none !important;
+         }
+         body.dark-theme .wizard-step a.btn {
+             color: #b0b3b8 !important;
+         }
+         .wizard-step a.btn i {
+             font-size: 22px;
+             transition: all 0.3s ease;
+         }
+         .wizard-step.active a.btn, 
+         .wizard-step a.btn.active {
+             color: var(--iq-primary) !important;
+             border-bottom: 3px solid var(--iq-primary) !important;
+         }
+         .wizard-step.active a.btn i {
+             transform: scale(1.1);
+             color: var(--iq-primary) !important;
+         }
+
+         /* Two-Column Grid Setup */
+         .event-form-container {
+             display: flex;
+             flex-wrap: wrap;
+             gap: 30px;
+             width: 100%;
+         }
+         .form-side {
+             flex: 1;
+             min-width: 320px;
+         }
+         .preview-side {
+             width: 380px;
+             flex-shrink: 0;
+         }
+         @media (max-width: 991px) {
+             .preview-side {
+                 width: 100%;
+             }
+         }
+
+         /* Sticky Preview Panel */
+         .sticky-preview {
+             position: sticky;
+             top: 95px;
+             padding-top: 15px;
+         }
+         .preview-badge-floating {
+             position: absolute;
+             top: 5px;
+             left: 20px;
+             background: linear-gradient(135deg, var(--iq-primary), #ff7675);
+             color: white;
+             padding: 4px 12px;
+             font-size: 11px;
+             font-weight: 700;
+             border-radius: 20px;
+             box-shadow: 0 4px 12px rgba(191, 23, 23, 0.25);
+             z-index: 10;
+             text-transform: uppercase;
+             letter-spacing: 1px;
+         }
+
+         /* Mimic Design from event list card */
+         .event-card {
+             border-radius: 20px !important;
+             overflow: hidden;
+             border: 1px solid var(--iq-border-light) !important;
+             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+             background: var(--iq-white);
+             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03) !important;
+             display: flex;
+             flex-direction: column;
+             height: 100%;
+         }
+         body.dark-theme .event-card {
+             background: #242526 !important;
+             border-color: #3a3b3c !important;
+             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4) !important;
+         }
+         .event-img-container {
+             position: relative;
+             overflow: hidden;
+             height: 220px;
+             background: #e9ecef;
+         }
+         body.dark-theme .event-img-container {
+             background: #2a2b2c;
+         }
+         .event-img-container img {
+             width: 100%;
+             height: 100%;
+             object-fit: cover;
+             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+         }
+         .event-card-overlay {
+             position: absolute;
+             bottom: 0;
+             left: 0;
+             right: 0;
+             height: 60%;
+             background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+             pointer-events: none;
+         }
+         
+         .badge-location {
+             position: absolute;
+             top: 15px;
+             right: 15px;
+             padding: 6px 12px;
+             font-size: 11px;
+             border-radius: 20px;
+             font-weight: 600;
+             background: rgba(0, 0, 0, 0.6);
+             backdrop-filter: blur(8px);
+             -webkit-backdrop-filter: blur(8px);
+             color: #fff;
+             border: 1px solid rgba(255, 255, 255, 0.1);
+             z-index: 2;
+         }
+         .badge-category {
+             position: absolute;
+             top: 15px;
+             left: 15px;
+             padding: 6px 12px;
+             font-size: 11px;
+             border-radius: 20px;
+             font-weight: 600;
+             color: #fff;
+             border: 1px solid rgba(255, 255, 255, 0.1);
+             z-index: 2;
+         }
+         .event-card-body {
+             padding: 24px !important;
+             display: flex;
+             flex-direction: column;
+             flex-grow: 1;
+         }
+         .event-title {
+             font-size: 19px;
+             font-weight: 700;
+             line-height: 1.3;
+             color: var(--iq-title-text);
+             margin-bottom: 8px;
+         }
+         body.dark-theme .event-title {
+             color: #ffffff;
+         }
+         .event-desc {
+             font-size: 13.5px;
+             color: var(--iq-body-text);
+             line-height: 1.5;
+             margin-bottom: 20px;
+             display: -webkit-box;
+             -webkit-line-clamp: 2;
+             -webkit-box-orient: vertical;
+             overflow: hidden;
+             text-overflow: ellipsis;
+         }
+         body.dark-theme .event-desc {
+             color: #b0b3b8;
+         }
+         
+         .event-details-box {
+             background: var(--iq-light-secondary);
+             border-radius: 12px;
+             padding: 15px;
+             margin-bottom: 20px;
+             font-size: 13px;
+             border: 1px solid var(--iq-border-light);
+         }
+         body.dark-theme .event-details-box {
+             background: rgba(255, 255, 255, 0.02) !important;
+             border-color: #3a3b3c !important;
+         }
+         .detail-item {
+             display: flex;
+             align-items: flex-start;
+             margin-bottom: 10px;
+             color: var(--iq-body-text);
+         }
+         body.dark-theme .detail-item {
+             color: #b0b3b8;
+         }
+         .detail-item:last-child {
+             margin-bottom: 0;
+         }
+         .detail-item i {
+             font-size: 16px;
+             margin-right: 12px;
+             color: var(--iq-primary);
+             flex-shrink: 0;
+             margin-top: 2px;
+         }
+         .detail-item strong {
+             color: var(--iq-title-text);
+             margin-right: 5px;
+         }
+         body.dark-theme .detail-item strong {
+             color: #fff;
+         }
+         .event-organizer {
+             display: flex;
+             align-items: center;
+             border-top: 1px solid var(--iq-border-light);
+             padding-top: 15px;
+             margin-top: auto;
+         }
+         body.dark-theme .event-organizer {
+             border-color: #3a3b3c;
+         }
+         .organizer-avatar {
+             width: 32px;
+             height: 32px;
+             border-radius: 50%;
+             object-fit: cover;
+             margin-right: 10px;
+             border: 2px solid var(--iq-primary);
+         }
+         .organizer-text {
+             font-size: 12.5px;
+             color: var(--iq-body-text);
+         }
+         body.dark-theme .organizer-text {
+             color: #a1a1aa;
+         }
+         .organizer-text strong {
+             color: var(--iq-title-text);
+         }
+         body.dark-theme .organizer-text strong {
+             color: #fff;
+         }
+      </style>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
    </head>
-   <body class="sidebar-main-active right-column-fixed">
-      <!-- loader Start -->
-      <div id="loading">
-         <div id="loading-center">
-         </div>
-      </div>
-      <!-- loader END -->
+   <body class="right-column-fixed">
+       <!-- loader Start -->
+       <div id="loading">
+          <div id="loading-center">
+          </div>
+       </div>
+       <script>
+           (function(){
+               var loader = document.getElementById('loading');
+               if (loader) {
+                   window.addEventListener('load', function() {
+                       setTimeout(function() {
+                           loader.style.transition = 'opacity 0.5s ease';
+                           loader.style.opacity = '0';
+                           setTimeout(function() { loader.style.display = 'none'; }, 500);
+                       }, 100);
+                   });
+                   setTimeout(function() {
+                       if (loader.style.display !== 'none') {
+                           loader.style.transition = 'opacity 0.5s ease';
+                           loader.style.opacity = '0';
+                           setTimeout(function() { loader.style.display = 'none'; }, 500);
+                       }
+                   }, 2500);
+               }
+           })();
+       </script>
+       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <!-- Sidebar  -->
-         <div class="iq-sidebar">
-            <div id="sidebar-scrollbar">
-               <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li>
-                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
-                     </li>
-                     <li>
-                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
-                     </li>
-                     <li>
-                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="iq-waves-effect"><i class="las la-bell"></i><span>Mis Notificaciones</span></a>
-                     </li>
-                     <li class="active">
-                        <a href="../EventosSociales/registrareventos" class="iq-waves-effect"><i class="las la-film"></i><span>Registrar Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Eventos/mostrareventos" class="iq-waves-effect"><i class="las la-bullhorn"></i><span>Ver Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../ChatGeneral/mensajeria-secret" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Mensajes</span></a>
-                     </li>
-                     <li>
-                        <a href="../Videos/multimedia-secretvideos" class="iq-waves-effect"><i class="ri-play-circle-line"></i><span>M&uacute;sica Favorita</span></a>
-                     </li>
-                  </ul>
-               </nav>
-               <div class="p-3"></div>
-            </div>
-         </div>
-         <!-- TOP Nav Bar -->
-         <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                     </div>
-                  </div>
-                  </div>
-                  <div class="iq-search-bar">
-                     <form action="../Buscador/resultados-busqueda" class="searchbox needs-validation" novalidate method="POST" autocomplete="off">
-                        <input type="text" class="text search-input" name="buscador" placeholder="Buscar en Secret..." required>
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                     </form>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                           </a>
-                        </li>
-                        <li>
-                           <a href="../Feed/inicio" class="iq-waves-effect d-flex align-items-center">
-                           <i class="ri-home-line"></i>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown iq-sub-dropdown-large">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Solicitudes de Amigos<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadRecibidas($conectarsistema15,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <!-- INICIO BANDERA -> SOLICITUDES DE AMIGOS -->
-                                    <?php 
-                                       while($filas=mysqli_fetch_array($consulta)){
-                                          if($filas['estado']==0){
-                                             echo '
-                                             <div class="iq-friend-request">
-                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                                <div class="d-flex align-items-center">
-                                                   <div class="">
-                                                      <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="">
-                                                   </div>
-                                                   <div class="media-body ml-3">
-                                                      <h6 class="mb-0 ">'; echo $filas['nombres']; echo ' '; echo $filas['apellidos'];  echo'</h6>
-                                                   </div>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                   <a style="color: var( --iq-white);" id="aceptar-solicitudes" data-id="'; echo $filas['id']; echo'" class="mr-3 btn btn-primary rounded">Confirmar</a>
-                                                   <a style="color: var( --iq-white);" id="rechazar-solicitudes" data-id="'; echo $filas['idsolicitudamistad']; echo'" class="mr-3 btn btn-secondary rounded">Rechazar</a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          ';
-                                          }
-                                       }
-                                    ?>
-                                    <!-- FIN BANDERA -> SOLICITUDES DE AMIGOS -->
-                                 </div>
-                                 <div class="text-center">
-                                    <a href="../SolicitudesAmistad/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="las la-hand-point-right"></i> Ver todas las solicitudes de amistad</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                        <li class="nav-item">
-                           <a href="#" class="search-toggle iq-waves-effect">
-                              <div id="lottie-beil"></div>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Notificaciones<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadAceptadas($conectarsistema17,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <?php 
-                                    // CONSULTA DE SOLICITUDES DE AMISTAD APROBADAS
-                                       while($filas=mysqli_fetch_array($consulta1)){
-                                          echo'
-                                          <a href="#" class="iq-sub-card" >
-                                          <div class="media align-items-center">
-                                             <div class="">
-                                                <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo$filas['fotoperfil'];  echo'" alt="">
-                                             </div>
-                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Eres amigo de '; echo $filas['nombres']; echo' '; echo $filas['apellidos']; echo'</h6>
-                                                <small class="float-right font-size-12">
-                                                ';
-                                                // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                                $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                                $ObtenerMes = date("m", $FechaCompleta);
-                                                $ObtenerHoras = date("H:i", $FechaCompleta);
-                                                $ObtenerMinutos = date("m", $FechaCompleta);
-                                                echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                                echo'
-                                                </small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                          ';
-                                       }
-                                    ?>
-                                 </div>
-                              </div>
-                              <div class="text-center">
-                                 <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="ri-notification-3-fill"></i> Ver todas las notificaciones</a>
-                              </div>
-                           </div>
-                        </li>
-                     <ul class="navbar-list">
-                        <li>
-                           <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <i class="ri-arrow-down-s-fill"></i>
-                           </a>
-                           <div class="iq-sub-dropdown iq-user-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hola, <?php echo $_SESSION['nombre_usuario'];?> <?php echo $_SESSION['apellido_usuario'];?></h5>
-                                       <span class="text-white font-size-12">Secret&reg;</span>
-                                    </div>
-                                    <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Mi perfil</h6>
-                                             <p class="mb-0 font-size-12">Ver mi informaci&oacute;n personal</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="../EditarPerfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-warning-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-warning">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Editar Perfil</h6>
-                                             <p class="mb-0 font-size-12">Modificar foto y detalles de mi perfil</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="../Salir/cerrarsesion" role="button">Cerrar Sesi&oacute;n<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-         </div>
-         <!-- TOP Nav Bar END -->
+                  <?php include __DIR__ . '/premium_sidebar.php'; ?>
+         <?php include __DIR__ . '/premium_topnav.php'; ?>
          <!-- Page Content  -->
          <div id="content-page" class="content-page">
             <div class="container">
@@ -301,144 +396,205 @@
                            </div>
                         </div>
                         <div class="iq-card-body">
-                           <div class="stepwizard mt-4">
-                              <div class="stepwizard-row setup-panel">
-                                 <div id="user" class="wizard-step active">
-                                    <a href="#user-detail" class="active btn">
-                                    <i class="ri-folder-add-line text-primary"></i><span>Evento</span>
-                                    </a>
-                                 </div>
-                                 <div id="document" class="wizard-step">
-                                    <a href="#document-detail" class="btn btn-default" >
-                                    <i class="ri-calendar-event-line text-danger"></i><span>Horario</span>
-                                    </a>
-                                 </div>
-                                 <div id="bank" class="wizard-step">
-                                    <a href="#bank-detail" class="btn btn-default">
-                                    <i class="ri-camera-fill text-success"></i><span>Foto</span>
-                                    </a>
-                                 </div>
-                                 <div id="confirm" class="wizard-step">
-                                    <a href="#cpnfirm-data" class="btn btn-default">
-                                    <i class="ri-check-fill text-warning"></i><span>Finalizar Registro</span>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                           <form id="form" class="form mt-4 needs-validation" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
-                              <div class="row setup-content" id="user-detail">
-                                 <div class="col-sm-12">
-                                    <div class="col-md-12 p-0">
-                                       <h3 class="mb-4">Informaci&oacute;n General:</h3>
-                                       <div class="row">
-                                          <div class="form-group col-md-6">
-                                             <label class="control-label">Nombre del Evento: *</label>
-                                             <input id="nombre_evento" name="nombre_evento" maxlength="255" type="text" required="required" class="form-control" placeholder="Ingrese el nombre del evento..."  />
-                                             <div class="invalid-tooltip">
-                                                Nombre del evento requerido, complete este campo 
-                                            </div>
-                                            <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                            </div>
-                                          </div>
-                                          <div class="form-group col-md-6">
-                                             <label class="control-label">Peque&ntilde;a Descripci&oacute;n: *</label>
-                                             <input maxlength="255" type="text" id="descripcion_evento" name="descripcion_evento"  class="form-control" required="required" placeholder="Ingrese una descripci&oacute;n del evento..." />
-                                             <div class="invalid-tooltip">
-                                                Descripci&oacute;n del evento requerido, complete este campo 
-                                            </div>
-                                            <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                            </div>
-                                          </div>
-                                          <div class="col-md-6 form-group">
-                                             <label for="uname" class="control-label">Usuario que registra evento: *</label>
-                                             <input type="text" class="form-control" id="uname" readonly value="<?php echo $_SESSION['usuario_unico']; ?>">
-                                          </div>
-                                          <div class="col-md-6 form-group">
-                                             <label for="emailid" class="control-label">Pa&iacute;s de Residencia: *</label>
-                                             <input type="text" class="form-control" id="emailid" readonly value="<?php echo $_SESSION['pais_usuarios']; ?>">
-                                          </div>
-                                          <div class="col-md-12 mb-3 form-group">
-                                             <label for="address" class="control-label">Direcci&oacute;n completa d&oacute;nde se realizar&aacute;: *</label>
-                                             <textarea id="direccion_evento" name="direccion_evento" class="form-control" rows="2" maxlength="255" placeholder="Por favor ingrese la direcci&oacute;n exacta y detallada en d&oacute;nde se realizar&aacute; el evento." required="required"></textarea>
-                                             <div class="invalid-tooltip">
-                                                Direcci&oacute;n del evento requerido, complete este campo 
-                                            </div>
-                                            <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                            </div>
-                                          </div>
-                                       </div>
-                                       <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Siguiente</button>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="row setup-content" id="document-detail">
-                                 <div class="col-sm-12">
-                                    <div class="col-md-12 p-0">
-                                       <h3 class="mb-4">Informaci&oacute;n Horaria:</h3>
-                                       <div class="row">
-                                          <div class="col-md-6 form-group">
-                                             <label for="fname" class="control-label">D&iacute;a / Hora de Inicio: *</label>
-                                             <input type="datetime-local" min="<?php echo substr(date('c'), 0, 19); ?>" max="<?php echo date('Y') ?>-12-31" id="diainicio_evento" name="diainicio_evento" onkeydown="return false"  class="form-control" required="required">
-                                             <div class="invalid-tooltip">
-                                                Fecha de inicio del evento requerido, complete este campo 
-                                            </div>
-                                            <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                            </div>
-                                          </div>
-                                          <div class="col-md-6 form-group">
-                                             <label for="horafinal" class="control-label">D&iacute;a / Hora de Finalizaci&oacute;n: *</label>
-                                             <input type="datetime-local" min="<?php echo substr(date('c'), 0, 19); ?>" max="<?php echo date('Y') ?>-12-31" id="diafin_evento" name="diafin_evento" class="form-control" onkeydown="return false"  required="required">
-                                             <div class="invalid-tooltip">
-                                                Fecha de finalizaci&oacute;n del evento requerido, complete este campo 
-                                            </div>
-                                            <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                            </div>
-                                          </div>
-                                       </div>
-                                       <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Siguiente</button>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="row setup-content" id="bank-detail">
-                                 <div class="col-sm-12">
-                                    <div class="col-md-12 p-0">
-                                       <h3 class="mb-4">Fotograf&iacute;a del Evento:</h3>
-                                       <div class="row">
-                                          <div class="col-md-12 form-group">
-                                             <label for="panno" class="control-label">Adjunte una fotograf&iacute;a representativa al evento: *</label>
-                                             <input type="file" id="foto_evento" name="foto_evento" id="input-file-max-fs" class="dropify" data-max-file-size="2M" data-max-width="1921" data-max-height="1081" data-min-height="301" accept="image/x-png,image/jpeg,image/jpg" required="required"  />
-                                             <div class="invalid-tooltip">
-                                                Fotograf&iacute;a del evento requerido, complete este campo 
-                                            </div>
-                                            <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                            </div>
-                                          </div>
-                                       </div>
-                                       <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Siguiente</button>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="row setup-content" id="cpnfirm-data">
-                                 <div class="col-sm-12">
-                                    <div class="col-md-12 p-0">
-                                    <div class="row justify-content-center">
-                                        <div class="col-3"> 
-                                          <img style="margin: 0 0 1rem 0;" src="../vista/images/page-img/img-success.png" class="fit-image" alt="img-success">
-                                          </div>
-                                            <h5 class="mb-4 text-left">¿<?php echo $_SESSION['nombre_usuario']; ?>, est&aacute;s seguro de registrar este evento? S&iacute; todo esta en orden y has completado todos los campos, haz clic en el bot&oacute;n para hacer efectiva tu petici&oacute;n y registrar el evento.</h5>
-                                            <button type="submit" id="enviar" class="btn btn-primary nextBtn btn-lg pull-right">Registrar Nuevo Evento</button>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
+                            <div class="event-form-container">
+                               <!-- Form Side -->
+                               <div class="form-side">
+                                  <div class="stepwizard mt-2">
+                                     <div class="stepwizard-row setup-panel">
+                                        <div id="user" class="wizard-step active">
+                                           <a href="#user-detail" class="active btn">
+                                              <i class="ri-folder-add-line text-primary"></i><span>Evento</span>
+                                           </a>
+                                        </div>
+                                        <div id="document" class="wizard-step">
+                                           <a href="#document-detail" class="btn btn-default" disabled="disabled">
+                                              <i class="ri-calendar-event-line text-danger"></i><span>Horario</span>
+                                           </a>
+                                        </div>
+                                        <div id="bank" class="wizard-step">
+                                           <a href="#bank-detail" class="btn btn-default" disabled="disabled">
+                                              <i class="ri-camera-fill text-success"></i><span>Foto</span>
+                                           </a>
+                                        </div>
+                                        <div id="confirm" class="wizard-step">
+                                           <a href="#cpnfirm-data" class="btn btn-default" disabled="disabled">
+                                              <i class="ri-check-fill text-warning"></i><span>Finalizar Registro</span>
+                                           </a>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  
+                                  <form id="form" class="form mt-4 needs-validation" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
+                                     <!-- STEP 1: General Info -->
+                                     <div class="row setup-content" id="user-detail">
+                                        <div class="col-sm-12">
+                                           <div class="col-md-12 p-0">
+                                              <h3 class="mb-4">Informaci&oacute;n General:</h3>
+                                              <div class="row">
+                                                 <div class="form-group col-md-6">
+                                                    <label class="control-label">Nombre del Evento: *</label>
+                                                    <input id="nombre_evento" name="nombre_evento" maxlength="255" type="text" required="required" class="form-control" placeholder="Ingrese el nombre del evento..."  />
+                                                    <div class="invalid-tooltip">
+                                                       Nombre del evento requerido, complete este campo 
+                                                    </div>
+                                                    <div class="valid-tooltip">
+                                                       Campo completado con &eacute;xito
+                                                    </div>
+                                                 </div>
+                                                 <div class="form-group col-md-6">
+                                                    <label class="control-label">Peque&ntilde;a Descripci&oacute;n: *</label>
+                                                    <input maxlength="255" type="text" id="descripcion_evento" name="descripcion_evento"  class="form-control" required="required" placeholder="Ingrese una descripci&oacute;n del evento..." />
+                                                    <div class="invalid-tooltip">
+                                                       Descripci&oacute;n del evento requerido, complete este campo 
+                                                    </div>
+                                                    <div class="valid-tooltip">
+                                                       Campo completado con &eacute;xito
+                                                    </div>
+                                                 </div>
+                                                 <div class="col-md-6 form-group">
+                                                    <label for="uname" class="control-label">Usuario que registra evento: *</label>
+                                                    <input type="text" class="form-control" id="uname" readonly value="<?php echo $_SESSION['usuario_unico']; ?>">
+                                                 </div>
+                                                 <div class="col-md-6 form-group">
+                                                    <label for="emailid" class="control-label">Pa&iacute;s de Residencia: *</label>
+                                                    <input type="text" class="form-control" id="emailid" readonly value="<?php echo $_SESSION['pais_usuarios']; ?>">
+                                                 </div>
+                                                 <div class="col-md-12 mb-3 form-group">
+                                                    <label for="address" class="control-label">Direcci&oacute;n completa d&oacute;nde se realizar&aacute;: *</label>
+                                                    <textarea id="direccion_evento" name="direccion_evento" class="form-control" rows="3" maxlength="255" placeholder="Por favor ingrese la direcci&oacute;n exacta y detallada en d&oacute;nde se realizar&aacute; el evento." required="required"></textarea>
+                                                    <div class="invalid-tooltip">
+                                                       Direcci&oacute;n del evento requerido, complete este campo 
+                                                    </div>
+                                                    <div class="valid-tooltip">
+                                                       Campo completado con &eacute;xito
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Siguiente</button>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     
+                                     <!-- STEP 2: Dates -->
+                                     <div class="row setup-content" id="document-detail">
+                                        <div class="col-sm-12">
+                                           <div class="col-md-12 p-0">
+                                              <h3 class="mb-4">Informaci&oacute;n Horaria:</h3>
+                                              <div class="row">
+                                                 <div class="col-md-6 form-group">
+                                                    <label for="diainicio_evento" class="control-label">D&iacute;a / Hora de Inicio: *</label>
+                                                    <input type="datetime-local" min="<?php echo substr(date('c'), 0, 19); ?>" max="<?php echo date('Y') ?>-12-31" id="diainicio_evento" name="diainicio_evento" onkeydown="return false"  class="form-control" required="required">
+                                                    <div class="invalid-tooltip">
+                                                       Fecha de inicio del evento requerido, complete este campo 
+                                                    </div>
+                                                    <div class="valid-tooltip">
+                                                       Campo completado con &eacute;xito
+                                                    </div>
+                                                 </div>
+                                                 <div class="col-md-6 form-group">
+                                                    <label for="diafin_evento" class="control-label">D&iacute;a / Hora de Finalizaci&oacute;n: *</label>
+                                                    <input type="datetime-local" min="<?php echo substr(date('c'), 0, 19); ?>" max="<?php echo date('Y') ?>-12-31" id="diafin_evento" name="diafin_evento" class="form-control" onkeydown="return false"  required="required">
+                                                    <div class="invalid-tooltip">
+                                                       Fecha de finalizaci&oacute;n del evento requerido, complete este campo 
+                                                    </div>
+                                                    <div class="valid-tooltip">
+                                                       Campo completado con &eacute;xito
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Siguiente</button>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     
+                                     <!-- STEP 3: Image cover upload -->
+                                     <div class="row setup-content" id="bank-detail">
+                                        <div class="col-sm-12">
+                                           <div class="col-md-12 p-0">
+                                              <h3 class="mb-4">Fotograf&iacute;a del Evento:</h3>
+                                              <div class="row">
+                                                 <div class="col-md-12 form-group">
+                                                    <label for="foto_evento" class="control-label">Adjunte una fotograf&iacute;a representativa al evento: *</label>
+                                                    <input type="file" id="foto_evento" name="foto_evento" class="dropify" data-max-file-size="2M" data-max-width="1921" data-max-height="1081" data-min-height="301" accept="image/x-png,image/jpeg,image/jpg" required="required"  />
+                                                    <div class="invalid-tooltip">
+                                                       Fotograf&iacute;a del evento requerido, complete este campo 
+                                                    </div>
+                                                    <div class="valid-tooltip">
+                                                       Campo completado con &eacute;xito
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Siguiente</button>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     
+                                     <!-- STEP 4: Confirm and submit -->
+                                     <div class="row setup-content" id="cpnfirm-data">
+                                        <div class="col-sm-12">
+                                           <div class="col-md-12 p-0">
+                                              <div class="row justify-content-center text-center">
+                                                 <div class="col-3 mb-3"> 
+                                                    <img style="margin: 0 auto;" src="../vista/images/page-img/img-success.png" class="fit-image" alt="img-success">
+                                                 </div>
+                                                 <h5 class="mb-4 text-left w-100">¿<?php echo $_SESSION['nombre_usuario']; ?>, est&aacute;s seguro de registrar este evento? S&iacute; todo esta en orden y has completado todos los campos, haz clic en el bot&oacute;n para hacer efectiva tu petici&oacute;n y registrar el evento.</h5>
+                                                 <button type="submit" id="enviar" class="btn btn-primary nextBtn btn-lg pull-right">Registrar Nuevo Evento</button>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </form>
+                               </div>
+                               
+                               <!-- Live Preview Side -->
+                               <div class="preview-side">
+                                  <div class="sticky-preview">
+                                     <div class="preview-badge-floating"><i class="ri-eye-line"></i> Vista Previa en Vivo</div>
+                                     
+                                     <div class="event-card">
+                                        <div class="event-img-container">
+                                           <img id="preview-image" src="../vista/images/logo.png" alt="event-cover">
+                                           <div class="event-card-overlay"></div>
+                                           <span class="badge-category" id="preview-category" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+                                               <i class="ri-sparkling-line" id="preview-category-icon"></i> <span id="preview-category-name">General</span>
+                                           </span>
+                                           <span class="badge-location">
+                                               <i class="ri-map-pin-2-line"></i> <span id="preview-country"><?php echo $_SESSION['pais_usuarios']; ?></span>
+                                           </span>
+                                        </div>
+                                        
+                                        <div class="event-card-body">
+                                           <h4 class="event-title text-truncate" id="preview-title">Nombre del Evento</h4>
+                                           <p class="event-desc" id="preview-desc">Esta es una descripción corta de tu evento para que la comunidad se interese en asistir.</p>
+                                           
+                                           <div class="event-details-box">
+                                              <div class="detail-item">
+                                                 <i class="ri-map-pin-line"></i>
+                                                 <span><strong>Lugar:</strong> <span id="preview-location">Dirección del evento</span></span>
+                                              </div>
+                                              <div class="detail-item">
+                                                 <i class="ri-calendar-event-line"></i>
+                                                 <span><strong>Inicio:</strong> <span id="preview-start">Fecha y hora de inicio</span></span>
+                                              </div>
+                                              <div class="detail-item">
+                                                 <i class="ri-time-line"></i>
+                                                 <span><strong>Fin:</strong> <span id="preview-end">Fecha y hora de finalización</span></span>
+                                              </div>
+                                           </div>
+                                           
+                                           <div class="event-organizer">
+                                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="organizer-avatar" alt="organizer">
+                                              <div class="organizer-text">
+                                                 Organizado por <strong>@<?php echo $_SESSION['usuario_unico']; ?></strong>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     
+                                  </div>
+                                </div>
+                             </div>
+                          </div>
                      </div>
                   </div>
                </div>
@@ -504,6 +660,129 @@
       <script src="../vista/js/alerta_registroeventos.js"></script>
       <script src="../vista/js/alerta-solicitudesaceptadas.js"></script>
       <script src="../vista/js/alerta-eliminarsolicitudamistad.js"></script>
+
+       <script>
+       // Loader Failsafe
+       $(window).on('load', function() {
+           $('#loading').fadeOut('slow');
+       });
+       $(document).ready(function() {
+          function updatePreview() {
+              // Title
+              let title = $('#nombre_evento').val().trim();
+              $('#preview-title').text(title ? title : 'Nombre del Evento');
+
+              // Description
+              let desc = $('#descripcion_evento').val().trim();
+              $('#preview-desc').text(desc ? desc : 'Esta es una descripción corta de tu evento para que la comunidad se interese en asistir.');
+
+              // Location
+              let loc = $('#direccion_evento').val().trim();
+              $('#preview-location').text(loc ? loc : 'Dirección del evento');
+
+              // Date formatting helper
+              function formatEventDate(val) {
+                  if (!val) return null;
+                  let date = new Date(val);
+                  if (isNaN(date.getTime())) return null;
+                  let day = String(date.getDate()).padStart(2, '0');
+                  let meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+                  let mes = meses[date.getMonth()];
+                  let hr = String(date.getHours()).padStart(2, '0');
+                  let min = String(date.getMinutes()).padStart(2, '0');
+                  return `${day} ${mes} | ${hr}:${min}`;
+              }
+
+              // Start Date
+              let startVal = $('#diainicio_evento').val();
+              let startText = formatEventDate(startVal);
+              $('#preview-start').text(startText ? startText : 'Fecha y hora de inicio');
+
+              // End Date
+              let endVal = $('#diafin_evento').val();
+              let endText = formatEventDate(endVal);
+              $('#preview-end').text(endText ? endText : 'Fecha y hora de finalización');
+
+              // Dynamic Category detection based on Title/Description
+              let textForCategory = (title + ' ' + desc).toLowerCase();
+              let category = {
+                  name: 'General',
+                  icon: 'ri-sparkling-line',
+                  gradient: 'linear-gradient(135deg, #6b7280, #4b5563)'
+              };
+
+              if (/(concierto|musica|música|banda|recital|festival|show|canto|karaoke|dj|tocada)/i.test(textForCategory)) {
+                  category = {
+                      name: 'Música',
+                      icon: 'ri-music-2-line',
+                      gradient: 'linear-gradient(135deg, #ec4899, #8b5cf6)'
+                  };
+              } else if (/(fiesta|party|rumba|discoteca|cumpleaños|cumple|boda|celebracion|celebración|brindis|social)/i.test(textForCategory)) {
+                  category = {
+                      name: 'Fiesta',
+                      icon: 'ri-cake-3-line',
+                      gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)'
+                  };
+              } else if (/(charla|conferencia|taller|curso|seminario|clase|webinar|educacion|educación|aprender|confe)/i.test(textForCategory)) {
+                  category = {
+                      name: 'Educación',
+                      icon: 'ri-book-open-line',
+                      gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)'
+                  };
+              } else if (/(deporte|partido|torneo|futbol|fútbol|basquet|básquet|maraton|maratón|carrera|gym|entrenamiento|running)/i.test(textForCategory)) {
+                  category = {
+                      name: 'Deporte',
+                      icon: 'ri-football-line',
+                      gradient: 'linear-gradient(135deg, #10b981, #3b82f6)'
+                  };
+              } else if (/(exposicion|exposición|museo|arte|teatro|obra|cine|pelicula|película|cultura|cultural)/i.test(textForCategory)) {
+                  category = {
+                      name: 'Cultura',
+                      icon: 'ri-palette-line',
+                      gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)'
+                  };
+              } else if (/(comida|cena|almuerzo|desayuno|gastronomia|gastronomía|restaurante|cafe|café|bebida|tragos|degustacion)/i.test(textForCategory)) {
+                  category = {
+                      name: 'Comida',
+                      icon: 'ri-restaurant-line',
+                      gradient: 'linear-gradient(135deg, #f97316, #eab308)'
+                  };
+              }
+
+              // Apply Category UI changes
+              $('#preview-category').css('background', category.gradient);
+              $('#preview-category-icon').attr('class', category.icon);
+              $('#preview-category-name').text(category.name);
+          }
+
+          // Input event listeners
+          $('#nombre_evento, #descripcion_evento, #direccion_evento').on('input', updatePreview);
+          $('#diainicio_evento, #diafin_evento').on('change', updatePreview);
+
+          // Cover Image reader using FileReader
+          $(document).on('change', '#foto_evento', function() {
+              let input = this;
+              if (input.files && input.files[0]) {
+                  let reader = new FileReader();
+                  reader.onload = function(e) {
+                      $('#preview-image').attr('src', e.target.result);
+                  }
+                  reader.readAsDataURL(input.files[0]);
+              }
+          });
+
+          // Dropify afterClear listener to reset image
+          setTimeout(function() {
+              let drEvent = $('#foto_evento').dropify();
+              drEvent.on('dropify.afterClear', function(event, element) {
+                  $('#preview-image').attr('src', '../vista/images/logo.png');
+              });
+          }, 500);
+
+          // Run initially to format any values already filled
+          updatePreview();
+      });
+      </script>
    </body>
 </html>
 <?php

@@ -101,7 +101,7 @@ $(document).ready(function(){
                 $('#telefono').prop('disabled', true);
                 $('#privacidad').prop('disabled', true);
                 $('#fecha_nacimiento').prop('disabled', true);
-                $('#enviar').prop('disabled', true);
+                $('#enviar_registro').prop('disabled', true);
                 // DESHABILITAR NAVEGACION DE MENU SUPERIOR
                 $('#importante').prop('disabled', true);
                 $('#registrocancelar').prop('disabled', true);

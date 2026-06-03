@@ -12,6 +12,20 @@
 --------------------------------------------------------
 */ 
 
+    // Función auxiliar para vaciar resultados adicionales de Stored Procedures
+    if (!function_exists('LimpiarConexion')) {
+        function LimpiarConexion($conexion) {
+            if ($conexion) {
+                while (mysqli_more_results($conexion) && mysqli_next_result($conexion)) {
+                    $extra = mysqli_use_result($conexion);
+                    if ($extra instanceof mysqli_result) {
+                        mysqli_free_result($extra);
+                    }
+                }
+            }
+        }
+    }
+
     // CONTADORES EXCLUSIVOS PERFILES PROPIETARIOS
     /*
         -> PERFIL PROPIETARIO: CUANDO UN X USUARIO REGISTRADO REVISA SU PROPIO PERFIL 
@@ -120,13 +134,16 @@
     }
     // CONTADOR DE RESULTADOS DE BUSQUEDA -> BUSCADOR SECRET
     function ContadorResultadosBusqueda($conectarsistema2,$Busqueda){
-        $resultado=mysqli_query($conectarsistema2,"CALL ConsultarBuscadorSecret('".$Busqueda."');");
-		if(mysqli_num_rows($resultado)>0){
-			$ImpresionConteo=mysqli_num_rows($resultado);	
-			return $ImpresionConteo;
-		}else{
-            $ImpresionConteo = 0;
-            return $ImpresionConteo;
-		}
+        $resUsers = mysqli_query($conectarsistema2, "SELECT id FROM usuarios WHERE estado_usuario = 'activo' AND (nombres LIKE '%$Busqueda%' OR apellidos LIKE '%$Busqueda%' OR usuario LIKE '%$Busqueda%')");
+        $countUsers = $resUsers ? mysqli_num_rows($resUsers) : 0;
+        if($resUsers) { mysqli_free_result($resUsers); }
+        LimpiarConexion($conectarsistema2);
+
+        $resPubs = mysqli_query($conectarsistema2, "SELECT idpublicacion FROM publicaciones WHERE mensaje_publicacion LIKE '%$Busqueda%'");
+        $countPubs = $resPubs ? mysqli_num_rows($resPubs) : 0;
+        if($resPubs) { mysqli_free_result($resPubs); }
+        LimpiarConexion($conectarsistema2);
+
+        return $countUsers + $countPubs;
     }
 ?>

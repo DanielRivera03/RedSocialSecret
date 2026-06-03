@@ -46,12 +46,29 @@ $(document).ready(function(){
         }).done(function(respuesta){
             // SI ACCION ES CONFIRMADA POR EL MODELO, REALIZA ACTUALIZACION DE PERFIL
             if(respuesta == "OK"){
-                // MENSAJE DE CONFIRMACION EXITOSO
-                AlertaUsuarioMostrar("Publicacion Exitosa","Enhorabuena, has compartido tu historia con éxito","success");
-                // 1.5 SEGUNDOS DE RETRASO PARA MOSTRAR ALERTA Y REFRESCAR
-                setTimeout(function(){
-                    location.reload();
-                }, 1500);
+                Swal.fire({
+                    title: "Publicación Exitosa",
+                    text: "Enhorabuena, has compartido tu historia con éxito",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                
+                // Dynamically reset post form and modal without reload
+                $("#post-modal").modal('hide');
+                $("#form")[0].reset();
+                $("#image-collage-preview").empty();
+                
+                // Reset gradients and sentiments
+                $(".btn-gradient-select").removeClass("active");
+                $(".btn-gradient-select[data-gradient='']").addClass("active");
+                $("#fondo_gradiente_input").val("");
+                $("#contador").text("");
+                
+                // Reset Feed Infinito to load the new post at the top
+                if (window.FeedInfinito && typeof window.FeedInfinito.reset === "function") {
+                    window.FeedInfinito.reset();
+                }
             }else{ // FALLO PROCESAMIENTO DE DATOS -> DENTRO DEL SISTEMA
                 AlertaUsuarioMostrar("Error","Lo sentimos, no pudimos procesar en estos momentos tu petición.","error");
             }

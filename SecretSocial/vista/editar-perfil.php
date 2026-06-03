@@ -1,4 +1,6 @@
 <?php
+   $active_page = 'perfil';
+
    // NO PERMITIR INGRESO SIN ENVIO DE PARAMETRO
    if(!isset($_GET['nuevoregistro'])){
     header('location:../AccesoDenegado=restringido');
@@ -64,6 +66,359 @@
       <link href="../vista/dropify/dist/css/dropify.min.css" rel="stylesheet" type="text/css"/>
      <!-- Alerts -->
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+     
+     <!-- Estilos Premium para Editar Perfil (Facebook/Instagram Settings look) -->
+     <style>
+     :root {
+        --primary-color: #b92025;
+        --primary-gradient: linear-gradient(135deg, #b92025, #e53935);
+        --bg-light: #f8fafc;
+        --border-color: #e2e8f0;
+        --text-dark: #1e293b;
+        --text-muted: #64748b;
+     }
+
+     /* Sidebar y Diseño de dos columnas */
+     .iq-edit-list {
+        background: #ffffff !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 16px !important;
+        padding: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02) !important;
+     }
+
+     .iq-edit-profile {
+        flex-direction: column !important;
+     }
+
+     .iq-edit-profile li {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 6px !important;
+     }
+
+     .iq-edit-profile a.nav-link {
+        background: transparent !important;
+        color: var(--text-muted) !important;
+        font-weight: 550 !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 14.5px !important;
+        border-radius: 10px !important;
+        padding: 12px 16px !important;
+        transition: all 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        text-align: left !important;
+        border: 1px solid transparent !important;
+     }
+
+     .iq-edit-profile a.nav-link.active {
+        background: #fef2f2 !important;
+        color: var(--primary-color) !important;
+        font-weight: 600 !important;
+        border: 1px solid rgba(185, 32, 37, 0.1) !important;
+     }
+
+     .iq-edit-profile a.nav-link:hover:not(.active) {
+        background: #f1f5f9 !important;
+        color: var(--text-dark) !important;
+     }
+
+     /* Tarjeta Principal */
+     .iq-edit-list-data .iq-card {
+        border: 1px solid var(--border-color) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+        background: #ffffff !important;
+        overflow: hidden;
+     }
+
+     .iq-card-header {
+        border-bottom: 1px solid var(--border-color) !important;
+        padding: 20px 24px !important;
+        background: #ffffff !important;
+     }
+
+     .iq-card-header .card-title {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: var(--text-dark) !important;
+        font-family: 'Inter', sans-serif !important;
+        margin: 0 !important;
+     }
+
+     .iq-card-body {
+        padding: 24px !important;
+     }
+
+     /* Campos de Formulario e Inputs */
+     .form-group label {
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        color: #475569 !important;
+        margin-bottom: 6px !important;
+        font-family: 'Inter', sans-serif !important;
+     }
+
+     .form-control {
+        border: 1.5px solid var(--border-color) !important;
+        border-radius: 10px !important;
+        padding: 10px 14px !important;
+        font-size: 14px !important;
+        color: var(--text-dark) !important;
+        background-color: #ffffff !important;
+        transition: all 0.2s ease !important;
+        height: auto !important;
+     }
+
+     .form-control:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 3px rgba(185, 32, 37, 0.12) !important;
+        outline: none !important;
+     }
+
+     .form-control[readonly], .form-control:disabled {
+        background-color: #f8fafc !important;
+        border-color: #e2e8f0 !important;
+        color: #94a3b8 !important;
+        cursor: not-allowed !important;
+     }
+
+     /* Genero - Controles */
+     .custom-radio {
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 10px 14px 10px 30px !important;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        margin-right: 8px !important;
+        margin-bottom: 8px !important;
+        display: inline-block !important;
+     }
+
+     .custom-radio:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+     }
+
+     .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+     }
+
+     /* Botones Premium */
+     .btn-primary {
+        background: var(--primary-gradient) !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 10px 24px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 12px rgba(185, 32, 37, 0.15) !important;
+        transition: all 0.2s ease !important;
+     }
+
+     .btn-primary:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 16px rgba(185, 32, 37, 0.25) !important;
+     }
+
+     /* Contenedor del Avatar Circular */
+     .profile-avatar-container {
+        position: relative !important;
+        width: 140px !important;
+        height: 140px !important;
+        margin: 0 auto 24px !important;
+     }
+
+     .profile-img-edit.avatar {
+        width: 140px !important;
+        height: 140px !important;
+        margin: 0 !important;
+        border-radius: 50% !important;
+        border: 4px solid #ffffff !important;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        background: #f1f5f9 !important;
+        transition: all 0.3s ease !important;
+     }
+
+     .profile-img-edit.avatar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1) !important;
+     }
+
+     .profile-img-edit.avatar .profile-pic {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50% !important;
+     }
+
+     .profile-img-edit.avatar .p-image {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 40px !important;
+        background: rgba(15, 23, 42, 0.75) !important;
+        backdrop-filter: blur(2px) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 0 !important;
+        transition: opacity 0.2s ease !important;
+        color: #ffffff !important;
+        cursor: pointer !important;
+     }
+
+     .profile-img-edit.avatar:hover .p-image {
+        opacity: 1 !important;
+     }
+
+     .profile-img-edit.avatar .p-image i {
+        font-size: 16px !important;
+        color: #ffffff !important;
+     }
+
+     .btn-webcam-trigger {
+        position: absolute !important;
+        bottom: 4px !important;
+        right: 4px !important;
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        background: #ffffff !important;
+        border: 1px solid var(--border-color) !important;
+        color: var(--text-dark) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        z-index: 5 !important;
+     }
+
+     .btn-webcam-trigger:hover {
+        background: var(--primary-color) !important;
+        color: #ffffff !important;
+        border-color: var(--primary-color) !important;
+        transform: scale(1.08);
+     }
+
+     /* Alertas de Información Modernas */
+     .alert {
+        border-radius: 12px !important;
+        padding: 16px 20px !important;
+        border: 1px solid transparent !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.01) !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 13.5px !important;
+        line-height: 1.5 !important;
+     }
+
+     .alert.bg-danger, .alert-danger {
+        background-color: #fef2f2 !important;
+        border-color: #fee2e2 !important;
+        color: #991b1b !important;
+     }
+
+     .alert.bg-danger .iq-alert-icon, .alert-danger .iq-alert-icon {
+        color: #ef4444 !important;
+        font-size: 18px !important;
+        display: flex;
+        align-items: center;
+     }
+
+     .alert.bg-danger strong, .alert-danger strong {
+        color: #7f1d1d !important;
+     }
+
+     .alert-info, .alert.bg-info {
+        background-color: #f0f9ff !important;
+        border-color: #e0f2fe !important;
+        color: #0369a1 !important;
+     }
+
+     .alert-info .iq-alert-icon, .alert.bg-info .iq-alert-icon {
+        color: #0284c7 !important;
+        font-size: 18px !important;
+        display: flex;
+        align-items: center;
+     }
+
+     .alert-success {
+        background-color: #f0fdf4 !important;
+        border-color: #dcfce7 !important;
+        color: #166534 !important;
+     }
+
+     .alert-success .iq-alert-icon {
+        color: #16a34a !important;
+        font-size: 18px !important;
+        display: flex;
+        align-items: center;
+     }
+
+     /* Área de Peligro */
+     .danger-zone-title {
+        color: #dc2626 !important;
+        font-weight: 700 !important;
+        font-size: 16px !important;
+        margin-bottom: 12px !important;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Inter', sans-serif !important;
+     }
+
+     #eliminarcuentausuarios {
+        background: #fef2f2 !important;
+        border: 1px solid #fca5a5 !important;
+        color: #b91c1c !important;
+        border-radius: 10px !important;
+        padding: 12px !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: none !important;
+        width: 100% !important;
+     }
+
+     #eliminarcuentausuarios:hover {
+        background: #fee2e2 !important;
+        border-color: #ef4444 !important;
+        color: #991b1c !important;
+     }
+
+     /* Dropify Premium */
+     .dropify-wrapper {
+        border: 2px dashed #cbd5e1 !important;
+        border-radius: 12px !important;
+        background-color: #f8fafc !important;
+        transition: all 0.2s ease !important;
+     }
+
+     .dropify-wrapper:hover {
+        border-color: var(--primary-color) !important;
+        background-color: #ffffff !important;
+     }
+
+     .dropify-wrapper .dropify-message p {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 13.5px !important;
+        color: var(--text-muted) !important;
+        font-weight: 550 !important;
+     }
+     </style>
    </head>
    <body class="right-column-fixed">
       <!-- loader Start -->
@@ -74,234 +429,31 @@
       <!-- loader END -->
       <!-- Wrapper Start -->
       <div class="wrapper">
-         <!-- Sidebar  -->
-         <div class="iq-sidebar">
-            <div id="sidebar-scrollbar">
-               <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li>
-                        <a href="../Feed/inicio" class="iq-waves-effect"><i class="las la-newspaper"></i><span>Inicio</span></a>
-                     </li>
-                     <li class="active">
-                        <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect"><i class="las la-user"></i><span>Mi Perfil</span></a>
-                     </li>
-                     <li>
-                        <a href="../MisAmigos/explorar-amigos-aceptados" class="iq-waves-effect"><i class="las la-user-friends"></i><span>Mis Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Amigos/explorar-amigos" class="iq-waves-effect"><i class="las la-smile"></i><span>Explorar Amigos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="iq-waves-effect"><i class="las la-bell"></i><span>Mis Notificaciones</span></a>
-                     </li>
-                     <li>
-                        <a href="../EventosSociales/registrareventos" class="iq-waves-effect"><i class="las la-film"></i><span>Registrar Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../Eventos/mostrareventos" class="iq-waves-effect"><i class="las la-bullhorn"></i><span>Ver Eventos</span></a>
-                     </li>
-                     <li>
-                        <a href="../ChatGeneral/mensajeria-secret" class="iq-waves-effect"><i class="lab la-rocketchat"></i><span>Mensajes</span></a>
-                     </li>
-                     <li>
-                        <a href="../Videos/multimedia-secretvideos" class="iq-waves-effect"><i class="ri-play-circle-line"></i><span>M&uacute;sica Favorita</span></a>
-                     </li>
-                  </ul>
-               </nav>
-               <div class="p-3"></div>
-            </div>
-         </div>
-         <!-- TOP Nav Bar -->
-         <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-               <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex justify-content-between">
-                     <a href="#">
-                     <img src="../vista/images/logo.png" class="img-fluid" alt="">
-                     <span>Secret</span>
-                     </a>
-                     <div class="iq-menu-bt align-self-center">
-                     <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                     </div>
-                  </div>
-                  </div>
-                  <div class="iq-search-bar">
-                     <form action="../Buscador/resultados-busqueda" class="searchbox needs-validation" novalidate method="POST" autocomplete="off">
-                        <input type="text" class="text search-input" name="buscador" placeholder="Buscar en Secret..." required>
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                     </form>
-                  </div>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
-                  <i class="ri-menu-3-line"></i>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                     <ul class="navbar-nav ml-auto navbar-list">
-                        <li>
-                           <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-waves-effect d-flex align-items-center">
-                              <img src="../vista/images/fotosperfiles/<?php echo $_SESSION['fotos_perfiles'];?>" class="img-fluid rounded-circle mr-3 avatar-img" alt="user">
-                              <div class="caption">
-                                 <h6 class="mb-0 line-height"><?php echo $_SESSION['nombre_usuario'];?></h6>
-                              </div>
-                           </a>
-                        </li>
-                        <li>
-                           <a href="../Feed/inicio" class="iq-waves-effect d-flex align-items-center">
-                           <i class="ri-home-line"></i>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="search-toggle iq-waves-effect" href="#"><i class="ri-group-line"></i>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown iq-sub-dropdown-large">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Solicitudes de Amigos<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadRecibidas($conectarsistema15,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <!-- INICIO BANDERA -> SOLICITUDES DE AMIGOS -->
-                                    <?php 
-                                       while($filas=mysqli_fetch_array($consulta1)){
-                                          if($filas['estado']==0){
-                                             echo '
-                                             <div class="iq-friend-request">
-                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between" >
-                                                <div class="d-flex align-items-center">
-                                                   <div class="">
-                                                      <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo $filas['fotoperfil']; echo'" alt="">
-                                                   </div>
-                                                   <div class="media-body ml-3">
-                                                      <h6 class="mb-0 ">'; echo $filas['nombres']; echo ' '; echo $filas['apellidos'];  echo'</h6>
-                                                   </div>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                   <a style="color: var( --iq-white);" id="aceptar-solicitudes" data-id="'; echo $filas['id']; echo'" class="mr-3 btn btn-primary rounded">Confirmar</a>
-                                                   <a style="color: var( --iq-white);" id="rechazar-solicitudes" data-id="'; echo $filas['idsolicitudamistad']; echo'" class="mr-3 btn btn-secondary rounded">Rechazar</a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          ';
-                                          }
-                                       }
-                                    ?>
-                                    <!-- FIN BANDERA -> SOLICITUDES DE AMIGOS -->
-                                 </div>
-                              </div>
-                              <div class="text-center">
-                                <a href="../SolicitudesAmistad/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="las la-hand-point-right"></i> Ver todas las solicitudes de amistad</a>
-                            </div>
-                           </div>
-                        </li>
-                        <li class="nav-item">
-                           <a href="#" class="search-toggle iq-waves-effect">
-                              <div id="lottie-beil"></div>
-                              <span class="bg-danger dots"></span>
-                           </a>
-                           <div class="iq-sub-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3">
-                                       <h5 class="mb-0 text-white">Notificaciones<small class="badge  badge-light float-right pt-1"><?php echo NumeroSolicitudesAmistadAceptadas($conectarsistema17,$_SESSION['id_usuario']); ?></small></h5>
-                                    </div>
-                                    <?php 
-                                    // CONSULTA DE SOLICITUDES DE AMISTAD APROBADAS
-                                       while($filas=mysqli_fetch_array($consulta2)){
-                                          echo'
-                                          <a href="#" class="iq-sub-card" >
-                                          <div class="media align-items-center">
-                                             <div class="">
-                                                <img class="avatar-40 rounded" src="../vista/images/fotosperfiles/'; echo$filas['fotoperfil'];  echo'" alt="">
-                                             </div>
-                                             <div class="media-body ml-3">
-                                                <h6 class="mb-0 ">Eres amigo de '; echo $filas['nombres']; echo' '; echo $filas['apellidos']; echo'</h6>
-                                                <small class="float-right font-size-12">
-                                                ';
-                                                // OBTENER -> DIA / MES / HORAS Y MINUTOS SOLAMENTE
-                                                $FechaCompleta = strtotime($filas['fecha_notificacion']); $ObtenerDia = date("d", $FechaCompleta);
-                                                $ObtenerMes = date("m", $FechaCompleta);
-                                                $ObtenerHoras = date("H:i", $FechaCompleta);
-                                                $ObtenerMinutos = date("m", $FechaCompleta);
-                                                echo $ObtenerDia; echo'/';echo $ObtenerMes; echo' | ';echo $ObtenerHoras;
-                                                echo'
-                                                </small>
-                                             </div>
-                                          </div>
-                                       </a>
-                                          ';
-                                       }
-                                    ?>
-                                    <div class="text-center">
-                                       <a href="../Notificaciones/<?php echo $_SESSION['usuario_unico']; ?>" class="mr-3 btn text-primary"><i class="ri-notification-3-fill"></i> Ver todas las notificaciones</a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     <ul class="navbar-list">
-                        <li>
-                           <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                           <i class="ri-arrow-down-s-fill"></i>
-                           </a>
-                           <div class="iq-sub-dropdown iq-user-dropdown">
-                              <div class="iq-card shadow-none m-0">
-                                 <div class="iq-card-body p-0 ">
-                                    <div class="bg-primary p-3 line-height">
-                                       <h5 class="mb-0 text-white line-height">Hola, <?php echo $_SESSION['nombre_usuario'];?> <?php echo $_SESSION['apellido_usuario'];?></h5>
-                                       <span class="text-white font-size-12">Secret&reg;</span>
-                                    </div>
-                                    <a href="../Perfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-file-user-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Mi perfil</h6>
-                                             <p class="mb-0 font-size-12">Ver mi informaci&oacute;n personal</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="../EditarPerfil/<?php echo $_SESSION['usuario_unico'];?>" class="iq-sub-card iq-bg-warning-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-warning">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Editar Perfil</h6>
-                                             <p class="mb-0 font-size-12">Modificar foto y detalles de mi perfil</p>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                       <a class="bg-primary iq-sign-btn" href="../Salir/cerrarsesion" role="button">Cerrar Sesi&oacute;n<i class="ri-login-box-line ml-2"></i></a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-         </div>
-         <!-- TOP Nav Bar END -->
+                  <?php include __DIR__ . '/premium_sidebar.php'; ?>
+         <?php include __DIR__ . '/premium_topnav.php'; ?>
          <!-- Page Content  -->
          <div id="content-page" class="content-page">
             <div class="container">
                <div class="row">
-                  <div class="col-lg-12">
-                     <div class="iq-card">
+                  <!-- Sidebar Settings Menu -->
+                  <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
+                     <div class="iq-card settings-sidebar-card">
                         <div class="iq-card-body p-0">
                            <div class="iq-edit-list">
-                              <ul class="iq-edit-profile d-flex nav nav-pills">
-                                 <li class="col-md-6 p-0">
+                              <ul class="iq-edit-profile d-flex nav nav-pills flex-column">
+                                 <li class="p-0">
                                     <a class="nav-link active" data-toggle="pill" href="#informacion-personal">
-                                    Informaci&oacute;n Personal
+                                       <i class="las la-user-cog mr-2"></i>Informaci&oacute;n Personal
                                     </a>
                                  </li>
-                                 <li class="col-md-6 p-0">
+                                 <li class="p-0 mt-2">
                                     <a class="nav-link" data-toggle="pill" href="#informaciondetalles-usuarios">
-                                    Sobre M&iacute;
+                                       <i class="las la-info-circle mr-2"></i>Sobre M&iacute;
+                                    </a>
+                                 </li>
+                                 <li class="p-0 mt-2">
+                                    <a class="nav-link" data-toggle="pill" href="#seguridad-perfil">
+                                       <i class="las la-shield-alt mr-2"></i>Seguridad y Contrase&ntilde;a
                                     </a>
                                  </li>
                               </ul>
@@ -309,7 +461,9 @@
                         </div>
                      </div>
                   </div>
-                  <div class="col-lg-12">
+                  
+                  <!-- Main Settings Panel -->
+                  <div class="col-lg-9 col-md-8 col-sm-12">
                      <div class="iq-edit-list-data">
                         <div class="tab-content">
                            <div class="tab-pane fade active show" id="informacion-personal" role="tabpanel">
@@ -321,23 +475,28 @@
                                  </div>
                                  <div class="iq-card-body">
                                  <form id="form" class="mt-4 needs-validation" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
-                                 <div class="alert text-white bg-danger" role="alert">
+                                 <div class="alert alert-info" role="alert">
                                     <div class="iq-alert-icon">
                                        <i class="ri-information-line"></i>
                                     </div>
-                                    <div class="iq-alert-text">Por favor tome nota: Estimado(a) <?php echo $_SESSION['nombre_usuario'] ?>, por motivos de seguridad, deber&aacute; cambiar obligatoriamente su contrase&ntilde;a luego de actualizar datos personales de su perfil. <strong>Sus detalles de usuario (sobre m&iacute;) no aplica para este aviso.</strong></div>
+                                    <div class="iq-alert-text">Estimado(a) <strong><?php echo $_SESSION['nombre_usuario'] ?></strong>, desde aqu&iacute; puedes actualizar tu informaci&oacute;n personal b&aacute;sica. Tus datos est&aacute;n protegidos. Para cambiar tu contrase&ntilde;a de acceso, ve a la pesta&ntilde;a <strong>Seguridad y Contrase&ntilde;a</strong>.</div>
                                     </div><br>
                                        <div class="form-group row align-items-center">
                                           <div class="col-md-12">
-                                             <div class="profile-img-edit avatar">
-                                                <img class="profile-pic avatar-img" src="../vista/images/fotosperfiles/<?php echo $Usuarios->getFotoPerfilUsuario();?>" alt="Foto de perfil" data-toggle="tooltip" data-placement="right" title="Resoluci&oacute;n sugerida: 640x640 &Uacute;nicamente: .png / .jpg">
-                                                <div class="p-image" data-toggle="tooltip" data-placement="bottom" title="Campo No Requerido">
-                                                   <i class="ri-pencil-line upload-button"></i>
-                                                   <input class="file-upload" type="file" name="fotoperfil" accept="image/x-png,image/jpeg"/>
+                                             <div class="profile-avatar-container">
+                                                <div class="profile-img-edit avatar">
+                                                   <img class="profile-pic avatar-img" src="../vista/images/fotosperfiles/<?php echo $Usuarios->getFotoPerfilUsuario();?>" alt="Foto de perfil" data-toggle="tooltip" data-placement="right" title="Resoluci&oacute;n sugerida: 640x640 &Uacute;nicamente: .png / .jpg">
+                                                   <div class="p-image" data-toggle="tooltip" data-placement="bottom" title="Campo No Requerido">
+                                                      <i class="ri-pencil-line upload-button"></i>
+                                                      <input class="file-upload" type="file" name="fotoperfil" accept="image/x-png,image/jpeg"/>
+                                                   </div>
                                                 </div>
+                                                <!-- CAPTURAR FOTO WEBCAM -->
+                                                <button type="button" class="btn-webcam-trigger" data-toggle="modal" data-target="#exampleModalCenter" data-toggle="tooltip" data-placement="bottom" title="Tomar Foto con WebCam">
+                                                   <i class="fa fa-camera"></i>
+                                                </button>
                                              </div>
-                                             <!-- CAPTURAR FOTO WEBCAM -->
-                                             <button style="width: 4.5%;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera"></i></button>
+                                             
                                              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                    <div class="modal-content">
@@ -352,7 +511,7 @@
                                                       <a style="color: #fff; width:100%;" id="boton" class="btn btn-primary"><i class="fa fa-camera"></i> Tomar Foto</a>
                                                       <p id="estado"></p>
                                                       <video style="width: 100%; max-width: 100%; height: 100%; max-height: 255px;" muted="muted" id="video"></video>
-	                                                   <canvas id="canvas" style="display: none;"></canvas>
+ 	                                                   <canvas id="canvas" style="display: none;"></canvas>
                                                       </div>
                                                       <div class="modal-footer">
                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -378,26 +537,6 @@
                                              <input type="text" class="form-control mb-0" id="apellido" name="apellido_usuario" value="<?php echo $Usuarios->getApellidoUsuario(); ?>" required>
                                              <div class="invalid-tooltip">
                                                 Apellido es requerido, complete este campo
-                                             </div>
-                                             <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                             </div>
-                                          </div>
-                                          <div class="form-group col-sm-6">
-                                             <label for="nombre">Nueva Contrase&ntilde;a:</label>
-                                             <input type="password" class="form-control" id="clavenueva" name="clave_usuario" placeholder="************" required>
-                                             <div class="invalid-tooltip">
-                                                Nueva Contrase&ntilde;a es requerida, complete este campo
-                                             </div>
-                                             <div class="valid-tooltip">
-                                                Campo completado con &eacute;xito
-                                             </div>
-                                          </div>
-                                          <div class="form-group col-sm-6">
-                                             <label for="nombre">Repetir Contrase&ntilde;a:</label>
-                                             <input type="password" class="form-control" id="claverepetida" placeholder="************" required>
-                                             <div class="invalid-tooltip">
-                                                Debe repetir su nueva contrase&ntilde;a
                                              </div>
                                              <div class="valid-tooltip">
                                                 Campo completado con &eacute;xito
@@ -718,7 +857,7 @@
                                     <div class="iq-header-title">
                                        <h4 class="card-title">&Aacute;rea de Peligro (Eliminar Cuenta Definitivamente)</h4>
                                     </div>
-                                    <div class="alert bg-white alert-danger" role="alert">
+                                    <div class="alert alert-danger" role="alert">
                                        <div class="iq-alert-icon">
                                           <i class="ri-alert-line"></i>
                                     </div>
@@ -748,7 +887,7 @@
                                  <div class="iq-card-body">
                                     <?php if($Usuarios->getComprobacionPerfil()=="0"){ // USUARIOS ANTIGUOS ?>
                                           <form id="detallesusuarios_modificar" class="mt-4 needs-validation" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
-                                             <div class="alert bg-white alert-info" role="alert">
+                                             <div class="alert alert-info" role="alert">
                                                 <div class="iq-alert-icon">
                                                 <i class="ri-information-line"></i>
                                              </div>
@@ -832,13 +971,13 @@
                                                 <button type="submit" id="enviardetalles" class="btn btn-primary mr-2">Enviar Datos</button>
                                        <?php }else{ // USUARIOS NUEVOS ?>
                                        <form id="detallesusuarios" class="mt-4 needs-validation" novalidate method="POST" autocomplete="off" enctype="multipart/form-data">
-                                          <div class="alert bg-white alert-info" role="alert">
+                                          <div class="alert alert-info" role="alert">
                                              <div class="iq-alert-icon">
                                              <i class="ri-information-line"></i>
                                           </div>
                                           <div class="iq-alert-text">Estimado(a) <?php echo $_SESSION['nombre_usuario'];?> le recordamos que esta secci&oacute;n es opcional, usted decide si completarla o no. S&iacute; decide completarla, el &uacute;nico campo requerido es sobre una peque&ntilde;a descripci&oacute;n corta subre usted. <strong>Le sugerimos que en los campos donde usted ingrese m&aacute;s de un detalle, lo separe por comas " , "</strong> esto con el fin de mostrar su informaci&oacute;n en su perfil de usuario de la manera m&aacute;s ordenada posible. <strong>Hemos detectado que usted es un usuario nuevo; al completar los campos que usted considere necesarios, por su seguridad deber&aacute; iniciar sesi&oacute;n nuevamente. Lo anterior aplica &uacute;nicamente a los usuario nuevos.</strong></div>
                                        </div>
-                                       <div class="alert bg-white alert-danger" role="alert">
+                                       <div class="alert alert-danger" role="alert">
                                              <div class="iq-alert-icon">
                                              <i class="ri-information-line"></i>
                                           </div>
@@ -915,6 +1054,83 @@
                                              <button type="submit" id="enviardetalles" class="btn btn-primary mr-2">Enviar Datos</button>
                                           <?php } ?>
                                     </form>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- NUEVA PESTAÑA: SEGURIDAD Y CONTRASEÑA -->
+                           <div class="tab-pane fade" id="seguridad-perfil" role="tabpanel">
+                              <div class="iq-card">
+                                 <div class="iq-card-header d-flex justify-content-between">
+                                    <div class="iq-header-title">
+                                       <h4 class="card-title"><i class="las la-shield-alt mr-2" style="color: var(--primary-color);"></i>Seguridad y Contrase&ntilde;a</h4>
+                                    </div>
+                                 </div>
+                                 <div class="iq-card-body">
+                                    <div class="row">
+                                       <!-- Columna del Formulario de Cambio de Clave -->
+                                       <div class="col-lg-6 col-md-12 mb-4">
+                                          <h5 class="mb-3 font-weight-bold" style="color: var(--text-dark); font-family: 'Inter', sans-serif;">Actualizar Contrase&ntilde;a</h5>
+                                          <form id="form_cambiar_clave" class="needs-validation" novalidate method="POST" autocomplete="off">
+                                             <div class="form-group">
+                                                <label for="clave_actual">Contrase&ntilde;a Actual:</label>
+                                                <input type="password" class="form-control" id="clave_actual" name="clave_actual" placeholder="Ingresa tu contrase&ntilde;a actual" required>
+                                                <div class="invalid-tooltip">Por favor ingresa tu contrase&ntilde;a actual.</div>
+                                             </div>
+                                             <div class="form-group">
+                                                <label for="clave_nueva">Nueva Contrase&ntilde;a:</label>
+                                                <input type="password" class="form-control" id="clave_nueva" name="clave_nueva" placeholder="M&iacute;nimo 8 caracteres" required>
+                                                <div class="invalid-tooltip">Por favor ingresa tu nueva contrase&ntilde;a.</div>
+                                             </div>
+                                             <div class="form-group">
+                                                <label for="clave_nueva_repetida">Confirmar Nueva Contrase&ntilde;a:</label>
+                                                <input type="password" class="form-control" id="clave_nueva_repetida" placeholder="Repite tu nueva contrase&ntilde;a" required>
+                                                <div class="invalid-tooltip">Por favor confirma tu nueva contrase&ntilde;a.</div>
+                                             </div>
+                                             <button type="submit" id="btn_cambiar_clave" class="btn btn-primary mt-3 w-100">Guardar Cambios</button>
+                                          </form>
+                                       </div>
+                                       
+                                       <!-- Columna de Consejos de Seguridad Estilo Facebook -->
+                                       <div class="col-lg-6 col-md-12">
+                                          <div class="p-3 border rounded-lg bg-light" style="border-radius: 12px; border: 1.5px solid var(--border-color) !important; background-color: var(--bg-light) !important;">
+                                             <h5 class="mb-3 font-weight-bold d-flex align-items-center gap-2" style="color: var(--text-dark); font-family: 'Inter', sans-serif;">
+                                                <i class="las la-user-shield text-success font-size-24 mr-2"></i>Comprobaci&oacute;n de Seguridad
+                                             </h5>
+                                             <p class="text-muted font-size-13 mb-4">Te ayudamos a proteger tu cuenta en Secret&reg;. Sigue estos consejos pr&aacute;cticos inspirados en est&aacute;ndares profesionales de seguridad.</p>
+                                             
+                                             <ul class="list-unstyled mb-0" style="padding-left: 0;">
+                                                <li class="media mb-3 align-items-start">
+                                                   <i class="las la-key text-primary font-size-20 mr-3 mt-1"></i>
+                                                   <div class="media-body">
+                                                      <h6 class="mt-0 mb-1 font-weight-bold font-size-14" style="color: var(--text-dark);">Contrase&ntilde;as Fuertes</h6>
+                                                      <p class="text-muted font-size-12 mb-0">Combina letras may&uacute;sculas, min&uacute;sculas, n&uacute;meros y s&iacute;mbolos. Evita usar datos obvios como fechas o nombres.</p>
+                                                   </div>
+                                                </li>
+                                                <li class="media mb-3 align-items-start">
+                                                   <i class="las la-envelope-open-text text-warning font-size-20 mr-3 mt-1"></i>
+                                                   <div class="media-body">
+                                                      <h6 class="mt-0 mb-1 font-weight-bold font-size-14" style="color: var(--text-dark);">Alertas por Correo Electr&oacute;nico</h6>
+                                                      <p class="text-muted font-size-12 mb-0">Cada vez que realices cambios en tu perfil o se detecte un inicio de sesi&oacute;n duplicado, te enviaremos una alerta de seguridad.</p>
+                                                   </div>
+                                                </li>
+                                                <li class="media mb-3 align-items-start">
+                                                   <i class="las la-lock-open text-danger font-size-20 mr-3 mt-1"></i>
+                                                   <div class="media-body">
+                                                      <h6 class="mt-0 mb-1 font-weight-bold font-size-14" style="color: var(--text-dark);">No compartas tus datos</h6>
+                                                      <p class="text-muted font-size-12 mb-0">Secret&reg; nunca te pedir&aacute; tu clave por correo, SMS ni chat privado. Mant&eacute;n tus credenciales seguras.</p>
+                                                   </div>
+                                                </li>
+                                                <li class="media align-items-start">
+                                                   <i class="las la-history text-info font-size-20 mr-3 mt-1"></i>
+                                                   <div class="media-body">
+                                                      <h6 class="mt-0 mb-1 font-weight-bold font-size-14" style="color: var(--text-dark);">Control de Inicios de Sesi&oacute;n</h6>
+                                                      <p class="text-muted font-size-12 mb-0">Monitoreamos sesiones concurrentes. Si inicias sesi&oacute;n en otro navegador, te notificaremos inmediatamente por seguridad.</p>
+                                                   </div>
+                                                </li>
+                                             </ul>
+                                          </div>
+                                       </div>
+                                    </div>
                                  </div>
                               </div>
                            </div>
